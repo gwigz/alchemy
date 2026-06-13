@@ -61,6 +61,26 @@ S32 LLUIImage::getHeight() const
     return 0;
 }
 
+void LLUIImage::draw(S32, S32, S32, S32, const LLColor4&) const
+{
+}
+
+void LLUIImage::drawSolid(S32, S32, S32, S32, const LLColor4&) const
+{
+}
+
+void LLUIImage::drawBorder(S32, S32, S32, S32, const LLColor4&, S32) const
+{
+}
+
+void LLUIImage::drawShaped(S32, S32, S32, S32, const LLColor4&, const LLUIImageShape&) const
+{
+}
+
+void LLUIImage::draw3D(const LLVector3&, const LLVector3&, const LLVector3&, const LLRect&, const LLColor4&)
+{
+}
+
 namespace LLInitParam
 {
     ParamValue<LLUIColor>::ParamValue(const LLUIColor& color)

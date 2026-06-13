@@ -41,6 +41,19 @@
 
 extern const LLColor4 UI_VERTEX_COLOR;
 
+// Per-instance shape overrides for procedural chrome. Each < 0 means "use the
+// recipe default". Plain floats so llrender stays independent of the AL layer.
+struct LLUIImageShape
+{
+    F32 radius_top = -1.f;
+    F32 radius_bottom = -1.f;
+    F32 radius_left = -1.f;
+    F32 radius_right = -1.f;
+    F32 inset = -1.f;
+
+    bool any() const { return radius_top >= 0.f || radius_bottom >= 0.f || radius_left >= 0.f || radius_right >= 0.f || inset >= 0.f; }
+};
+
 class LLUIImage : public LLRefCount
 {
 public:
@@ -71,22 +84,29 @@ public:
         mScaleStyle = style;
     }
 
+    void copyLayoutFrom(const LLUIImage& other);
+    void releaseImage();
+
     LL_FORCE_INLINE LLPointer<LLTexture> getImage() { return mImage; }
     LL_FORCE_INLINE const LLPointer<LLTexture>& getImage() const { return mImage; }
 
-    LL_FORCE_INLINE void draw(S32 x, S32 y, S32 width, S32 height, const LLColor4& color = UI_VERTEX_COLOR) const;
+    virtual void draw(S32 x, S32 y, S32 width, S32 height, const LLColor4& color = UI_VERTEX_COLOR) const;
     LL_FORCE_INLINE void draw(S32 x, S32 y, const LLColor4& color = UI_VERTEX_COLOR) const;
     LL_FORCE_INLINE void draw(const LLRect& rect, const LLColor4& color = UI_VERTEX_COLOR) const { draw(rect.mLeft, rect.mBottom, rect.getWidth(), rect.getHeight(), color); }
 
-    LL_FORCE_INLINE void drawSolid(S32 x, S32 y, S32 width, S32 height, const LLColor4& color) const;
+    virtual void drawSolid(S32 x, S32 y, S32 width, S32 height, const LLColor4& color) const;
     LL_FORCE_INLINE void drawSolid(const LLRect& rect, const LLColor4& color) const { drawSolid(rect.mLeft, rect.mBottom, rect.getWidth(), rect.getHeight(), color); }
     LL_FORCE_INLINE void drawSolid(S32 x, S32 y, const LLColor4& color) const { drawSolid(x, y, getWidth(), getHeight(), color); }
 
-    LL_FORCE_INLINE void drawBorder(S32 x, S32 y, S32 width, S32 height, const LLColor4& color, S32 border_width) const;
+    virtual void drawBorder(S32 x, S32 y, S32 width, S32 height, const LLColor4& color, S32 border_width) const;
+
+    // Draw with per-instance shape overrides. Procedural images honor them; plain
+    // textures ignore them and draw normally.
+    virtual void drawShaped(S32 x, S32 y, S32 width, S32 height, const LLColor4& color, const LLUIImageShape& shape) const;
     LL_FORCE_INLINE void drawBorder(const LLRect& rect, const LLColor4& color, S32 border_width) const { drawBorder(rect.mLeft, rect.mBottom, rect.getWidth(), rect.getHeight(), color, border_width); }
     LL_FORCE_INLINE void drawBorder(S32 x, S32 y, const LLColor4& color, S32 border_width) const { drawBorder(x, y, getWidth(), getHeight(), color, border_width); }
 
-    void draw3D(const LLVector3& origin_agent, const LLVector3& x_axis, const LLVector3& y_axis, const LLRect& rect, const LLColor4& color);
+    virtual void draw3D(const LLVector3& origin_agent, const LLVector3& x_axis, const LLVector3& y_axis, const LLRect& rect, const LLColor4& color);
 
     LL_FORCE_INLINE const std::string& getName() const { return mName; }
 

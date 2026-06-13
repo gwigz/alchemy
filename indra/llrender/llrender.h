@@ -488,6 +488,11 @@ public:
     };
 
 public:
+    // Drains deferred UI geometry after older gGL immediate geometry, so mixed
+    // immediate/procedural UI streams keep submission order. Null until set.
+    static void (*sUIBatchFlush)();
+    static bool (*sUIBatchHasPending)();
+
     static U32 sUICalls;
     static U32 sUIVerts;
     static F32 sAnisotropicFilteringLevel;
@@ -503,6 +508,7 @@ private:
     LLVertexBuffer* bufferfromCache(U32 attribute_mask, U32 count);
     LLVertexBuffer* genBuffer(U32 attribute_mask, S32 count);
     void drawBuffer(LLVertexBuffer* vb, U32 mode, S32 count);
+    void flushImmediate();
     void resetStriders(S32 count);
 
     eMatrixMode mMatrixMode;

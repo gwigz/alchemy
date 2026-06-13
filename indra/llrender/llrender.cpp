@@ -67,6 +67,8 @@ glm::mat4 gGLInverseDeltaModelView;
 
 S32 gGLViewport[4];
 
+void (*LLRender::sUIBatchFlush)() = nullptr;
+bool (*LLRender::sUIBatchHasPending)() = nullptr;
 
 U32 LLRender::sUICalls = 0;
 U32 LLRender::sUIVerts = 0;
@@ -1478,13 +1480,26 @@ void LLRender::endList()
 
 void LLRender::begin(const GLuint& mode)
 {
+    if (sUIBatchFlush)
+    {
+        const bool batch_pending = !sUIBatchHasPending || sUIBatchHasPending();
+        if (batch_pending && mCount > 0)
+        {
+            flushImmediate();
+        }
+        if (batch_pending)
+        {
+            sUIBatchFlush();
+        }
+    }
+
     if (mode != mMode)
     {
         if (mMode == LLRender::LINES ||
             mMode == LLRender::TRIANGLES ||
             mMode == LLRender::POINTS)
         {
-            flush();
+            flushImmediate();
         }
         else if (mCount != 0)
         {
@@ -1513,6 +1528,15 @@ void LLRender::end()
 }
 
 void LLRender::flush()
+{
+    flushImmediate();
+    if (sUIBatchFlush && (!sUIBatchHasPending || sUIBatchHasPending()))
+    {
+        sUIBatchFlush();
+    }
+}
+
+void LLRender::flushImmediate()
 {
     STOP_GLERROR;
     if (mCount > 0)

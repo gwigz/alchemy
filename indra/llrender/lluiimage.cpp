@@ -42,8 +42,11 @@ LLUIImage::LLUIImage(const std::string& name, LLPointer<LLTexture> image)
     mCachedW(-1),
     mCachedH(-1)
 {
-    getTextureWidth();
-    getTextureHeight();
+    if (mImage.notNull())
+    {
+        getTextureWidth();
+        getTextureHeight();
+    }
 }
 
 LLUIImage::LLUIImage(std::string&& name, LLPointer<LLTexture> image) :
@@ -56,8 +59,11 @@ LLUIImage::LLUIImage(std::string&& name, LLPointer<LLTexture> image) :
     mCachedW(-1),
     mCachedH(-1)
 {
-    getTextureWidth();
-    getTextureHeight();
+    if (mImage.notNull())
+    {
+        getTextureWidth();
+        getTextureHeight();
+    }
 }
 
 LLUIImage::~LLUIImage()
@@ -65,14 +71,87 @@ LLUIImage::~LLUIImage()
     delete mImageLoaded;
 }
 
+void LLUIImage::drawBorder(S32 x, S32 y, S32 width, S32 height, const LLColor4& color, S32 border_width) const
+{
+    LLRect border_rect;
+    border_rect.setOriginAndSize(x, y, width, height);
+    border_rect.stretch(border_width, border_width);
+    drawSolid(border_rect, color);
+}
+
+void LLUIImage::drawShaped(S32 x, S32 y, S32 width, S32 height, const LLColor4& color, const LLUIImageShape&) const
+{
+    draw(x, y, width, height, color);
+}
+
+void LLUIImage::copyLayoutFrom(const LLUIImage& other)
+{
+    mScaleRegion = other.mScaleRegion;
+    mClipRegion = other.mClipRegion;
+    mScaleStyle = other.mScaleStyle;
+    mCachedW = other.mCachedW;
+    mCachedH = other.mCachedH;
+}
+
+void LLUIImage::releaseImage()
+{
+    mImage = NULL;
+}
+
+void LLUIImage::draw(S32 x, S32 y, S32 width, S32 height, const LLColor4& color) const
+{
+    if (mImage.isNull())
+    {
+        return;
+    }
+
+    gl_draw_scaled_image_with_border(
+        x, y,
+        width, height,
+        mImage,
+        color,
+        false,
+        mClipRegion,
+        mScaleRegion,
+        mScaleStyle == SCALE_INNER);
+}
+
+void LLUIImage::drawSolid(S32 x, S32 y, S32 width, S32 height, const LLColor4& color) const
+{
+    if (mImage.isNull())
+    {
+        return;
+    }
+
+    gl_draw_scaled_image_with_border(
+        x, y,
+        width, height,
+        mImage,
+        color,
+        true,
+        mClipRegion,
+        mScaleRegion,
+        mScaleStyle == SCALE_INNER);
+}
+
 S32 LLUIImage::getWidth() const
 {
+    if (mImage.isNull())
+    {
+        return llmax(0, mCachedW);
+    }
+
     // return clipped dimensions of actual image area
     return ll_round((F32)mImage->getWidth(0) * mClipRegion.getWidth());
 }
 
 S32 LLUIImage::getHeight() const
 {
+    if (mImage.isNull())
+    {
+        return llmax(0, mCachedH);
+    }
+
     // return clipped dimensions of actual image area
     return ll_round((F32)mImage->getHeight(0) * mClipRegion.getHeight());
 }
@@ -80,6 +159,11 @@ S32 LLUIImage::getHeight() const
 void LLUIImage::draw3D(const LLVector3& origin_agent, const LLVector3& x_axis, const LLVector3& y_axis,
                         const LLRect& rect, const LLColor4& color)
 {
+    if (mImage.isNull())
+    {
+        return;
+    }
+
     F32 border_scale = 1.f;
     F32 border_height = (1.f - mScaleRegion.getHeight()) * getHeight();
     F32 border_width = (1.f - mScaleRegion.getWidth()) * getWidth();
