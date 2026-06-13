@@ -2139,8 +2139,7 @@ void LLFloater::draw()
     {
         const F32 alpha = getCurrentTransparency();
 
-        drawShadow(this);
-
+        // Floater shadows are drawn through the Window_* procedural image recipes.
         S32 left = LLPANEL_BORDER_WIDTH;
         S32 top = getRect().getHeight() - LLPANEL_BORDER_WIDTH;
         S32 right = getRect().getWidth() - LLPANEL_BORDER_WIDTH;
@@ -2170,7 +2169,9 @@ void LLFloater::draw()
         }
         else
         {
-            // We're not using images, use old-school flat colors
+            // We're not using images, use old-school flat colors. The procedural
+            // recipes carry their own shadow, so legacy skins draw it here instead.
+            drawShadow(this);
             gl_rect_2d( left, top, right, bottom, color % alpha );
 
             // draw highlight on title bar to indicate focus.  RDW

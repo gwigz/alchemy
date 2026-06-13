@@ -132,6 +132,13 @@ public:
                                 display_pressed_state;
 
         Optional<F32>               hover_glow_amount;
+        // Per-instance procedural-chrome shape overrides (see LLUIImageShape).
+        Optional<F32>               shape_radius,
+                                    shape_radius_top,
+                                    shape_radius_bottom,
+                                    shape_radius_left,
+                                    shape_radius_right,
+                                    shape_inset;
         Optional<TimeIntervalParam> held_down_delay;
 
         Optional<bool>              use_draw_context_alpha,
@@ -265,6 +272,7 @@ public:
 
     void            setScaleImage(bool scale)           { mScaleImage = scale; }
     bool            getScaleImage() const               { return mScaleImage; }
+    void            setImageShape(const LLUIImageShape& shape) { mShape = shape; }
 
     void            setDropShadowedText(bool b);
 
@@ -355,6 +363,7 @@ protected:
 
     bool                        mIsToggle;
     bool                        mScaleImage;
+    LLUIImageShape              mShape;
 
     bool                        mDropShadowedText;
     bool                        mAutoResize;

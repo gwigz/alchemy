@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<shapes>
+  <shape name="Window_Foreground" width="30" height="60"         radius="4" fill="DkGray2" shadow_color="0 0 0 0.22" shadow_blur="7" shadow_offset_y="-2" />
+  <shape name="Window_NoTitle_Foreground" width="30" height="60" radius="4" fill="DkGray2" shadow_color="0 0 0 0.22" shadow_blur="7" shadow_offset_y="-2" />
+  <shape name="Window_Background" width="30" height="60"         radius="4" fill="DkGray" />
+  <shape name="Window_NoTitle_Background" width="30" height="60" radius="4" fill="DkGray" />
+
+  <shape name="PushButton_Off" width="32" height="23"               radius="4" fill_color="0.318 0.318 0.318 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Selected" width="32" height="23"          radius="4" fill_color="0.173 0.173 0.173 0.784" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_On" width="32" height="23"                radius="4" fill_color="0.263 0.369 0.467 0.702" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Disabled" width="32" height="23"          radius="4" fill_color="0.271 0.271 0.271 0.294" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Selected_Disabled" width="32" height="23" radius="4" fill_color="0.349 0.486 0.431 0.729" border_color="1 1 1 0.08" border_width="1" />
+
+  <shape name="ScrollThumb_Vert" width="14" height="57"  radius="5" inset="4" fill_color="1 1 1 0.22" />
+  <shape name="ScrollThumb_Horiz" width="57" height="14" radius="5" inset="4" fill_color="1 1 1 0.22" />
+  <shape name="ScrollTrack_Vert" width="15" height="40"  radius="5" inset="5" fill_color="1 1 1 0.05" />
+  <shape name="ScrollTrack_Horiz" width="40" height="15" radius="5" inset="5" fill_color="1 1 1 0.05" />
+  <shape name="ScrollArrow_Up" width="15" height="15"    radius="3" fill_color="1 1 1 0" />
+  <shape name="ScrollArrow_Down" width="15" height="15"  radius="3" fill_color="1 1 1 0" />
+  <shape name="ScrollArrow_Left" width="15" height="15"  radius="3" fill_color="1 1 1 0" />
+  <shape name="ScrollArrow_Right" width="15" height="15" radius="3" fill_color="1 1 1 0" />
+
+  <shape name="TabTop_First_Flat_Off" width="70" height="31"       radius_top="4" radius_bottom="0" fill_color="0.267 0.267 0.267 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Middle_Flat_Off" width="70" height="31"      radius_top="4" radius_bottom="0" fill_color="0.267 0.267 0.267 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Last_Flat_Off" width="70" height="31"        radius_top="4" radius_bottom="0" fill_color="0.267 0.267 0.267 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_First_Flat_Selected" width="70" height="31"  radius_top="4" radius_bottom="0" fill_color="0.259 0.365 0.475 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Middle_Flat_Selected" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.259 0.365 0.475 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Last_Flat_Selected" width="70" height="31"   radius_top="4" radius_bottom="0" fill_color="0.259 0.365 0.475 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabLeft_Flat_Off" width="70" height="31" radius_left="4" radius_right="0" fill_color="0.267 0.267 0.267 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabLeft_Flat_Selected" width="70" height="31" radius_left="4" radius_right="0" fill_color="0.259 0.365 0.475 1" border_color="1 1 1 0.08" border_width="1" />
+
+  <shape name="Toolbar_Left_Off" width="31" height="25"        radius="0" fill_color="0.949 0.949 0.949 0.059" />
+  <shape name="Toolbar_Middle_Off" width="31" height="25"      radius="0" fill_color="0.949 0.949 0.949 0.059" />
+  <shape name="Toolbar_Right_Off" width="31" height="25"       radius="0" fill_color="0.949 0.949 0.949 0.059" />
+  <shape name="Toolbar_Left_Selected" width="31" height="25"   radius="0" fill_color="0.263 0.369 0.467 0.702" />
+  <shape name="Toolbar_Middle_Selected" width="31" height="25" radius="0" fill_color="0.263 0.369 0.467 0.702" />
+  <shape name="Toolbar_Right_Selected" width="31" height="25"  radius="0" fill_color="0.263 0.369 0.467 0.702" />
+
+  <shape name="ComboButton_Off" width="22" height="23"      radius="2" fill_color="0.396 0.396 0.396 0.639" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="ComboButton_Selected" width="22" height="23" radius="2" fill_color="0.388 0.388 0.388 0.631" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="ComboButton_Disabled" width="22" height="23" radius="2" fill_color="0.404 0.404 0.404 0.322" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="DropDown_Off" width="122" height="23"      radius="4" fill_color="0.341 0.341 0.341 0.608" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="DropDown_On" width="122" height="23"       radius="4" fill_color="0.38 0.58 0.694 0.349" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="DropDown_Press" width="122" height="23"    radius="4" fill_color="0.2 0.2 0.2 0.792" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="DropDown_Disabled" width="122" height="23" radius="4" fill_color="0.341 0.341 0.341 0.306" border_color="1 1 1 0.08" border_width="1" />
+
+  <shape name="TextField_Off" width="256" height="23"      radius="4" fill_color="0.753 0.753 0.753 1" border_color="0 0 0 0.15" border_width="1" />
+  <shape name="TextField_Disabled" width="256" height="23" radius="4" fill_color="0.753 0.753 0.753 0.502" border_color="0 0 0 0.15" border_width="1" />
+  <shape name="TextField_Active" width="256" height="23"   radius="4" fill_color="1 1 1 1" border_color="0 0 0 0.15" border_width="1" />
+
+  <shape name="SliderTrack_Horiz" width="104" height="6" radius="3" fill_color="0.251 0.251 0.251 0.831" />
+  <shape name="SliderTrack_Vert" width="6" height="104"  radius="3" fill_color="0.067 0.067 0.067 0.624" />
+  <shape name="SliderThumb_Off" width="14" height="14"      radius="7" inset="1" fill_color="0.38 0.38 0.38 0.996" />
+  <shape name="SliderThumb_Press" width="14" height="14"    radius="7" inset="1" fill_color="0.392 0.392 0.392 0.851" />
+  <shape name="SliderThumb_Disabled" width="14" height="14" radius="7" inset="1" fill_color="0.247 0.247 0.247 1" />
+
+  <shape name="Tooltip" width="102" height="17" radius="3" fill_color="0.937 0.89 0.655 1" />
+  <shape name="Badge_Background" width="256" height="23" radius="9" fill_color="0.502 0.502 0.502 1.0" />
+  <shape name="ComboButton_On" width="22" height="23" radius="2" fill_color="0.4 0.522 0.475 0.757" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="ComboButton_UpOff" width="22" height="23" radius="2" fill_color="0.329 0.329 0.329 0.62" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="ComboButton_UpSelected" width="22" height="23" radius="2" fill_color="0.38 0.38 0.38 0.831" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="Dragbar" width="63" height="10" radius="5" fill_color="0.208 0.208 0.208 1.0" />
+  <shape name="Inspector_Background" width="64" height="32" radius="4" fill_color="0.125 0.125 0.125 1.0"   shadow_color="0 0 0 0.20" shadow_blur="6" shadow_offset_y="-1" />
+  <shape name="Inspector_Hover" width="197" height="86"      radius="4" fill_color="0.125 0.125 0.125 0.659" shadow_color="0 0 0 0.12" shadow_blur="4" shadow_offset_y="-1" />
+  <shape name="Icon_Gear_Background" width="12" height="12" radius="6" fill_color="0.502 0.502 0.502 1" shadow_color="0 0 0 0.376" shadow_blur="1" />
+  <shape name="ListItem_Over" width="280" height="24" radius="2" fill_color="0.259 0.365 0.475 0.149" />
+  <shape name="ListItem_Select" width="280" height="24" radius="2" fill_color="0.259 0.365 0.475 0.451" />
+  <shape name="MarketplaceBtn_Off" width="40" height="35" radius="4" fill_color="0.357 0.357 0.357 0.69" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="MarketplaceBtn_Selected" width="40" height="35" radius="4" fill_color="0.243 0.243 0.243 0.839" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="NavBar_BG" width="40" height="60" radius="0" fill_color="0.125 0.125 0.125 1.0" />
+  <shape name="NavBar_BG_NoFav_Bevel" width="40" height="36" radius="0" fill_color="0.125 0.125 0.125 1.0" />
+  <shape name="NavBar_BG_NoNav_Bevel" width="40" height="26" radius="0" fill_color="0.125 0.125 0.125 1.0" />
+  <shape name="New_Tag_Background" width="48" height="16" radius="4" fill_color="0.1 0.1 0.1 0.92" />
+  <shape name="ProgressBar" width="52" height="15" radius="3" fill_color="0.937 0.937 0.937 0.196" />
+  <shape name="ProgressBarSolid" width="52" height="15" radius="3" fill_color="0.965 0.965 0.965 1.0" />
+  <shape name="ProgressTrack" width="152" height="15" radius="2" fill_color="0.0 0.0 0.0 0.2" />
+  <shape name="PushButton_Login" width="299" height="64" radius="4" fill_color="0.0 0.749 1.0 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Login_Over" width="299" height="64" radius="4" fill_color="0.322 0.831 1.0 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Login_Pressed" width="299" height="64" radius="4" fill_color="0.071 0.592 0.765 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_On_Selected" width="32" height="23" radius="4" fill_color="0.263 0.38 0.333 0.855" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Over" width="32" height="23" radius="4" fill_color="0.447 0.447 0.447 0.651" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Selected_Press" width="32" height="23" radius="4" fill_color="0.259 0.365 0.459 0.984" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Sign" width="299" height="64" radius="4" fill_color="0.125 0.125 0.125 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Sign_Over" width="299" height="64" radius="4" fill_color="0.169 0.169 0.169 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="PushButton_Sign_Pressed" width="299" height="64" radius="4" fill_color="0.114 0.114 0.114 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Left_Disabled" width="110" height="32" radius_left="4" radius_right="0" fill_color="0.204 0.204 0.204 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Left_Off" width="110" height="32" radius_left="4" radius_right="0" fill_color="0.267 0.365 0.325 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Left_Over" width="110" height="32" radius_left="4" radius_right="0" fill_color="0.325 0.431 0.392 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Left_Press" width="110" height="32" radius_left="4" radius_right="0" fill_color="0.220 0.322 0.282 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Middle_Disabled" width="110" height="32" radius="0" fill_color="0.204 0.204 0.204 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Middle_Off" width="110" height="32" radius="0" fill_color="0.267 0.365 0.325 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Middle_Over" width="110" height="32" radius="0" fill_color="0.325 0.431 0.392 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Middle_Press" width="110" height="32" radius="0" fill_color="0.220 0.322 0.282 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Right_Disabled" width="110" height="32" radius_left="0" radius_right="4" fill_color="0.204 0.204 0.204 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Right_Off" width="110" height="32" radius_left="0" radius_right="4" fill_color="0.267 0.365 0.325 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Right_Over" width="110" height="32" radius_left="0" radius_right="4" fill_color="0.325 0.431 0.392 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="BreadCrumbBtn_Right_Press" width="110" height="32" radius_left="0" radius_right="4" fill_color="0.220 0.322 0.282 1" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="Accordion_Off" width="281" height="24" radius="4" fill_color="0.753 0.753 0.753 0.051" border_color="0 0 0 0.2" border_width="1" />
+  <shape name="Accordion_Over" width="281" height="24" radius="4" fill_color="1 1 1 0.102" border_color="0 0 0 0.149" border_width="1" />
+  <shape name="Accordion_Press" width="281" height="24" radius="4" fill_color="1 1 1 0.031" border_color="0 0 0 0.149" border_width="1" />
+  <shape name="Accordion_Selected" width="281" height="24" radius="4" fill_color="0.259 0.365 0.475 1" />
+  <shape name="RadioButton_Off" width="14" height="14" radius="7" fill_color="0 0 0 0" border_color="0.38 0.38 0.38 1" border_width="1" />
+  <shape name="RadioButton_Press" width="14" height="14" radius="7" fill_color="0.25 0.25 0.25 0.55" border_color="0.55 0.55 0.55 1" border_width="1" />
+  <shape name="RadioButton_Disabled" width="14" height="14" radius="7" fill_color="0 0 0 0" border_color="0.247 0.247 0.247 1" border_width="1" />
+  <shape name="RadioButton_On" width="14" height="14" radius="7" inset="3" fill_color="0.86 0.86 0.86 1" border_color="0.32 0.32 0.32 1" border_width="1" />
+  <shape name="RadioButton_On_Press" width="14" height="14" radius="7" inset="3" fill_color="1 1 1 1" border_color="0.45 0.45 0.45 1" border_width="1" />
+  <shape name="RadioButton_On_Disabled" width="14" height="14" radius="7" inset="3" fill_color="0.50 0.50 0.50 1" border_color="0.22 0.22 0.22 1" border_width="1" />
+  <shape name="Rounded_Rect" width="64" height="32" radius="6" fill_color="1.0 1.0 1.0 1.0" />
+  <shape name="Rounded_Rect_Top" width="64" height="32" radius_top="6" radius_bottom="0" fill_color="1.0 1.0 1.0 1.0" />
+  <shape name="Rounded_Rect_Bottom" width="64" height="32" radius_top="0" radius_bottom="6" fill_color="1.0 1.0 1.0 1.0" />
+  <shape name="Rounded_Rect_Left" width="64" height="32" radius_left="6" radius_right="0" fill_color="1.0 1.0 1.0 1.0" />
+  <shape name="Rounded_Rect_Right" width="64" height="32" radius_left="0" radius_right="6" fill_color="1.0 1.0 1.0 1.0" />
+  <shape name="Rounded_Square" width="128" height="32" radius="16" fill_color="1.0 1.0 1.0 1.0" />
+  <shape name="SegmentedBtn_Left_Disabled" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.298" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Left_Off" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Left_Over" width="26" height="23" radius="4" fill_color="0.427 0.427 0.427 0.647" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Left_Press" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Left_Selected" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Left_Selected_Disabled" width="26" height="23" radius="4" fill_color="0.349 0.486 0.431 0.729" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Left_Selected_Over" width="26" height="23" radius="4" fill_color="0.416 0.549 0.498 0.765" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Left_Selected_Press" width="26" height="23" radius="4" fill_color="0.314 0.455 0.4 0.714" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Middle_Disabled" width="26" height="23" radius="4" fill_color="0.271 0.271 0.271 0.294" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Middle_Selected" width="26" height="23" radius="4" fill_color="0.318 0.318 0.318 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Middle_Selected_Disabled" width="26" height="23" radius="4" fill_color="0.263 0.369 0.467 0.702" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Middle_Selected_Press" width="26" height="23" radius="4" fill_color="0.259 0.365 0.459 0.984" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Right_Disabled" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.298" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Right_Off" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Right_Over" width="26" height="23" radius="4" fill_color="0.427 0.427 0.427 0.647" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Right_Press" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Right_Selected" width="26" height="23" radius="4" fill_color="0.302 0.302 0.302 0.596" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Right_Selected_Disabled" width="26" height="23" radius="4" fill_color="0.341 0.478 0.427 0.729" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="SegmentedBtn_Right_Selected_Press" width="26" height="23" radius="4" fill_color="0.341 0.478 0.427 0.729" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="Stepper_Up_Off" width="16" height="11" radius="3" fill_color="0.271 0.271 0.271 0.584" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="Stepper_Up_Press" width="16" height="11" radius="3" fill_color="0.224 0.224 0.224 0.631" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="Stepper_Down_Off" width="16" height="11" radius="3" fill_color="0.271 0.271 0.271 0.584" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="Stepper_Down_Press" width="16" height="11" radius="3" fill_color="0.224 0.224 0.224 0.631" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Left_Off" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.953 0.953 0.953 0.09" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Left_Selected" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.494 0.745 0.647 0.404" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Middle_Off" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.953 0.953 0.953 0.09" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Middle_Selected" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.494 0.745 0.647 0.404" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Right_Flashing" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.996 0.996 0.996 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Right_Off" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.953 0.953 0.953 0.09" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TabTop_Right_Selected" width="70" height="31" radius_top="4" radius_bottom="0" fill_color="0.494 0.745 0.647 0.404" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TaskPanel_Tab_Off" width="29" height="40" radius="4" fill_color="0.071 0.071 0.071 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TaskPanel_Tab_Selected" width="32" height="40" radius="5" fill_color="0.125 0.125 0.125 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="TextField_Highlight" width="256" height="23" radius="9" fill_color="0.898 0.863 0.631 1.0" border_color="0 0 0 0.15" border_width="1" />
+  <shape name="TextField_Search_Active" width="256" height="23" radius="9" fill_color="1.0 1.0 1.0 1.0" border_color="0 0 0 0.15" border_width="1" />
+  <shape name="TextField_Search_Disabled" width="256" height="23" radius="9" fill_color="0.753 0.753 0.753 0.502" border_color="0 0 0 0.15" border_width="1" />
+  <shape name="TextField_Search_Highlight" width="256" height="23" radius="9" fill_color="0.898 0.863 0.631 1.0" border_color="0 0 0 0.15" border_width="1" />
+  <shape name="TextField_Search_Off" width="256" height="23" radius="9" fill_color="0.753 0.753 0.753 1.0" border_color="0 0 0 0.15" border_width="1" />
+  <shape name="TextField_Transparent" width="256" height="23" radius="4" fill_color="0 0 0 0" />
+  <shape name="Toast_Background" width="64" height="32" radius="4" fill_color="0.125 0.125 0.125 0.659" />
+  <shape name="Toast_Over" width="197" height="86" radius="4" fill_color="0.125 0.125 0.125 1.0" />
+  <shape name="Toolbar_Left_Flash" width="31" height="25" radius="4" fill_color="0.647 0.443 0.176 1.0" />
+  <shape name="Toolbar_Left_Over" width="31" height="25" radius="4" fill_color="0.949 0.949 0.949 0.098" />
+  <shape name="Toolbar_Middle_Flash" width="31" height="25" radius="4" fill_color="0.647 0.443 0.176 1.0" />
+  <shape name="Toolbar_Middle_Over" width="31" height="25" radius="1" fill_color="0.949 0.949 0.949 0.098" />
+  <shape name="Toolbar_Right_Flash" width="31" height="25" radius="1" fill_color="0.647 0.443 0.176 1.0" />
+  <shape name="Toolbar_Right_Over" width="31" height="25" radius="1" fill_color="0.949 0.949 0.949 0.098" />
+  <shape name="Volume_Background" width="68" height="38" radius="6" fill_color="0.302 0.302 0.302 1.0" />
+  <shape name="Wearables_Divider" width="256" height="3" radius="0" fill_color="0.17 0.17 0.17 1.0" />
+  <shape name="WellButton_Lit" width="30" height="20" radius="4" fill_color="0.651 0.447 0.188 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="WellButton_Lit_Selected" width="30" height="20" radius="4" fill_color="0.651 0.447 0.188 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="Badge_Border" width="256" height="23" radius="9" fill_color="0 0 0 0" border_color="1 1 1 0.25" border_width="1" />
+  <shape name="Container" width="250" height="250" radius="4" fill_color="1 1 1 0.051" border_color="0 0 0 0.2" border_width="1" />
+  <shape name="DropTarget" width="72" height="72" radius="4" fill_color="0 0 0 0.33" border_color="0.33 0.33 0.33 0.6" border_width="1" />
+  <shape name="Error_Tag_Background" width="32" height="16" radius="4" fill_color="0.169 0.169 0.169 1" border_color="0.988 0.933 0.016 1" border_width="1" />
+  <shape name="Flyout_Left" width="12" height="23" radius_left="4" radius_right="0" fill_color="0.169 0.169 0.169 1" shadow_color="0 0 0 0.35" shadow_blur="4" shadow_offset_y="-1" />
+  <shape name="Flyout_Right" width="12" height="23" radius_left="0" radius_right="4" fill_color="0.169 0.169 0.169 1" shadow_color="0 0 0 0.35" shadow_blur="4" shadow_offset_y="-1" />
+  <shape name="Favorite_Link_Over" width="120" height="15" radius="3" fill_color="0.749 0.749 0.749 0.102" />
+  <shape name="Linden_Dollar_Background" width="350" height="215" radius="6" fill_color="0.086 0.098 0.098 1" />
+  <shape name="Marketplace_Dropzone_Background" width="270" height="40" radius="4" fill_color="0.341 0.341 0.341 0.302" />
+  <shape name="NavBar Separator" width="4" height="2" radius="0" fill_color="0.182 0.182 0.182 1.0" />
+  <shape name="Square_Selection" width="106" height="32" radius="0" fill_color="0.38 0.58 0.694 0.349" />
+  <shape name="bevel_background" width="120" height="18" radius="2" fill_color="0.18 0.18 0.18 1.0" />
+  <shape name="buy_off" width="70" height="18" radius="2" fill_color="0.294 0.392 0.353 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="buy_over" width="70" height="18" radius="2" fill_color="0.353 0.455 0.412 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="buy_press" width="70" height="18" radius="2" fill_color="0.243 0.341 0.302 1.0" border_color="1 1 1 0.08" border_width="1" />
+  <shape name="hint_background" width="204" height="75" radius="8" fill_color="1.0 1.0 1.0 0.749" />
+  <shape name="menu_separator" width="167" height="1" radius="0" fill_color="1 1 1 0.102" />
+  <shape name="Row_Selection" width="167" height="21"   radius="2" fill_color="0.38 0.58 0.694 0.349" />
+  <shape name="New_Tag_Border" width="48" height="16"   radius="4" fill_color="0 0 0 0" />
+</shapes>

@@ -2013,7 +2013,8 @@ void LLLineEditor::drawBackground()
         }
         LLColor4 tmp_color = UI_VERTEX_COLOR;
         tmp_color.setAlpha(alpha);
-        image->draw(getLocalRect(), tmp_color);
+        LLRect bg_rect = getLocalRect();
+        image->drawShaped(bg_rect.mLeft, bg_rect.mBottom, bg_rect.getWidth(), bg_rect.getHeight(), tmp_color, mShape);
     }
 }
 

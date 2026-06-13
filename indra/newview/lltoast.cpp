@@ -378,11 +378,6 @@ void LLToast::draw()
 
     if(!isBackgroundVisible())
     {
-        // Floater background is invisible, lets make wrapper panel look like a
-        // floater - draw shadow.
-        drawShadow(mWrapperPanel);
-
-        // Shadow will probably overlap close button, lets redraw the button
         if(mHideBtn)
         {
             drawChild(mHideBtn);

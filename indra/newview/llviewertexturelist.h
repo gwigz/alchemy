@@ -255,6 +255,7 @@ public:
     void cleanUp() override;
 
     bool initFromFile();
+    void releaseUIImageTexture(const std::string& name);
 
     LLPointer<LLUIImage> preloadUIImage(const std::string& name, const std::string& filename, bool use_mips, const LLRect& scale_rect, const LLRect& clip_rect, LLUIImage::EScaleStyle stype);
 

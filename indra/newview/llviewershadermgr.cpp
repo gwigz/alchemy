@@ -45,6 +45,7 @@
 #include "llsky.h"
 
 #include "pipeline.h"
+#include "alproceduralui.h"
 
 #include "llfile.h"
 #include "llviewerwindow.h"
@@ -3446,6 +3447,21 @@ bool LLViewerShaderMgr::loadShadersInterface()
             gSolidColorProgram.bind();
             gSolidColorProgram.uniform1i(sTex0, 0);
             gSolidColorProgram.unbind();
+        }
+    }
+
+    if (success)
+    {
+        gSDFShapeProgram.mName = "SDF Shape Shader";
+        gSDFShapeProgram.mShaderFiles.clear();
+        gSDFShapeProgram.mShaderFiles.push_back(make_pair("interface/sdfshapeV.glsl", GL_VERTEX_SHADER));
+        gSDFShapeProgram.mShaderFiles.push_back(make_pair("interface/sdfshapeF.glsl", GL_FRAGMENT_SHADER));
+        gSDFShapeProgram.mShaderLevel = mShaderLevel[SHADER_INTERFACE];
+        success = gSDFShapeProgram.createShader();
+        if (success)
+        {
+            LLRender::sUIBatchFlush = &ALShapeBatch::flushHook;
+            LLRender::sUIBatchHasPending = &ALShapeBatch::hasPendingHook;
         }
     }
 

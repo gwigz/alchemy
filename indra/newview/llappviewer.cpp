@@ -74,6 +74,7 @@
 #include "lltracethreadrecorder.h"
 #include "llviewerwindow.h"
 #include "llviewerdisplay.h"
+#include "alproceduralui.h"
 #include "llviewermedia.h"
 #include "llviewerparcelaskplay.h"
 #include "llviewerparcelmedia.h"
@@ -909,7 +910,7 @@ bool LLAppViewer::init()
     settings_map["account"] = &gSavedPerAccountSettings;
 
     LLUI::createInstance(settings_map,
-        LLUIImageList::getInstance(),
+        ALProceduralImageProvider::wrap(LLUIImageList::getInstance()),
         ui_audio_callback,
         deferred_ui_audio_callback);
 
@@ -2708,6 +2709,8 @@ std::string LLAppViewer::getSettingsFilename(const std::string& location_key,
 void LLAppViewer::loadColorSettings()
 {
     LLUIColorTable::instance().loadFromSettings();
+    // After colors so procedural chrome recipes can resolve color tokens.
+    ALShapeRegistry::instance().loadFromSettings();
 }
 
 namespace

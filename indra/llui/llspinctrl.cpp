@@ -120,7 +120,7 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
     mDownBtn = LLUICtrlFactory::create<LLButton>(down_button_params);
     addChild(mDownBtn);
 
-    LLRect editor_rect( btn_right + 1, centered_top, getRect().getWidth(), centered_bottom );
+    LLRect editor_rect( btn_right, centered_top, getRect().getWidth(), centered_bottom );
     LLLineEditor::Params params;
     params.name("SpinCtrl Editor");
     params.rect(editor_rect);
@@ -130,6 +130,7 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
     }
     params.max_length.bytes(MAX_STRING_LENGTH);
     params.commit_callback.function((boost::bind(&LLSpinCtrl::onEditorCommit, this, _2)));
+    params.draw_focus_border(false);
 
     //*NOTE: allow entering of any chars for LLCalc, proper input will be evaluated on commit
 
@@ -147,6 +148,23 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
     //mEditor->setSelectAllonFocusReceived(true);
     mEditor->setSelectAllonCommit(false);
     addChild(mEditor);
+
+    LLUIImageShape up_shape;
+    up_shape.radius_top = 4.f;
+    up_shape.radius_bottom = 0.f;
+    up_shape.radius_right = 0.f;
+    mUpBtn->setImageShape(up_shape);
+
+    LLUIImageShape down_shape;
+    down_shape.radius_top = 0.f;
+    down_shape.radius_bottom = 4.f;
+    down_shape.radius_right = 0.f;
+    mDownBtn->setImageShape(down_shape);
+
+    LLUIImageShape editor_shape;
+    editor_shape.radius_left = 0.f;
+    editor_shape.radius_right = 4.f;
+    mEditor->setImageShape(editor_shape);
 
     updateEditor();
     setUseBoundingRect( true );

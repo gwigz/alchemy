@@ -499,11 +499,6 @@ void LLToastAlertPanel::draw()
         LLToastPanel::setDefaultBtn(mButtonData[mDefaultOption].mButton);
     }
 
-    static LLUIColor shadow_color = LLUIColorTable::instance().getColor("ColorDropShadow");
-
-    gl_drop_shadow( 0, LLToastPanel::getRect().getHeight(), LLToastPanel::getRect().getWidth(), 0,
-        shadow_color, DROP_SHADOW_FLOATER);
-
     LLToastPanel::draw();
 }
 

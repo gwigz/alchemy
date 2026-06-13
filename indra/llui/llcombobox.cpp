@@ -157,6 +157,21 @@ LLComboBox::LLComboBox(const LLComboBox::Params& p)
 
     createLineEditor(p);
 
+    // Editable combos read as a field + arrow unit: round the outer corners, keep
+    // the shared edge flat so the procedural chrome connects them.
+    if (mAllowTextEntry && mTextEntry)
+    {
+        LLUIImageShape field_shape;
+        field_shape.radius_left = 4.f;
+        field_shape.radius_right = 0.f;
+        mTextEntry->setImageShape(field_shape);
+
+        LLUIImageShape arrow_shape;
+        arrow_shape.radius_left = 0.f;
+        arrow_shape.radius_right = 4.f;
+        mButton->setImageShape(arrow_shape);
+    }
+
     mTopLostSignalConnection = setTopLostCallback(boost::bind(&LLComboBox::hideList, this));
 }
 

@@ -106,6 +106,12 @@ LLButton::Params::Params()
     is_toggle("is_toggle", false),
     scale_image("scale_image", true),
     hover_glow_amount("hover_glow_amount"),
+    shape_radius("shape_radius"),
+    shape_radius_top("shape_radius_top"),
+    shape_radius_bottom("shape_radius_bottom"),
+    shape_radius_left("shape_radius_left"),
+    shape_radius_right("shape_radius_right"),
+    shape_inset("shape_inset"),
     commit_on_return("commit_on_return", true),
     commit_on_capture_lost("commit_on_capture_lost", false),
     display_pressed_state("display_pressed_state", true),
@@ -189,6 +195,13 @@ LLButton::LLButton(const LLButton::Params& p)
     mHandleRightMouse(p.handle_right_mouse),
     mFlashingTimer(NULL)
 {
+    F32 r = p.shape_radius.isProvided() ? p.shape_radius() : -1.f;
+    mShape.radius_top = p.shape_radius_top.isProvided() ? p.shape_radius_top() : r;
+    mShape.radius_bottom = p.shape_radius_bottom.isProvided() ? p.shape_radius_bottom() : r;
+    mShape.radius_left = p.shape_radius_left.isProvided() ? p.shape_radius_left() : r;
+    mShape.radius_right = p.shape_radius_right.isProvided() ? p.shape_radius_right() : r;
+    mShape.inset = p.shape_inset.isProvided() ? p.shape_inset() : -1.f;
+
     if (p.button_flash_enable)
     {
         // If optional parameter "p.button_flash_count" is not provided, LLFlashTimer will be
@@ -869,7 +882,8 @@ void LLButton::draw()
         LLColor4 disabled_color = mFadeWhenDisabled ? mDisabledImageColor.get() % 0.5f : mDisabledImageColor.get();
         if ( mScaleImage)
         {
-            imagep->draw(getLocalRect(), (enabled ? mImageColor.get() : disabled_color) % alpha  );
+            LLRect image_rect = getLocalRect();
+            imagep->drawShaped(image_rect.mLeft, image_rect.mBottom, image_rect.getWidth(), image_rect.getHeight(), (enabled ? mImageColor.get() : disabled_color) % alpha, mShape);
             if (mCurGlowStrength > 0.01f)
             {
                 gGL.setSceneBlendType(glow_type);
@@ -880,7 +894,7 @@ void LLButton::draw()
         else
         {
             S32 y = getLocalRect().getHeight() - imagep->getHeight();
-            imagep->draw(0, y, (enabled ? mImageColor.get() : disabled_color) % alpha);
+            imagep->drawShaped(0, y, imagep->getWidth(), imagep->getHeight(), (enabled ? mImageColor.get() : disabled_color) % alpha, mShape);
             if (mCurGlowStrength > 0.01f)
             {
                 gGL.setSceneBlendType(glow_type);

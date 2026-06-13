@@ -195,6 +195,7 @@ set(viewer_SOURCE_FILES
     alpanelsearchweb.cpp
     alpanelstreaminfo.cpp
     alpickitem.cpp
+    alproceduralui.cpp
     alstreaminfo.cpp
     altoolalign.cpp
     alunzip.cpp
@@ -957,6 +958,7 @@ set(viewer_HEADER_FILES
     alpanelsearchweb.h
     alpanelstreaminfo.h
     alpickitem.h
+    alproceduralui.h
     alstreaminfo.h
     altoolalign.h
     alunzip.h

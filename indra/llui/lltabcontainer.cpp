@@ -1963,8 +1963,9 @@ void LLTabContainer::initButtons()
 
         LLButton::Params p;
         p.name(std::string("Jump Left Arrow"));
-        p.image_unselected.name("jump_left_out.tga");
-        p.image_selected.name("jump_left_in.tga");
+        p.image_overlay.name("jump_left_out.tga");
+        p.image_unselected.name("ComboButton_Off");
+        p.image_selected.name("ComboButton_Selected");
         p.click_callback.function(boost::bind(&LLTabContainer::onJumpFirstBtn, this, _2));
         p.rect(jump_left_arrow_btn_rect);
         p.follows.flags(FOLLOWS_LEFT);
@@ -1975,8 +1976,9 @@ void LLTabContainer::initButtons()
         p.name(std::string("Left Arrow"));
         p.rect(left_arrow_btn_rect);
         p.follows.flags(FOLLOWS_LEFT);
-        p.image_unselected.name("scrollbutton_left_out_blue.tga");
-        p.image_selected.name("scrollbutton_left_in_blue.tga");
+        p.image_overlay.name("scrollbutton_left_out_blue.tga");
+        p.image_unselected.name("ComboButton_Off");
+        p.image_selected.name("ComboButton_Selected");
         p.click_callback.function(boost::bind(&LLTabContainer::onPrevBtn, this, _2));
         p.mouse_held_callback.function(boost::bind(&LLTabContainer::onPrevBtnHeld, this, _2));
 
@@ -1986,8 +1988,9 @@ void LLTabContainer::initButtons()
         p.name(std::string("Jump Right Arrow"));
         p.rect(jump_right_arrow_btn_rect);
         p.follows.flags(FOLLOWS_RIGHT);
-        p.image_unselected.name("jump_right_out.tga");
-        p.image_selected.name("jump_right_in.tga");
+        p.image_overlay.name("jump_right_out.tga");
+        p.image_unselected.name("ComboButton_Off");
+        p.image_selected.name("ComboButton_Selected");
         p.click_callback.function(boost::bind(&LLTabContainer::onJumpLastBtn, this, _2));
 
         mJumpNextArrowBtn = LLUICtrlFactory::create<LLButton>(p);
@@ -1996,8 +1999,9 @@ void LLTabContainer::initButtons()
         p.name(std::string("Right Arrow"));
         p.rect(right_arrow_btn_rect);
         p.follows.flags(FOLLOWS_RIGHT);
-        p.image_unselected.name("scrollbutton_right_out_blue.tga");
-        p.image_selected.name("scrollbutton_right_in_blue.tga");
+        p.image_overlay.name("scrollbutton_right_out_blue.tga");
+        p.image_unselected.name("ComboButton_Off");
+        p.image_selected.name("ComboButton_Selected");
         p.click_callback.function(boost::bind(&LLTabContainer::onNextBtn, this, _2));
         p.mouse_held_callback.function(boost::bind(&LLTabContainer::onNextBtnHeld, this, _2));
 

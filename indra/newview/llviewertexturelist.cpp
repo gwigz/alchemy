@@ -62,6 +62,7 @@
 #include "llviewerdisplay.h"
 #include "llviewerwindow.h"
 #include "llprogressview.h"
+#include "alproceduralui.h"
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -1610,6 +1611,35 @@ void LLUIImageList::cleanUp()
     mUITextureList.clear() ;
 }
 
+void LLUIImageList::releaseUIImageTexture(const std::string& name)
+{
+    uuid_ui_image_map_t::iterator found_it = mUIImages.find(name);
+    if (found_it == mUIImages.end() || found_it->second.isNull())
+    {
+        return;
+    }
+
+    LLPointer<LLTexture> image = found_it->second->getImage();
+    found_it->second->releaseImage();
+    if (image.isNull())
+    {
+        return;
+    }
+
+    for (auto it = mUITextureList.begin(); it != mUITextureList.end();)
+    {
+        if (it->get() == image.get())
+        {
+            (*it)->forceActive();
+            it = mUITextureList.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
 LLUIImagePtr LLUIImageList::getUIImageByID(const LLUUID& image_id, S32 priority)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
@@ -1902,6 +1932,26 @@ bool LLUIImageList::initFromFile()
             {
                 continue;
             }
+
+            ALUIImageSource source;
+            source.name = image.name();
+            source.fileName = file_name;
+            source.scale = image.scale();
+            source.clip = image.clip();
+            source.scaleStyle = image.scale_type();
+
+            const ALUIImageResolution resolution = ALUIImageResolver::resolve(source);
+            if (resolution.kind != ALUIImageResolution::BITMAP)
+            {
+                if (resolution.image.notNull())
+                {
+                    mUIImages.insert(std::make_pair(image.name(), resolution.image));
+                    continue;
+                }
+                LL_WARNS("ViewerImages") << "UI image resolver returned no image for "
+                                         << image.name() << ", falling back to " << file_name << LL_ENDL;
+            }
+
             preloadUIImage(image.name, file_name, image.use_mips, image.scale, image.clip, image.scale_type);
         }
 

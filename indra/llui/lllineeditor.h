@@ -204,6 +204,7 @@ public:
     const std::string&  getLabel()  { return mLabel.getString(); }
 
     void            setDefaultText() { setText(mDefaultText); }
+    void            setImageShape(const LLUIImageShape& shape) { mShape = shape; }
     void            setText(const LLStringExplicit &new_text);
 
     const std::string& getText() const override { return mText.getString(); }
@@ -441,6 +442,7 @@ private:
     LLPointer<LLUIImage> mBgImage;
     LLPointer<LLUIImage> mBgImageDisabled;
     LLPointer<LLUIImage> mBgImageFocused;
+    LLUIImageShape       mShape;
 
     bool        mReplaceNewlinesWithSpaces; // if false, will replace pasted newlines with paragraph symbol.
 
