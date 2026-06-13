@@ -2832,6 +2832,47 @@ void LLAgentCamera::setFocusGlobal(const LLVector3d& focus, const LLUUID &object
 
             mCameraFocusOffsetTarget = gAgent.getPosGlobalFromAgent(mCameraVirtualPositionAgent) - mFocusTargetGlobal;
 
+            // Angle the camera to face the focused target rather than simply
+            // re-aiming from wherever the camera happened to be. Avatars are
+            // framed head-on along their own facing; objects keep their natural
+            // approach angle, nudged slightly toward the direction we travelled
+            // to reach them. The current zoom distance is preserved either way.
+            if (focus_obj)
+            {
+                F64 focus_distance = mCameraFocusOffsetTarget.length();
+                if (focus_distance > 0.0)
+                {
+                    if (focus_obj->isAvatar())
+                    {
+                        LLVector3 facing = LLVector3::x_axis * focus_obj->getRenderRotation();
+                        facing.mV[VZ] = 0.f;
+                        if (facing.normalize() > 0.f)
+                        {
+                            // Centre on the avatar's body and frame them head-on
+                            // from the front, level, rather than aiming at their
+                            // feet wherever the focus point happened to land.
+                            mFocusTargetGlobal = gAgent.getPosGlobalFromAgent(focus_obj->getBoundingBoxAgent().getCenterAgent());
+                            mCameraFocusOffsetTarget = LLVector3d(facing) * focus_distance;
+                        }
+                    }
+                    else
+                    {
+                        LLVector3d offset_dir = mCameraFocusOffsetTarget;
+                        LLVector3d approach = mFocusTargetGlobal - gAgent.getPositionGlobal();
+                        approach.mdV[VZ] = 0.0;
+                        if (offset_dir.normalize() > 0.0 && approach.normalize() > 0.0)
+                        {
+                            constexpr F64 OBJECT_FRONT_BLEND = 0.25;
+                            LLVector3d blended = offset_dir * (1.0 - OBJECT_FRONT_BLEND) - approach * OBJECT_FRONT_BLEND;
+                            if (blended.normalize() > 0.0)
+                            {
+                                mCameraFocusOffsetTarget = blended * focus_distance;
+                            }
+                        }
+                    }
+                }
+            }
+
             startCameraAnimation();
 
             if (focus_obj)
@@ -2922,12 +2963,21 @@ void LLAgentCamera::setCameraPosAndFocusGlobal(const LLVector3d& camera_pos, con
 
     if (mCameraAnimating)
     {
-        const F64 ANIM_METERS_PER_SECOND = 25.0;
-        const F64 MIN_ANIM_SECONDS = 0.5;
-        const F64 MAX_ANIM_SECONDS = 1.0;
-        F64 anim_duration = llmax( MIN_ANIM_SECONDS, sqrt(focus_delta_squared) / ANIM_METERS_PER_SECOND );
-        anim_duration = llmin( anim_duration, MAX_ANIM_SECONDS );
-        setAnimationDuration( (F32)anim_duration );
+        F64 focus_delta = sqrt(focus_delta_squared);
+        F64 snap_distance = gSavedSettings.getF32("AlchemyCameraZoomSnapDistance");
+        if (snap_distance > 0.0 && focus_delta > snap_distance)
+        {
+            mCameraAnimating = false;
+            gAgent.endAnimationUpdateUI();
+        }
+        else
+        {
+            const F64 ANIM_METERS_PER_SECOND = 25.0;
+            const F64 MIN_ANIM_SECONDS = 0.2;
+            F64 anim_duration = llmax( MIN_ANIM_SECONDS, focus_delta / ANIM_METERS_PER_SECOND );
+            anim_duration = llmin( anim_duration, (F64)gSavedSettings.getF32("ZoomTime") );
+            setAnimationDuration( (F32)anim_duration );
+        }
     }
 
     updateFocusOffset();

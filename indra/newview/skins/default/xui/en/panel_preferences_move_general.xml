@@ -98,6 +98,25 @@
    name="appearance_camera_movement"
    tool_tip="Use automatic camera positioning while in edit mode"
    width="242" />
+  <slider
+   can_edit_text="true"
+   control_name="AlchemyCameraZoomSnapDistance"
+   decimal_digits="0"
+   follows="left|top"
+   height="16"
+   increment="1"
+   initial_value="0"
+   layout="topleft"
+   label="Zoom snap distance"
+   left_delta="-30"
+   label_width="130"
+   max_val="328"
+   min_val="0"
+   name="camera_zoom_snap_distance"
+   show_text="true"
+   tool_tip="Snap the camera instantly instead of animating when a zoom moves the focus farther than this many meters. Set to 0 to always animate."
+   width="270"
+   top_pad="5"/>
   <icon
 	 follows="left|top"
 	 height="18"

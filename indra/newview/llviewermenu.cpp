@@ -6881,9 +6881,22 @@ bool handle_zoom_to_object(const LLUUID& object_id)
         F32 angle_of_view = llmax(0.1f, LLViewerCamera::getInstance()->getAspect() > 1.f ? LLViewerCamera::getInstance()->getView() * LLViewerCamera::getInstance()->getAspect() : LLViewerCamera::getInstance()->getView());
         F32 distance = bbox.getExtentLocal().magVec() * PADDING_FACTOR / atan(angle_of_view);
 
-        LLVector3 obj_to_cam = LLViewerCamera::getInstance()->getOrigin() - bbox.getCenterAgent();
-        obj_to_cam.normVec();
-
+        // For avatars, frame them head-on from the front along their own facing
+        // (levelled) instead of from wherever our camera happens to be, which can
+        // leave us angled at their feet for distant targets.
+        LLVector3 obj_to_cam;
+        bool framed_front = false;
+        if (object->isAvatar())
+        {
+            obj_to_cam = LLVector3::x_axis * object->getRenderRotation();
+            obj_to_cam.mV[VZ] = 0.f;
+            framed_front = (obj_to_cam.normVec() > 0.f);
+        }
+        if (!framed_front)
+        {
+            obj_to_cam = LLViewerCamera::getInstance()->getOrigin() - bbox.getCenterAgent();
+            obj_to_cam.normVec();
+        }
 
         LLVector3d object_center_global = gAgent.getPosGlobalFromAgent(bbox.getCenterAgent());
 
