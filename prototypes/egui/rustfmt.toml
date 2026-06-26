@@ -1,0 +1,6 @@
+# rustfmt config — only stable options so `cargo fmt` works without nightly.
+# (imports_granularity, group_imports, wrap_comments, etc. are nightly-only.)
+edition = "2021"
+max_width = 100
+use_small_heuristics = "Default"
+newline_style = "Unix"

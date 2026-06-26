@@ -1,0 +1,29 @@
+{
+  "channel": "Alchemy Test",
+  "version": "26.2.0.0",
+  "address_size": 64,
+  "opengl_version": "4.1 Metal - 90.5",
+  "cpu": "Apple M4 (2400 MHz)",
+  "memory_mb": 24576,
+  "concurrency": 10,
+  "os_version": "macOS 26.4.0 (Darwin 25.4.0, arm64)",
+  "gpu_vendor": "Apple",
+  "gpu": "Apple M4",
+  "credits_alchemy": [
+    "Rye Cogtail",
+    "Luminous Luminos",
+    "XenHat",
+    "Cinder Roxley",
+    "Drake Arconis",
+    "Liru Færs",
+    "Ada Radius"
+  ],
+  "credits_sl": [
+    "Aleric Inglewood",
+    "Ansariel Hiller",
+    "Henri Beauchamp",
+    "Kadah Coba",
+    "Nicky Dasmijn",
+    "Sovereign Engineer"
+  ]
+}

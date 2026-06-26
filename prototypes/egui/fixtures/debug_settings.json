@@ -1,0 +1,88 @@
+{
+  "settings": [
+    {
+      "name": "RenderShadowDetail",
+      "kind": "S32",
+      "value": "1",
+      "default": "2",
+      "comment": "Detail of shadows: 0 = off, 1 = sun/moon only, 2 = full."
+    },
+    {
+      "name": "RenderFarClip",
+      "kind": "F32",
+      "value": "128",
+      "default": "256",
+      "comment": "Draw distance in meters."
+    },
+    {
+      "name": "RestrainedLove",
+      "kind": "Boolean",
+      "value": "true",
+      "default": "false",
+      "comment": "Toggles RLVa features (requires restart)."
+    },
+    {
+      "name": "RenderVSyncEnable",
+      "kind": "Boolean",
+      "value": "true",
+      "default": "true",
+      "comment": "Sync frame rate to monitor refresh."
+    },
+    {
+      "name": "UIScaleFactor",
+      "kind": "F32",
+      "value": "1",
+      "default": "1",
+      "comment": "Master scale factor for the user interface."
+    },
+    {
+      "name": "MainGridURI",
+      "kind": "String",
+      "value": "https://login.agni.lindenlab.com/cgi-bin/login.cgi",
+      "default": "https://login.agni.lindenlab.com/cgi-bin/login.cgi",
+      "comment": "Login endpoint for the main grid."
+    },
+    {
+      "name": "RenderGlowResolutionPow",
+      "kind": "S32",
+      "value": "9",
+      "default": "9",
+      "comment": "Glow map resolution as a power of two."
+    },
+    {
+      "name": "BackgroundColor",
+      "kind": "Color",
+      "value": "0.20 0.22 0.26 1.00",
+      "default": "0.13 0.13 0.14 1.00",
+      "comment": "Window background color when no scene is loaded."
+    },
+    {
+      "name": "CameraOffsetRearView",
+      "kind": "Vec3",
+      "value": "-3.00 0.00 0.75",
+      "default": "-3.00 0.00 0.75",
+      "comment": "Default rear-view camera offset from the avatar."
+    },
+    {
+      "name": "AudioLevelMaster",
+      "kind": "F32",
+      "value": "0.40",
+      "default": "1.00",
+      "comment": "Master audio volume (0.0 to 1.0)."
+    },
+    {
+      "name": "DebugShowTime",
+      "kind": "Boolean",
+      "value": "false",
+      "default": "false",
+      "comment": "Show a frame-time readout overlay."
+    },
+    {
+      "name": "NearbyChatFontSize",
+      "kind": "String",
+      "value": "Medium",
+      "default": "Medium",
+      "comment": "Font size for the nearby chat panel."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "grids": [
+    { "id": "agni",    "label": "Second Life Main (Agni)" },
+    { "id": "aditi",   "label": "Second Life Beta (Aditi)" },
+    { "id": "os",      "label": "OpenSimulator" }
+  ],
+  "remembered_users": [
+    { "username": "steller.sunshine", "display": "Steller Sunshine" },
+    { "username": "bobsmith12",       "display": "bobsmith12" }
+  ],
+  "start_locations": [
+    { "value": "last", "label": "My last location" },
+    { "value": "home", "label": "My home" },
+    { "value": "Da Boom/128/128/24", "label": "Da Boom" }
+  ],
+  "remember_username": true,
+  "remember_password": false,
+  "help_url": "http://secondlife.com/account/request.php",
+  "create_account_url": "https://join.secondlife.com/"
+}

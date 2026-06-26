@@ -1,0 +1,8 @@
+[build]
+# Skip wasm-opt for fast dev rebuilds (hot-reload loop).
+release = false
+
+[serve]
+address = "127.0.0.1"
+port = 8080
+open = false

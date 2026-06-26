@@ -1,0 +1,59 @@
+[workspace]
+members = ["crates/harvest"]
+resolver = "2"
+
+[package]
+name = "sl-egui-mock"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+egui = "0.33"
+eframe = { version = "0.33", default-features = false, features = [
+    "default_fonts",
+    "glow",
+    "persistence",
+] }
+egui_extras = { version = "0.33", features = ["image"] }
+image = { version = "0.25", default-features = false, features = ["png"] }
+twill = { version = "0.2", features = ["egui"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+log = "0.4"
+
+fluent-templates = { version = "0.14", default-features = false, features = ["macros", "walkdir"] }
+unic-langid = { version = "0.9", features = ["macros"] }
+
+iconflow = { version = "1.0.0", default-features = false, features = ["pack-phosphor"] }
+egui-notify = "0.21"
+
+egui_inbox = "0.10"
+egui_animation = "0.10"
+egui_form = "0.7"
+egui_suspense = "0.10"
+egui_dnd = "0.14"
+egui_flex = "0.5"
+egui_table = "0.7"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+env_logger = "0.11"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "0.4"
+web-sys = "0.3"
+console_error_panic_hook = "0.1"
+
+[lints.rust]
+unsafe_code = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+struct_excessive_bools = "allow"
+
+[profile.release]
+opt-level = 2
+
+[profile.dev]
+opt-level = 1
