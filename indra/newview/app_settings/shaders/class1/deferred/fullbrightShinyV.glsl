@@ -26,6 +26,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 
 
 void calcAtmospherics(vec3 inPositionEye);
@@ -72,6 +73,7 @@ void main()
     vec3 norm = normalize(normal_matrix * normal);
 #endif
 
+    gl_Position = quantizeRasterVertex(gl_Position);
     vary_position = pos.xyz;
     vary_texcoord0 = (texture_matrix0 * vec4(texcoord0,0,1)).xy;
 

@@ -187,6 +187,7 @@ set(viewer_SOURCE_FILES
     alscopedata.cpp
     alfloaterwebprofile.cpp
     algradehistory.cpp
+    alrasterprecision.cpp
     allegacynotificationwellwindow.cpp
     alobjectproperties.cpp
     alpanelaomini.cpp
@@ -967,6 +968,7 @@ set(viewer_HEADER_FILES
     alscopedata.h
     alfloaterwebprofile.h
     algradehistory.h
+    alrasterprecision.h
     allegacynotificationwellwindow.h
     alobjectproperties.h
     alpanelaomini.h
@@ -2404,6 +2406,7 @@ if (BUILD_TESTING)
     alcurvemodel.cpp
     aldaycyclelandmarks.cpp
     algradehistory.cpp
+    alrasterprecision.cpp
     alsceneexplorerpredicate.cpp
     alscopedata.cpp
     alwhitebalancesolver.cpp

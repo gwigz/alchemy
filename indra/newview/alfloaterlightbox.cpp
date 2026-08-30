@@ -31,6 +31,7 @@
 #include "llviewerprecompiledheaders.h"
 #include "alfloaterlightbox.h"
 
+#include "alrasterprecision.h"
 #include "llaccordionctrltab.h"
 #include "llcombobox.h"
 #include "llfloaterreg.h"
@@ -216,6 +217,20 @@ bool ALFloaterLightBox::postBuild()
     mTonemapConnection = gSavedSettings.getControl("AlchemyRenderTonemapType")->getSignal()->connect(
         [this](LLControlVariable*, const LLSD&, const LLSD&) { updateTonemapperRows(); });
     updateTonemapperRows();
+
+    static const char* raster_controls[] = {
+        "RenderRasterProfile",
+        "RenderRasterGridMode",
+        "RenderRasterVertexGridMode",
+        "RenderRasterRGB555",
+        "RenderRasterOrderedDither",
+    };
+    for (const char* setting : raster_controls)
+    {
+        mRasterConnections.emplace_back(gSavedSettings.getControl(setting)->getSignal()->connect(
+            [this](LLControlVariable*, const LLSD&, const LLSD&) { updateRasterRows(); }));
+    }
+    updateRasterRows();
 
     mLooksCombo = getChild<LLComboBox>("looks_combo");
     mLooksListConnection = LLPresetsManager::instance().setPresetListChangeLooksCallback(
@@ -1454,6 +1469,55 @@ void ALFloaterLightBox::updateTonemapperRows()
         getChild<LLUICtrl>(row.first)->setEnabled(active);
         getChild<LLUICtrl>(std::string(row.first) + "_rst")->setEnabled(active);
     }
+}
+
+void ALFloaterLightBox::updateRasterRows()
+{
+    const S32 profile = gSavedSettings.getS32("RenderRasterProfile");
+    const bool custom = profile == ALRasterPrecision::PROFILE_CUSTOM;
+    const bool rgb555 = custom && gSavedSettings.getBOOL("RenderRasterRGB555");
+
+    static const char* custom_controls[] = {
+        "raster_grid_label",
+        "raster_grid_combo",
+        "raster_grid_rst",
+        "raster_vertex_grid_label",
+        "raster_vertex_grid_combo",
+        "raster_vertex_grid_rst",
+        "raster_rgb555",
+        "sec_raster_adv_reset",
+    };
+    for (const char* name : custom_controls)
+    {
+        getChild<LLUICtrl>(name)->setEnabled(custom);
+    }
+    getChild<LLUICtrl>("raster_ordered_dither")->setEnabled(custom && rgb555);
+
+    std::string summary;
+    if (profile == ALRasterPrecision::PROFILE_REFERENCE)
+    {
+        summary = "Effective: 320 x 240, RGB555, 4 x 4 ordered dither, matched vertex grid.";
+    }
+    else if (profile == ALRasterPrecision::PROFILE_CUSTOM)
+    {
+        static const char* grid_names[] = {
+            "320 x 240", "240-line aspect fit", "360-line aspect fit", "480-line aspect fit",
+        };
+        static const char* vertex_names[] = {
+            "vertex grid off", "fine vertex grid", "matched vertex grid", "coarse vertex grid",
+        };
+        const S32 grid_mode = llclamp(gSavedSettings.getS32("RenderRasterGridMode"), 0, 3);
+        const S32 vertex_mode = llclamp(gSavedSettings.getS32("RenderRasterVertexGridMode"), 0, 3);
+        const bool dither = rgb555 && gSavedSettings.getBOOL("RenderRasterOrderedDither");
+        summary = llformat("Effective: %s, %s%s, %s.", grid_names[grid_mode],
+                           rgb555 ? "RGB555" : "full color",
+                           dither ? " + ordered dither" : "", vertex_names[vertex_mode]);
+    }
+    else
+    {
+        summary = "Effective: 360-line aspect fit, full color, fine vertex grid.";
+    }
+    getChild<LLUICtrl>("raster_effective_summary")->setValue(summary);
 }
 
 void ALFloaterLightBox::refreshVec3Row(const std::string& setting_name)

@@ -511,6 +511,16 @@ public:
         DITHER_BITS,                        //  "uDitherBits"
         DITHER_ANIMATE,                     //  "uDitherAnimate"
 
+        // Low-precision rasterization
+        RASTER_ENABLED,                     //  "uRasterEnabled"
+        RASTER_GRID_SIZE,                   //  "uRasterGridSize"
+        RASTER_DISPLAY_RECT,                //  "uRasterDisplayRect"
+        RASTER_SOURCE_RECT,                 //  "uRasterSourceRect"
+        RASTER_RGB555,                      //  "uRasterRGB555"
+        RASTER_ORDERED_DITHER,              //  "uRasterOrderedDither"
+        RASTER_VERTEX_ENABLED,              //  "uRasterVertexEnabled"
+        RASTER_VERTEX_GRID_SIZE,            //  "uRasterVertexGridSize"
+
         // Previews
         PREVIEW_MODE,                       //  "uPreviewMode"
 

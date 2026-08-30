@@ -34,6 +34,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 #if TERRAIN_PAINT_TYPE == TERRAIN_PAINT_TYPE_PBR_PAINTMAP
 uniform float region_scale;
 #endif
@@ -81,6 +82,7 @@ void main()
 {
     //transform vertex
     gl_Position = modelview_projection_matrix * vec4(position.xyz, 1.0);
+    gl_Position = quantizeRasterVertex(gl_Position);
     vary_position = (modelview_matrix*vec4(position.xyz, 1.0)).xyz;
 
     vec3 n = normal_matrix * normal;

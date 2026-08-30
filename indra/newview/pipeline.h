@@ -360,6 +360,7 @@ public:
 
     void renderGeomDeferred(LLCamera& camera, bool do_occlusion = false);
     void renderGeomPostDeferred(LLCamera& camera);
+    void configureRasterVertexQuantization(LLCamera& camera);
     void renderGeomShadow(LLCamera& camera);
     void bindBrdfLut(LLGLSLShader& shader);
 

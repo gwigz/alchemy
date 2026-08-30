@@ -34,6 +34,7 @@ vec4 skinTransformH(mat3x4 b, vec3 pos, mat4 m);
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 
 uniform vec4[2] texture_base_color_transform;
 uniform vec4[2] texture_emissive_transform;
@@ -61,9 +62,9 @@ void main()
     gl_Position = modelview_projection_matrix * vec4(position.xyz, 1.0);
 #endif
 
+    gl_Position = quantizeRasterVertex(gl_Position);
     base_color_texcoord = texture_transform(texcoord0, texture_base_color_transform, texture_matrix0);
     emissive_texcoord = texture_transform(texcoord0, texture_emissive_transform, texture_matrix0);
 
     vertex_emissive = emissive;
 }
-

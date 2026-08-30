@@ -26,6 +26,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 
 in vec3 position;
 in vec3 normal;
@@ -60,7 +61,7 @@ void main()
     vec4 pre_pos = vec4(position.xyz, 1.0);
     vec4 t_pos = modelview_projection_matrix * pre_pos;
 
-    gl_Position = t_pos;
+    gl_Position = quantizeRasterVertex(t_pos);
     pos = (modelview_matrix*pre_pos).xyz;
 
     vary_normal = normalize(normal_matrix * normal);

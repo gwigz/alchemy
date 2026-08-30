@@ -712,12 +712,26 @@ void LLRender::syncMatrices()
             mMatricesUBO.ensureCurrent(LLGLSLShader::UB_MATRICES);
         }
 
+        // Only world-material vertex programs declare these loose uniforms.
+        // Keeping the state in LLRender makes it follow every program bound in
+        // a geometry pass without expanding the shared matrix UBO.
+        shader->uniform1i(LLShaderMgr::RASTER_VERTEX_ENABLED, mRasterVertexEnabled ? 1 : 0);
+        shader->uniform2f(LLShaderMgr::RASTER_VERTEX_GRID_SIZE,
+                          mRasterVertexGridWidth, mRasterVertexGridHeight);
+
         if (shader->mFeatures.hasLighting || shader->mFeatures.calculatesLighting || shader->mFeatures.calculatesAtmospherics)
         { //also sync light state
             syncLightState();
         }
     }
     STOP_GLERROR;
+}
+
+void LLRender::setRasterVertexQuantization(bool enabled, F32 grid_width, F32 grid_height)
+{
+    mRasterVertexEnabled    = enabled;
+    mRasterVertexGridWidth  = llmax(1.f, grid_width);
+    mRasterVertexGridHeight = llmax(1.f, grid_height);
 }
 
 void LLRender::translatef(const GLfloat& x, const GLfloat& y, const GLfloat& z)

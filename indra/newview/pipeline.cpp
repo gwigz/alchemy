@@ -53,6 +53,7 @@
 #include "llui.h"
 #include "llglheaders.h"
 #include "alsamplerstate.h"
+#include "alrasterprecision.h"
 #include "aluniformbuffer.h"
 #include "alwhitebalancesolver.h"
 #include "llrender.h"
@@ -897,20 +898,23 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
     mRT->width = resX;
     mRT->height = resY;
 
-    U32 res_mod = RenderResolutionDivisor;
+    if (mRT == &mMainRT)
+    {
+        U32 res_mod = RenderResolutionDivisor;
 
-    if (res_mod > 1 && res_mod < resX && res_mod < resY)
-    {
-        resX /= res_mod;
-        resY /= res_mod;
-    }
+        if (res_mod > 1 && res_mod < resX && res_mod < resY)
+        {
+            resX /= res_mod;
+            resY /= res_mod;
+        }
 // [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
-    else if (RenderResolutionMultiplier > 0.f && RenderResolutionMultiplier != 1.f)
-    {
-        resX = (GLuint)(resX * RenderResolutionMultiplier);
-        resY = (GLuint)(resY * RenderResolutionMultiplier);
-    }
+        else if (RenderResolutionMultiplier > 0.f && RenderResolutionMultiplier != 1.f)
+        {
+            resX = (GLuint)(resX * RenderResolutionMultiplier);
+            resY = (GLuint)(resY * RenderResolutionMultiplier);
+        }
 // [/SL:KB]
+    }
 
     S32 shadow_detail = RenderShadowDetail;
     bool ssao = RenderDeferredSSAO;
@@ -4291,6 +4295,8 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
 
     llassert(!sRenderingHUDs);
 
+    configureRasterVertexQuantization(camera);
+
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -4433,6 +4439,8 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+
+    gGL.setRasterVertexQuantization(false);
 }
 
 // Render all of our geometry that's required after our deferred pass.
@@ -4441,6 +4449,8 @@ void LLPipeline::renderGeomPostDeferred(LLCamera& camera)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL;
     LL_PROFILE_GPU_ZONE("renderGeomPostDeferred");
+
+    configureRasterVertexQuantization(camera);
 
     if (gUseWireframe)
     {
@@ -4581,6 +4591,30 @@ void LLPipeline::renderGeomPostDeferred(LLCamera& camera)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+
+    gGL.setRasterVertexQuantization(false);
+}
+
+void LLPipeline::configureRasterVertexQuantization(LLCamera& camera)
+{
+    static LLCachedControl<bool> raster_enabled(gSavedSettings, "RenderRasterPrecisionEnabled", false);
+    static LLCachedControl<S32> raster_profile(gSavedSettings, "RenderRasterProfile", ALRasterPrecision::PROFILE_CONTEMPORARY);
+    static LLCachedControl<S32> raster_grid_mode(gSavedSettings, "RenderRasterGridMode", ALRasterPrecision::GRID_ASPECT_360);
+    static LLCachedControl<S32> raster_vertex_grid_mode(gSavedSettings, "RenderRasterVertexGridMode", ALRasterPrecision::VERTEX_GRID_FINE);
+    static LLCachedControl<bool> raster_rgb555(gSavedSettings, "RenderRasterRGB555", false);
+    static LLCachedControl<bool> raster_ordered_dither(gSavedSettings, "RenderRasterOrderedDither", false);
+
+    const LLRect world_rect = gViewerWindow->getWorldViewRectRaw();
+    const ALRasterGrid raster = ALRasterPrecision::resolve(
+        world_rect.getWidth(), world_rect.getHeight(), raster_profile(), raster_grid_mode(),
+        raster_vertex_grid_mode(), raster_rgb555(), raster_ordered_dither());
+    const bool is_main_world = &camera == LLViewerCamera::getInstance() &&
+                               !gCubeSnapshot && !sImpostorRender && !sRenderingHUDs;
+    const bool enabled = raster_enabled() && raster.mVertexQuantization &&
+                         is_main_world && !gSnapshotNoPost;
+    gGL.setRasterVertexQuantization(enabled,
+                                    static_cast<F32>(raster.mVertexGridWidth),
+                                    static_cast<F32>(raster.mVertexGridHeight));
 }
 
 void LLPipeline::renderGeomShadow(LLCamera& camera)
@@ -9295,6 +9329,36 @@ void LLPipeline::renderFinalize()
         // wanted.
         const bool clean_plate = gSnapshotNoPost;
 
+        // Low-precision rasterization. Profiles resolve here so the final
+        // shader receives one grid definition for sampling and dithering.
+        static LLCachedControl<bool> raster_enabled_setting(gSavedSettings, "RenderRasterPrecisionEnabled", false);
+        static LLCachedControl<S32> raster_profile(gSavedSettings, "RenderRasterProfile", ALRasterPrecision::PROFILE_CONTEMPORARY);
+        static LLCachedControl<S32> raster_grid_mode(gSavedSettings, "RenderRasterGridMode", ALRasterPrecision::GRID_ASPECT_360);
+        static LLCachedControl<S32> raster_vertex_grid_mode(gSavedSettings, "RenderRasterVertexGridMode", ALRasterPrecision::VERTEX_GRID_FINE);
+        static LLCachedControl<bool> raster_rgb555(gSavedSettings, "RenderRasterRGB555", false);
+        static LLCachedControl<bool> raster_ordered_dither(gSavedSettings, "RenderRasterOrderedDither", false);
+
+        const LLRect world_rect = gViewerWindow->getWorldViewRectRaw();
+        const bool raster_enabled = raster_enabled_setting() && !clean_plate && !gCubeSnapshot;
+        const ALRasterGrid raster = ALRasterPrecision::resolve(
+            world_rect.getWidth(), world_rect.getHeight(), raster_profile(), raster_grid_mode(),
+            raster_vertex_grid_mode(), raster_rgb555(), raster_ordered_dither());
+
+        gBlitWithEffectsProgram.uniform1i(LLShaderMgr::RASTER_ENABLED, raster_enabled ? 1 : 0);
+        gBlitWithEffectsProgram.uniform2f(LLShaderMgr::RASTER_GRID_SIZE,
+                                          static_cast<F32>(raster.mWidth),
+                                          static_cast<F32>(raster.mHeight));
+        gBlitWithEffectsProgram.uniform4f(LLShaderMgr::RASTER_DISPLAY_RECT,
+                                          raster.mDisplayRect.mX, raster.mDisplayRect.mY,
+                                          raster.mDisplayRect.mWidth, raster.mDisplayRect.mHeight);
+        gBlitWithEffectsProgram.uniform4f(LLShaderMgr::RASTER_SOURCE_RECT,
+                                          raster.mSourceRect.mX, raster.mSourceRect.mY,
+                                          raster.mSourceRect.mWidth, raster.mSourceRect.mHeight);
+        gBlitWithEffectsProgram.uniform1i(LLShaderMgr::RASTER_RGB555,
+                                          raster_enabled && raster.mRGB555 ? 1 : 0);
+        gBlitWithEffectsProgram.uniform1i(LLShaderMgr::RASTER_ORDERED_DITHER,
+                                          raster_enabled && raster.mOrderedDither ? 1 : 0);
+
         // Vignette
         static LLCachedControl<F32> vignette_amount(gSavedSettings, "RenderVignetteAmount", 0.0f, "[0, 1] default 0.");
         static LLCachedControl<F32> vignette_radius(gSavedSettings, "RenderVignetteRadius", 1.0f);
@@ -9347,7 +9411,8 @@ void LLPipeline::renderFinalize()
         // Dithering
         static LLCachedControl<bool> dither_enabled(gSavedSettings, "RenderDitherEnabled", true);
         static LLCachedControl<bool> dither_animated(gSavedSettings, "RenderDitherAnimated", true);
-        gBlitWithEffectsProgram.uniform1f(LLShaderMgr::DITHER_AMOUNT, dither_enabled() ? 1.0f : 0.0f);
+        gBlitWithEffectsProgram.uniform1f(LLShaderMgr::DITHER_AMOUNT,
+                                           dither_enabled() && !(raster_enabled && raster.mRGB555) ? 1.0f : 0.0f);
         gBlitWithEffectsProgram.uniform1i(LLShaderMgr::DITHER_BITS, LLRender::s10bitBackBuffer ? 10 : 8);
         gBlitWithEffectsProgram.uniform1i(LLShaderMgr::DITHER_ANIMATE, dither_animated ? 1 : 0);
 

@@ -1983,6 +1983,16 @@ void LLShaderMgr::initAttribsAndUniforms()
     mReservedUniforms.push_back("uDitherBits");
     mReservedUniforms.push_back("uDitherAnimate");
 
+    // Low-precision rasterization
+    mReservedUniforms.push_back("uRasterEnabled");
+    mReservedUniforms.push_back("uRasterGridSize");
+    mReservedUniforms.push_back("uRasterDisplayRect");
+    mReservedUniforms.push_back("uRasterSourceRect");
+    mReservedUniforms.push_back("uRasterRGB555");
+    mReservedUniforms.push_back("uRasterOrderedDither");
+    mReservedUniforms.push_back("uRasterVertexEnabled");
+    mReservedUniforms.push_back("uRasterVertexGridSize");
+
     // Previews
     mReservedUniforms.push_back("uPreviewMode");
 
@@ -2030,4 +2040,3 @@ void LLShaderMgr::initAttribsAndUniforms()
         }
     }
 }
-

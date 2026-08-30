@@ -54,6 +54,16 @@ uniform sampler2D uReferenceStill;
 uniform int       uRefWipeMode;     // 0 off, 1 wipe, 2 side by side.
 uniform float     uRefWipePos;      // Seam position, 0..1 across the frame.
 
+// Low-precision rasterization. Rectangles are normalized as x, y, width,
+// height. The CPU resolves every profile and aspect-ratio rule so this shader
+// only consumes one coordinate system.
+uniform bool uRasterEnabled;
+uniform vec2 uRasterGridSize;
+uniform vec4 uRasterDisplayRect;
+uniform vec4 uRasterSourceRect;
+uniform bool uRasterRGB555;
+uniform bool uRasterOrderedDither;
+
 // =============================================================================
 // Forward Declarations
 // =============================================================================
@@ -68,6 +78,46 @@ vec3 applyFilmGrain(vec3 color, vec2 fragCoord);
 vec3 applyDither(vec3 color, vec2 fragCoord);
 #endif
 vec3 applyPreview(vec3 color);
+
+// =============================================================================
+// Low-precision rasterization
+// =============================================================================
+
+const int RASTER_DITHER_4X4[16] = int[16](
+    -4,  0, -3,  1,
+     2, -2,  3, -1,
+    -3,  1, -4,  0,
+     3, -1,  2, -2
+);
+
+bool rasterContains(vec2 uv)
+{
+    vec2 local = (uv - uRasterDisplayRect.xy) / uRasterDisplayRect.zw;
+    return all(greaterThanEqual(local, vec2(0.0))) && all(lessThan(local, vec2(1.0)));
+}
+
+vec2 rasterCell(vec2 uv)
+{
+    vec2 local = clamp((uv - uRasterDisplayRect.xy) / uRasterDisplayRect.zw,
+                       vec2(0.0), vec2(0.999999));
+    return floor(local * uRasterGridSize);
+}
+
+vec2 rasterSampleUV(vec2 uv)
+{
+    vec2 cell = rasterCell(uv);
+    vec2 local = (cell + 0.5) / uRasterGridSize;
+    return uRasterSourceRect.xy + local * uRasterSourceRect.zw;
+}
+
+vec3 applyRasterRGB555(vec3 color, vec2 cell)
+{
+    ivec2 dither_cell = ivec2(cell) & ivec2(3);
+    int index = dither_cell.y * 4 + dither_cell.x;
+    float offset = uRasterOrderedDither ? float(RASTER_DITHER_4X4[index]) : 0.0;
+    vec3 encoded = clamp(color * 255.0 + offset, vec3(0.0), vec3(255.0));
+    return floor(encoded / 8.0) / 31.0;
+}
 
 // =============================================================================
 // Reference still
@@ -122,20 +172,44 @@ void main()
 {
     // === DISPLAY SPACE =======================================================
 
-    vec4 diff = sampleWithReference(vary_fragcoord.xy);
+    vec2 screen_uv = vary_fragcoord.xy;
+    vec2 sample_uv = screen_uv;
+    vec2 cell = floor(gl_FragCoord.xy);
 
-    diff.rgb = applyVignette(diff.rgb, vary_fragcoord.xy);
+    if (uRasterEnabled)
+    {
+        if (!rasterContains(screen_uv))
+        {
+            frag_color = vec4(0.0, 0.0, 0.0, 1.0);
+            gl_FragDepth = texture(depthMap, screen_uv).r;
+            return;
+        }
+
+        cell = rasterCell(screen_uv);
+        sample_uv = rasterSampleUV(screen_uv);
+    }
+
+    vec4 diff = sampleWithReference(sample_uv);
+
+    diff.rgb = applyVignette(diff.rgb, screen_uv);
     diff.rgb = applyCVDCompensation(diff.rgb);
-    diff.rgb = applyFilmGrain(diff.rgb, gl_FragCoord.xy);
+    diff.rgb = applyFilmGrain(diff.rgb, uRasterEnabled ? cell : gl_FragCoord.xy);
 #ifdef DITHER
-    diff.rgb = applyDither(diff.rgb, gl_FragCoord.xy);
+    if (!uRasterRGB555)
+    {
+        diff.rgb = applyDither(diff.rgb, gl_FragCoord.xy);
+    }
 #endif
     diff.rgb = applyPreview(diff.rgb);   // debug only — no-op when uPreviewMode == 0
-    diff.rgb = applyWipeSeam(diff.rgb, vary_fragcoord.xy);
+    diff.rgb = applyWipeSeam(diff.rgb, screen_uv);
 
     diff.rgb = clampHDRRange(diff.rgb);
+    if (uRasterRGB555)
+    {
+        diff.rgb = applyRasterRGB555(diff.rgb, cell);
+    }
     frag_color = diff;
 
     // Reverse-Z neutral: copies the raw stored depth value verbatim, no convention math.
-    gl_FragDepth = texture(depthMap, vary_fragcoord.xy).r;
+    gl_FragDepth = texture(depthMap, screen_uv).r;
 }

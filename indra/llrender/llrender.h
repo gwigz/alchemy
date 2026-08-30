@@ -246,6 +246,7 @@ public:
     const glm::mat4& getProjectionMatrix();
 
     void syncMatrices();
+    void setRasterVertexQuantization(bool enabled, F32 grid_width = 1.f, F32 grid_height = 1.f);
     void syncLightState();
 
     // ---- Shared forward-lighting uniform block (UB_LIGHTS) --------------------------------
@@ -491,6 +492,10 @@ private:
     glm::mat4       mCachedInvMdv{ 1.f };
     glm::mat4       mCachedInvProj{ 1.f };
     glm::mat4       mCachedMVP{ 1.f };
+
+    bool            mRasterVertexEnabled = false;
+    F32             mRasterVertexGridWidth = 1.f;
+    F32             mRasterVertexGridHeight = 1.f;
 
     bool            mDirty;
     U32             mCount;

@@ -27,6 +27,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 #ifndef IS_HUD
 
 // default alpha implementation
@@ -82,6 +83,7 @@ void main()
     //transform vertex
     vec4 vert = modelview_projection_matrix * vec4(position.xyz, 1.0);
 #endif
+    vert = quantizeRasterVertex(vert);
     gl_Position = vert;
 
     // FS derives a screen UV as vary_fragcoord.xy / .z; carry true clip w under reverse-Z
@@ -147,6 +149,7 @@ void main()
 {
     //transform vertex
     vec4 vert = modelview_projection_matrix * vec4(position.xyz, 1.0);
+    vert = quantizeRasterVertex(vert);
     gl_Position = vert;
     vary_position = vert.xyz;
 

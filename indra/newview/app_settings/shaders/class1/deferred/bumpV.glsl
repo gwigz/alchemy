@@ -26,6 +26,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 
 in vec3 position;
 in vec4 diffuse_color;
@@ -68,6 +69,7 @@ void main()
     vec3 t = normalize(normal_matrix * tangent.xyz);
 #endif
 
+    gl_Position = quantizeRasterVertex(gl_Position);
     vec3 b = cross(n, t) * tangent.w;
     vary_texcoord0 = (texture_matrix0 * vec4(texcoord0,0,1)).xy;
 

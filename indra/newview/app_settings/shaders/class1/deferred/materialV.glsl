@@ -31,6 +31,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 
 #ifdef HAS_SKIN
 mat3x4 getSkinBlend();
@@ -91,6 +92,7 @@ void main()
 
 #endif
 
+    gl_Position = quantizeRasterVertex(gl_Position);
     vary_texcoord0 = (texture_matrix0 * vec4(texcoord0,0,1)).xy;
 
 #ifdef HAS_NORMAL_MAP
@@ -139,4 +141,3 @@ void main()
     vary_position = (modelview_matrix*vec4(position.xyz, 1.0)).xyz;
 #endif
 }
-

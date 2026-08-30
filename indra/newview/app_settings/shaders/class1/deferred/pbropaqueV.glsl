@@ -27,6 +27,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 #ifndef IS_HUD
 
 //deferred opaque implementation
@@ -80,6 +81,7 @@ void main()
     gl_Position = modelview_projection_matrix * vec4(position.xyz, 1.0);
 #endif
 
+    gl_Position = quantizeRasterVertex(gl_Position);
     base_color_texcoord = texture_transform(texcoord0, texture_base_color_transform, texture_matrix0);
     normal_texcoord = texture_transform(texcoord0, texture_normal_transform, texture_matrix0);
     metallic_roughness_texcoord = texture_transform(texcoord0, texture_metallic_roughness_transform, texture_matrix0);
@@ -127,6 +129,7 @@ void main()
 {
     //transform vertex
     gl_Position = modelview_projection_matrix * vec4(position.xyz, 1.0);
+    gl_Position = quantizeRasterVertex(gl_Position);
 
     base_color_texcoord = texture_transform(texcoord0, texture_base_color_transform, texture_matrix0);
     emissive_texcoord = texture_transform(texcoord0, texture_emissive_transform, texture_matrix0);
@@ -135,5 +138,3 @@ void main()
 }
 
 #endif
-
-

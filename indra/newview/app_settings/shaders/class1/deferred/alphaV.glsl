@@ -30,6 +30,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 
 in vec3 position;
 
@@ -111,6 +112,8 @@ void main()
 
 #endif // HAS_SKIN
 
+    gl_Position = quantizeRasterVertex(gl_Position);
+
 #ifdef USE_INDEXED_TEX
     passTextureIndex();
 #endif
@@ -139,20 +142,20 @@ void main()
 // meaningless (and clip.z tends to 0 at the far plane), so carry the true clip w instead.
 #ifdef HAS_SKIN
 #ifdef REVERSE_Z
-    vary_fragcoord.xyz = vec3(frag_pos.xy, frag_pos.w);
+    vary_fragcoord.xyz = vec3(gl_Position.xy, gl_Position.w);
 #else
-    vary_fragcoord.xyz = frag_pos.xyz + vec3(0,0,near_clip);
+    vary_fragcoord.xyz = gl_Position.xyz + vec3(0,0,near_clip);
 #endif
 #else
 
 #ifdef IS_AVATAR_SKIN
 #ifdef REVERSE_Z
-    vary_fragcoord.xyz = vec3(frag_pos.xy, frag_pos.w);
+    vary_fragcoord.xyz = vec3(gl_Position.xy, gl_Position.w);
 #else
-    vary_fragcoord.xyz = pos.xyz + vec3(0,0,near_clip);
+    vary_fragcoord.xyz = vec3(gl_Position.xy, pos.z + near_clip);
 #endif
 #else
-    pos = modelview_projection_matrix * vert;
+    pos = gl_Position;
 #ifdef REVERSE_Z
     vary_fragcoord.xyz = vec3(pos.xy, pos.w);
 #else
@@ -163,4 +166,3 @@ void main()
 #endif
 
 }
-

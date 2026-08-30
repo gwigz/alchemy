@@ -97,6 +97,7 @@ public:
     /// first if this is its first use.
     void onClickOpenLUTFolder();
     void updateTonemapperRows();
+    void updateRasterRows();
     /// Freeze the frame about to be presented, and switch the wipe on so the
     /// grab is visibly a grab.
     void onClickReferenceGrab();
@@ -166,6 +167,7 @@ public:
     std::map<std::string, std::array<LLUICtrl*, 3>> mVec3Rows;
     std::vector<boost::signals2::scoped_connection> mVec3Connections;
     boost::signals2::scoped_connection mTonemapConnection;
+    std::vector<boost::signals2::scoped_connection> mRasterConnections;
     boost::signals2::scoped_connection mLooksListConnection;
     boost::signals2::scoped_connection mLooksActiveConnection;
     LLComboBox* mLooksCombo = nullptr;

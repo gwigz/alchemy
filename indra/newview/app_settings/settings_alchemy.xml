@@ -1653,6 +1653,72 @@
             <key>Value</key>
             <integer>1</integer>
         </map>
+        <key>RenderRasterPrecisionEnabled</key>
+        <map>
+            <key>Comment</key>
+            <string>Apply low-precision raster-grid resampling to the main world view. Disabled for clean snapshots and reflection-probe cube captures.</string>
+            <key>Persist</key>
+            <integer>1</integer>
+            <key>Type</key>
+            <string>Boolean</string>
+            <key>Value</key>
+            <integer>0</integer>
+        </map>
+        <key>RenderRasterProfile</key>
+        <map>
+            <key>Comment</key>
+            <string>Low-precision rasterization profile. 0 = contemporary low-resolution at 360-line aspect fit with full color, 1 = reference raster at fixed 320 x 240 with RGB555 and ordered dithering, 2 = custom settings.</string>
+            <key>Persist</key>
+            <integer>1</integer>
+            <key>Type</key>
+            <string>S32</string>
+            <key>Value</key>
+            <integer>0</integer>
+        </map>
+        <key>RenderRasterGridMode</key>
+        <map>
+            <key>Comment</key>
+            <string>Raster grid used by the Custom profile. 0 = fixed 320 x 240 with a centered 4:3 frame, 1 = 240-line aspect fit, 2 = 360-line aspect fit, 3 = 480-line aspect fit.</string>
+            <key>Persist</key>
+            <integer>1</integer>
+            <key>Type</key>
+            <string>S32</string>
+            <key>Value</key>
+            <integer>2</integer>
+        </map>
+        <key>RenderRasterRGB555</key>
+        <map>
+            <key>Comment</key>
+            <string>Quantize the Custom profile's final display-space red, green, and blue channels to five bits each.</string>
+            <key>Persist</key>
+            <integer>1</integer>
+            <key>Type</key>
+            <string>Boolean</string>
+            <key>Value</key>
+            <integer>0</integer>
+        </map>
+        <key>RenderRasterVertexGridMode</key>
+        <map>
+            <key>Comment</key>
+            <string>Screen-space vertex grid used by the Custom profile. 0 = off, 1 = fine at twice the raster-cell density, 2 = matched to the raster grid, 3 = coarse at half the raster-cell density.</string>
+            <key>Persist</key>
+            <integer>1</integer>
+            <key>Type</key>
+            <string>S32</string>
+            <key>Value</key>
+            <integer>1</integer>
+        </map>
+        <key>RenderRasterOrderedDither</key>
+        <map>
+            <key>Comment</key>
+            <string>Apply the fixed signed 4 x 4 ordered-dither matrix before Custom-profile RGB555 truncation. Has no effect unless RGB555 output is enabled.</string>
+            <key>Persist</key>
+            <integer>1</integer>
+            <key>Type</key>
+            <string>Boolean</string>
+            <key>Value</key>
+            <integer>0</integer>
+        </map>
         <key>RenderBloomThreshold</key>
         <map>
             <key>Comment</key>
@@ -3206,4 +3272,3 @@
         </map>
     </map>
 </llsd>
-

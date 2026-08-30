@@ -32,6 +32,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 #ifdef HAS_SKIN
 mat3x4 getSkinBlend();
 vec3 skinDirection(mat3x4 b, vec3 dir);
@@ -57,6 +58,7 @@ void main()
     gl_Position = modelview_projection_matrix * vec4(position.xyz, 1.0);
 #endif
 
+    gl_Position = quantizeRasterVertex(gl_Position);
     vary_material_index = texture_index;
     vary_texcoord0 = texcoord0;
     vertex_color = emissive;

@@ -158,6 +158,240 @@ buffer reallocation, and a shader rebuild); it stays a prefs-level switch.
 		<accordion_tab
 		 expanded="false"
 		 layout="topleft"
+		 height="150"
+		 name="atab_sec_raster"
+		 title="Raster precision"
+		 fit_panel="true">
+			<accordion_tab.header_check_box
+			 name="raster_precision_enabled"
+			 control_name="RenderRasterPrecisionEnabled"
+			 tool_tip="Apply low-precision rasterization to the main world view." />
+			<panel
+			 follows="all"
+			 layout="topleft"
+			 height="121"
+			 left="0"
+			 top="0"
+			 right="-1"
+			 name="sec_raster">
+				<text
+				 follows="left|top"
+				 layout="topleft"
+				 left="8"
+				 top="8"
+				 width="140"
+				 height="15"
+				 name="raster_profile_label"
+				 value="Profile" />
+				<combo_box
+				 follows="left|top|right"
+				 layout="topleft"
+				 left_delta="140"
+				 top_pad="-16"
+				 right="-32"
+				 height="18"
+				 name="raster_profile_combo"
+				 tool_tip="Contemporary keeps modern lighting and full color. Reference raster uses a fixed 320 x 240 frame, RGB555 output, and ordered dithering."
+				 control_name="RenderRasterProfile">
+					<combo_box.item
+					 label="Contemporary (full color)"
+					 name="0"
+					 value="0" />
+					<combo_box.item
+					 label="Reference (RGB555 + dither)"
+					 name="1"
+					 value="1" />
+					<combo_box.item
+					 label="Custom"
+					 name="2"
+					 value="2" />
+				</combo_box>
+				<button
+				 follows="top|right"
+				 layout="topleft"
+				 height="18"
+				 width="18"
+				 right="-8"
+				 top_pad="-18"
+				 scale_image="true"
+				 image_overlay="Refresh_Off"
+				 image_overlay_alignment="center"
+				 name="raster_profile_rst"
+				 tool_tip="Reset to default">
+					<button.commit_callback
+					 function="LightBox.ResetControlDefault"
+					 parameter="RenderRasterProfile" />
+				</button>
+				<text
+				 follows="left|top|right"
+				 layout="topleft"
+				 left="8"
+				 top_pad="8"
+				 right="-8"
+				 height="28"
+				 word_wrap="true"
+				 name="raster_effective_summary"
+				 value="Effective: 360-line aspect fit, full color, fine vertex grid." />
+				<text
+				 follows="left|top"
+				 layout="topleft"
+				 left="8"
+				 top_pad="9"
+				 width="140"
+				 height="15"
+				 name="raster_grid_label"
+				 value="Custom raster grid" />
+				<combo_box
+				 follows="left|top|right"
+				 layout="topleft"
+				 left_delta="140"
+				 top_pad="-16"
+				 right="-32"
+				 height="18"
+				 name="raster_grid_combo"
+				 tool_tip="Raster-cell layout used by the Custom profile"
+				 control_name="RenderRasterGridMode">
+					<combo_box.item label="Fixed 320 x 240" name="0" value="0" />
+					<combo_box.item label="240-line aspect fit" name="1" value="1" />
+					<combo_box.item label="360-line aspect fit" name="2" value="2" />
+					<combo_box.item label="480-line aspect fit" name="3" value="3" />
+				</combo_box>
+				<button
+				 follows="top|right"
+				 layout="topleft"
+				 height="18"
+				 width="18"
+				 right="-8"
+				 top_pad="-18"
+				 scale_image="true"
+				 image_overlay="Refresh_Off"
+				 image_overlay_alignment="center"
+				 name="raster_grid_rst"
+				 tool_tip="Reset to default">
+					<button.commit_callback
+					 function="LightBox.ResetControlDefault"
+					 parameter="RenderRasterGridMode" />
+				</button>
+				<button
+				 follows="top|right"
+				 layout="topleft"
+				 height="18"
+				 width="100"
+				 right="-8"
+				 top_pad="10"
+				 label="Reset All"
+				 halign="left"
+				 scale_image="true"
+				 image_overlay="Refresh_Off"
+				 image_overlay_alignment="right"
+				 name="sec_raster_reset"
+				 tool_tip="Reset raster precision settings to defaults">
+					<button.commit_callback
+					 function="LightBox.ResetSection"
+					 parameter="sec_raster" />
+				</button>
+			</panel>
+		</accordion_tab>
+		<accordion_tab
+		 expanded="false"
+		 layout="topleft"
+		 height="140"
+		 name="atab_sec_raster_adv"
+		 title="Custom precision"
+		 fit_panel="true">
+			<panel
+			 follows="all"
+			 layout="topleft"
+			 height="111"
+			 left="0"
+			 top="0"
+			 right="-1"
+			 name="sec_raster_adv">
+				<text
+				 follows="left|top"
+				 layout="topleft"
+				 left="8"
+				 top="8"
+				 width="140"
+				 height="15"
+				 name="raster_vertex_grid_label"
+				 value="Screen-space vertices" />
+				<combo_box
+				 follows="left|top|right"
+				 layout="topleft"
+				 left_delta="140"
+				 top_pad="-16"
+				 right="-32"
+				 height="18"
+				 name="raster_vertex_grid_combo"
+				 tool_tip="Quantize world-material vertex positions in screen space. Fine uses twice the raster-cell density; coarse uses half."
+				 control_name="RenderRasterVertexGridMode">
+					<combo_box.item label="Off" name="0" value="0" />
+					<combo_box.item label="Fine (2x raster grid)" name="1" value="1" />
+					<combo_box.item label="Matched to raster grid" name="2" value="2" />
+					<combo_box.item label="Coarse (half raster grid)" name="3" value="3" />
+				</combo_box>
+				<button
+				 follows="top|right"
+				 layout="topleft"
+				 height="18"
+				 width="18"
+				 right="-8"
+				 top_pad="-18"
+				 scale_image="true"
+				 image_overlay="Refresh_Off"
+				 image_overlay_alignment="center"
+				 name="raster_vertex_grid_rst"
+				 tool_tip="Reset to default">
+					<button.commit_callback
+					 function="LightBox.ResetControlDefault"
+					 parameter="RenderRasterVertexGridMode" />
+				</button>
+				<check_box
+				 follows="left|top"
+				 layout="topleft"
+				 height="16"
+				 left="8"
+				 top_pad="8"
+				 width="300"
+				 label="RGB555 output"
+				 tool_tip="Quantize each display-space color channel to five bits in the Custom profile."
+				 name="raster_rgb555"
+				 control_name="RenderRasterRGB555" />
+				<check_box
+				 follows="left|top"
+				 layout="topleft"
+				 height="16"
+				 left="8"
+				 top_pad="8"
+				 width="300"
+				 label="4 x 4 ordered dithering"
+				 tool_tip="Apply the fixed signed 4 x 4 matrix before RGB555 truncation in the Custom profile."
+				 name="raster_ordered_dither"
+				 control_name="RenderRasterOrderedDither" />
+				<button
+				 follows="top|right"
+				 layout="topleft"
+				 height="18"
+				 width="100"
+				 right="-8"
+				 top_pad="10"
+				 label="Reset All"
+				 halign="left"
+				 scale_image="true"
+				 image_overlay="Refresh_Off"
+				 image_overlay_alignment="right"
+				 name="sec_raster_adv_reset"
+				 tool_tip="Reset advanced raster precision settings to defaults">
+					<button.commit_callback
+					 function="LightBox.ResetSection"
+					 parameter="sec_raster_adv" />
+				</button>
+			</panel>
+		</accordion_tab>
+		<accordion_tab
+		 expanded="false"
+		 layout="topleft"
 		 height="142"
 		 name="atab_sec_reflect"
 		 title="Reflections"

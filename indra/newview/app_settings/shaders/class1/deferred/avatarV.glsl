@@ -26,6 +26,7 @@
 // Shared matrix stack + derived matrices, spliced from
 // class1/deferred/matricesBlock.glsl and bound at UB_MATRICES.
 //[ENGINE_BLOCK Matrices]
+//[ENGINE_BLOCK RasterPrecision]
 
 in vec3 position;
 in vec3 normal;
@@ -136,6 +137,5 @@ void main()
 
     vary_position = pos.xyz;
     gl_Position = projection_matrix * pos;
+    gl_Position = quantizeRasterVertex(gl_Position);
 }
-
-
