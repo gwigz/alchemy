@@ -21,11 +21,30 @@
          shortcut="control|I"
 		     visible="true">
         <menu_item_check.on_check
+         function="Inventory.PreferredVisible" />
+        <menu_item_check.on_click
+         function="Inventory.TogglePreferred" />
+      </menu_item_check>
+      <menu_item_check
+       label="Use Inventory Explorer"
+       name="UseInventoryExplorer">
+        <menu_item_check.on_check
+         function="CheckControlPerAccount"
+         parameter="InventoryUseExplorer" />
+        <menu_item_check.on_click
+         function="ToggleControlPerAccount"
+         parameter="InventoryUseExplorer" />
+      </menu_item_check>
+      <menu_item_check
+         label="Inventory Explorer..."
+         name="InventoryExplorer"
+         visible="true">
+        <menu_item_check.on_check
          function="Floater.Visible"
-         parameter="inventory" />
+         parameter="inventory_explorer" />
         <menu_item_check.on_click
          function="Floater.Toggle"
-         parameter="inventory" />
+         parameter="inventory_explorer" />
       </menu_item_check>
       <menu_item_call
        label="New Inventory Window"

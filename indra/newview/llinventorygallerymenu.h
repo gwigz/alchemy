@@ -31,9 +31,10 @@
 class LLInventoryGalleryContextMenu : public LLListContextMenu
 {
 public:
-    LLInventoryGalleryContextMenu(LLInventoryGallery* gallery)
+    LLInventoryGalleryContextMenu(LLInventoryGallery* gallery, const std::string& menu_filename)
     : LLListContextMenu(),
     mGallery(gallery),
+    mMenuFilename(menu_filename),
     mRootFolder(false){}
     /*virtual*/ LLContextMenu* createMenu();
 
@@ -57,6 +58,7 @@ private:
     bool checkContextMenuItem(const LLSD& userdata);
 
     LLInventoryGallery* mGallery;
+    std::string mMenuFilename;
     bool mRootFolder;
 };
 

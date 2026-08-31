@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel
+ follows="left|top|right"
+ height="28"
+ layout="topleft"
+ name="panel_al_inventory_explorer_collection_row"
+ width="170">
+  <panel
+   background_visible="true"
+   bg_alpha_color="ScrollSelectedBGColor"
+   bg_opaque_color="ScrollSelectedBGColor"
+   border="false"
+   follows="all"
+   bottom="-1"
+   left="0"
+   layout="topleft"
+   name="selection_background"
+   right="-1"
+   top="0"
+   visible="false" />
+  <icon
+   color="LabelTextColor"
+   follows="left|top"
+   height="16"
+   layout="topleft"
+   left="8"
+   name="collection_icon"
+   top="6"
+   width="16" />
+  <text
+   follows="left|top|right"
+   font="SansSerifSmall"
+   height="16"
+   layout="topleft"
+   left="32"
+   name="collection_label"
+   right="-86"
+   text_color="LabelTextColor"
+   top="5" />
+  <text
+   follows="right|top"
+   font="SansSerifSmall"
+   halign="right"
+   height="16"
+   layout="topleft"
+   name="collection_count"
+   right="-29"
+   text_color="LabelTextColor"
+   top="5"
+   width="54">--</text>
+  <button
+   follows="all"
+   height="28"
+   image_selected="Transparent"
+   image_unselected="Transparent"
+   layout="topleft"
+   left="0"
+   name="select_button"
+   right="-25"
+   top="0"
+   tool_tip="Show this inventory filter" />
+  <button
+   follows="right|top"
+   height="22"
+   image_overlay="TrashItem_Off"
+   image_overlay_color="LabelTextColor"
+   image_selected="Toolbar_Middle_Selected"
+   image_unselected="Toolbar_Middle_Off"
+   layout="topleft"
+   name="remove_button"
+   right="-2"
+   top="3"
+   width="22" />
+</panel>

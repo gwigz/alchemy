@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel
+ background_visible="true"
+ bg_alpha_color="PanelDefaultBackgroundColor"
+ bg_opaque_color="PanelDefaultBackgroundColor"
+ follows="left|top|right"
+ height="28"
+ layout="topleft"
+ name="panel_al_inventory_explorer_holding_item"
+ width="480">
+  <icon
+   color="LabelTextColor"
+   follows="left|top"
+   height="16"
+   layout="topleft"
+   left="6"
+   name="item_icon"
+   top="6"
+   width="16" />
+  <text
+   follows="left|top|right"
+   height="18"
+   layout="topleft"
+   left="28"
+   name="item_name"
+   right="-28"
+   text_color="LabelTextColor"
+   top="5"
+   use_ellipses="true" />
+  <button
+   follows="right|top"
+   height="18"
+   image_selected="Icon_Close_Toast"
+   image_unselected="Icon_Close_Toast"
+   layout="topleft"
+   name="remove_button"
+   right="-5"
+   tool_tip="Remove from holding"
+   top="5"
+   width="18" />
+</panel>

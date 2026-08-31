@@ -66,6 +66,7 @@ public:
         Optional<S32>   item_height;
         Optional<S32>   item_horizontal_gap;
         Optional<S32>   items_in_row;
+        Optional<std::string> context_menu;
 
         Params();
     };
@@ -264,6 +265,7 @@ private:
     int mGalleryWidth;
     int mRowPanWidthFactor;
     int mGalleryWidthFactor;
+    std::string mContextMenu;
 
     LLInventoryGalleryContextMenu* mInventoryGalleryMenu;
     LLInventoryGalleryContextMenu* mRootGalleryMenu;

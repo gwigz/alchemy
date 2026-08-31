@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater
+ can_close="true"
+ can_minimize="true"
+ can_resize="true"
+ height="640"
+ min_height="360"
+ min_width="360"
+ name="floater_al_inventory_explorer"
+ positioning="cascading"
+ reuse_instance="true"
+ save_rect="true"
+ save_visibility="true"
+ title="INVENTORY EXPLORER"
+ width="920">
+  <panel
+   bottom="-1"
+   class="panel_al_inventory_explorer"
+   filename="panel_al_inventory_explorer.xml"
+   follows="all"
+   left="0"
+   name="inventory_explorer_panel"
+   right="-1"
+   top="0" />
+</floater>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel
+ background_visible="true"
+ bg_alpha_color="InventoryBackgroundColor"
+ bg_opaque_color="InventoryBackgroundColor"
+ follows="all"
+ height="82"
+ layout="topleft"
+ name="panel_al_inventory_explorer_holding_tray"
+ width="500">
+  <view_border
+   bevel_style="none"
+   follows="left|top|right"
+   height="1"
+   layout="topleft"
+   left="0"
+   right="-1"
+   top="0" />
+  <text
+   follows="left|top"
+   font="SansSerifSmall"
+   font.style="BOLD"
+   height="16"
+   layout="topleft"
+   left="10"
+   name="holding_label"
+   text_color="LabelTextColor"
+   top="6"
+   width="100">HOLDING</text>
+  <button
+   follows="right|top"
+   height="20"
+   label="Clear"
+   layout="topleft"
+   name="clear_button"
+   right="-8"
+   top="3"
+   width="52" />
+  <flat_list_view
+   allow_select="false"
+   bottom="-4"
+   follows="all"
+   item_pad="1"
+   layout="topleft"
+   left="6"
+   name="holding_items"
+   no_items_text="Drag inventory here to hold it"
+   right="-6"
+   top="26" />
+</panel>

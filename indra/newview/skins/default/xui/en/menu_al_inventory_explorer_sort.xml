@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<toggleable_menu
+ can_tear_off="false"
+ layout="topleft"
+ mouse_opaque="false"
+ name="menu_al_inventory_explorer_sort"
+ visible="false">
+  <menu_item_check label="Sort by Name" name="sort_by_name">
+    <on_click function="InventoryExplorer.Sort" parameter="name" />
+    <on_check function="InventoryExplorer.SortChecked" parameter="name" />
+  </menu_item_check>
+  <menu_item_check label="Sort by Most Recent" name="sort_by_recent">
+    <on_click function="InventoryExplorer.Sort" parameter="date" />
+    <on_check function="InventoryExplorer.SortChecked" parameter="date" />
+  </menu_item_check>
+  <menu_item_check label="Sort Folders Always by Name" name="sort_folders_by_name">
+    <on_click function="InventoryExplorer.Sort" parameter="foldersalwaysbyname" />
+    <on_check function="InventoryExplorer.SortChecked" parameter="foldersalwaysbyname" />
+  </menu_item_check>
+  <menu_item_check label="Sort System Folders to Top" name="sort_system_folders_to_top">
+    <on_click function="InventoryExplorer.Sort" parameter="systemfolderstotop" />
+    <on_check function="InventoryExplorer.SortChecked" parameter="systemfolderstotop" />
+    <on_visible function="InventoryExplorer.SortVisible" parameter="systemfolderstotop" />
+  </menu_item_check>
+</toggleable_menu>

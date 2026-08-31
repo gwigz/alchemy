@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<toggleable_menu
+ name="menu_al_inventory_explorer_add_filter"
+ visible="false">
+  <menu_item_call label="Clothing" name="clothing">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="clothing" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="clothing" />
+  </menu_item_call>
+  <menu_item_call label="Body Parts" name="bodypart">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="bodypart" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="bodypart" />
+  </menu_item_call>
+  <menu_item_call label="Objects" name="object">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="object" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="object" />
+  </menu_item_call>
+  <menu_item_call label="Textures" name="texture">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="texture" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="texture" />
+  </menu_item_call>
+  <menu_item_call label="Landmarks" name="landmark">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="landmark" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="landmark" />
+  </menu_item_call>
+  <menu_item_call label="Animations" name="animation">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="animation" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="animation" />
+  </menu_item_call>
+  <menu_item_call label="Gestures" name="gesture">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="gesture" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="gesture" />
+  </menu_item_call>
+  <menu_item_call label="Notecards" name="notecard">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="notecard" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="notecard" />
+  </menu_item_call>
+  <menu_item_call label="Sounds" name="sound">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="sound" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="sound" />
+  </menu_item_call>
+  <menu_item_call label="Settings" name="settings">
+    <on_click function="InventoryExplorer.AddTypeFilter" parameter="settings" />
+    <on_enable function="InventoryExplorer.CanAddTypeFilter" parameter="settings" />
+  </menu_item_call>
+</toggleable_menu>

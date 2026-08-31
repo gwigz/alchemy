@@ -192,6 +192,9 @@ LLInventoryPanel::LLInventoryPanel(const LLInventoryPanel::Params& p) :
     mCommitCallbackRegistrar.add("Inventory.Share",  boost::bind(&LLAvatarActions::shareWithAvatars, this));
     mCommitCallbackRegistrar.add("Inventory.FileUploadLocation", boost::bind(&LLInventoryPanel::fileUploadLocation, this, _2));
     mEnableCallbackRegistrar.add("Inventory.FileUploadLocation.Check", boost::bind(&LLInventoryPanel::isUploadLocationSelected, this, _2));
+    mEnableCallbackRegistrar.add("Inventory.CanSetUploadLocation", boost::bind(&LLInventoryPanel::canSetUploadLocation, this, _2));
+    mEnableCallbackRegistrar.add("Inventory.EnvironmentEnabled", [](LLUICtrl*, const LLSD&) { return LLPanelMainInventory::hasSettingsInventory(); });
+    mEnableCallbackRegistrar.add("Inventory.MaterialsEnabled", [](LLUICtrl*, const LLSD&) { return LLPanelMainInventory::hasMaterialsInventory(); });
     mCommitCallbackRegistrar.add("Inventory.OpenNewFolderWindow", boost::bind(&LLInventoryPanel::openSingleViewInventory, this, LLUUID()));
 }
 
@@ -219,7 +222,7 @@ LLFolderView * LLInventoryPanel::createFolderRoot(LLUUID root_id )
     p.show_item_link_overlays = mShowItemLinkOverlays;
     p.root = NULL;
     p.allow_drop = mParams.allow_drop_on_root;
-    p.options_menu = "menu_inventory.xml";
+    p.options_menu = mParams.context_menu;
 
     LLFolderView* fv = LLUICtrlFactory::create<LLFolderView>(p);
     fv->setCallbackRegistrar(&mCommitCallbackRegistrar);
@@ -1758,6 +1761,25 @@ void LLInventoryPanel::doCreate(const LLSD& userdata)
     menu_create_inventory_item(this, LLFolderBridge::sSelf.get(), userdata);
 }
 
+void LLInventoryPanel::showContextMenuForSelection()
+{
+    LLFolderView* root = mFolderRoot.get();
+    if (!root)
+    {
+        return;
+    }
+
+    LLFolderViewItem* selected = root->getCurSelectedItem();
+    if (!selected)
+    {
+        return;
+    }
+
+    LLRect selected_rect;
+    selected->localRectToOtherView(selected->getLocalRect(), &selected_rect, root);
+    root->handleRightMouseDown(selected_rect.getCenterX(), selected_rect.getCenterY(), MASK_NONE);
+}
+
 bool LLInventoryPanel::beginIMSession()
 {
     std::set<LLFolderViewItem*> selected_items =   mFolderRoot.get()->getSelectionList();
@@ -1899,6 +1921,12 @@ bool LLInventoryPanel::isUploadLocationSelected(const LLSD& userdata)
     const std::string param = userdata.asString();
     const LLUUID dest = LLFolderBridge::sSelf.get()->getUUID();
     return LLInventoryAction::isFileUploadLocation(dest, param);
+}
+
+bool LLInventoryPanel::canSetUploadLocation(const LLSD&)
+{
+    return LLFolderBridge::sSelf.get() &&
+        gInventory.getCategory(LLFolderBridge::sSelf.get()->getUUID());
 }
 
 void LLInventoryPanel::openSingleViewInventory(LLUUID folder_id)

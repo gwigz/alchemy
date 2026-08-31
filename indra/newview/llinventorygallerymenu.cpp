@@ -124,7 +124,7 @@ LLContextMenu* LLInventoryGalleryContextMenu::createMenu()
                              return (!agent_url.empty() && !task_url.empty());
                          });
 
-    LLContextMenu* menu = createFromFile("menu_gallery_inventory.xml");
+    LLContextMenu* menu = createFromFile(mMenuFilename);
 
     updateMenuItemsVisibility(menu);
 
@@ -1086,4 +1086,3 @@ void LLInventoryGalleryContextMenu::updateMenuItemsVisibility(LLContextMenu* men
 
     hide_context_entries(*menu, items, disabled_items);
 }
-

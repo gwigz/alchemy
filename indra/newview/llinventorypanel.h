@@ -109,6 +109,7 @@ public:
         Optional<LLFolderViewFolder::Params> folder;
         Optional<LLFolderViewItem::Params>   item;
         Optional<bool>                       open_first_folder;
+        Optional<std::string>                context_menu;
 
         // All item and folder views will be initialized on init if true (default)
         // Will initialize on visibility change otherwise.
@@ -129,6 +130,7 @@ public:
             allow_drop_on_root("allow_drop_on_root", true),
             use_marketplace_folders("use_marketplace_folders", false),
             open_first_folder("open_first_folder", true),
+            context_menu("context_menu", "menu_inventory.xml"),
             scroll("scroll"),
             accepts_drag_and_drop("accepts_drag_and_drop"),
             folder_view("folder_view"),
@@ -224,9 +226,11 @@ public:
     // Callbacks
     void doToSelected(const LLSD& userdata);
     void doCreate(const LLSD& userdata);
+    void showContextMenuForSelection();
     bool beginIMSession();
     void fileUploadLocation(const LLSD& userdata);
     bool isUploadLocationSelected(const LLSD& userdata);
+    bool canSetUploadLocation(const LLSD& userdata);
     void openSingleViewInventory(LLUUID folder_id = LLUUID());
     void purgeSelectedItems();
     bool attachObject(const LLSD& userdata);

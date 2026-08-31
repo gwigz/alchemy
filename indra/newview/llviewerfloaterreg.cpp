@@ -41,6 +41,7 @@
 #include "alfloaterexploresounds.h"
 #include "alfloatergenerictext.h"
 #include "alfloatergroupprofile.h"
+#include "alfloaterinventoryexplorer.h"
 #include "alfloaterlightbox.h"
 #include "alfloaterparticleeditor.h"
 #include "alfloaterprofilelegacy.h"
@@ -437,6 +438,7 @@ void LLViewerFloaterReg::registerFloaters()
     LLFloaterReg::add("im_well_window", "floater_sys_well.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLIMWellWindow>);
     LLFloaterReg::add("incoming_call", "floater_incoming_call.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLIncomingCallDialog>);
     LLFloaterReg::add("inventory", "floater_my_inventory.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterSidePanelContainer>);
+    LLFloaterReg::add("inventory_explorer", "floater_al_inventory_explorer.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<ALFloaterInventoryExplorer>);
     LLFloaterReg::add("inspect", "floater_inspect.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterInspect>);
     LLFloaterReg::add("scene_explorer", "floater_scene_explorer.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<ALFloaterSceneExplorer>);
     LLFloaterReg::add("scene_explorer_filters", "floater_scene_explorer_filters.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<ALFloaterSceneExplorerFilters>);

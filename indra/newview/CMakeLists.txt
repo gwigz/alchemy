@@ -175,6 +175,7 @@ set(viewer_SOURCE_FILES
     alfloaterexploresounds.cpp
     alfloatergenerictext.cpp
     alfloatergroupprofile.cpp
+    alfloaterinventoryexplorer.cpp
     alfloaterlightbox.cpp
     alfloaterparticleeditor.cpp
     alfloaterprofilelegacy.cpp
@@ -196,6 +197,9 @@ set(viewer_SOURCE_FILES
     alpanelclassified.cpp
     alpanelclassifiededit.cpp
     alpaneleventinfo.cpp
+    alpanelinventoryexplorer.cpp
+    alpanelinventoryholdingtray.cpp
+    alpanelinventoryinspector.cpp
     alpanelmusicticker.cpp
     alpanelpick.cpp
     alpanelprofilelegacy.cpp
@@ -956,6 +960,7 @@ set(viewer_HEADER_FILES
     alfloaterexploresounds.h
     alfloatergenerictext.h
     alfloatergroupprofile.h
+    alfloaterinventoryexplorer.h
     alfloaterlightbox.h
     alfloaterparticleeditor.h
     alfloaterprofilelegacy.h
@@ -977,6 +982,9 @@ set(viewer_HEADER_FILES
     alpanelclassified.h
     alpanelclassifiededit.h
     alpaneleventinfo.h
+    alpanelinventoryexplorer.h
+    alpanelinventoryholdingtray.h
+    alpanelinventoryinspector.h
     alpanelmusicticker.h
     alpanelpick.h
     alpanelprofilelegacy.h

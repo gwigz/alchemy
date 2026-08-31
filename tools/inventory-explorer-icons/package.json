@@ -1,0 +1,12 @@
+{
+  "name": "alchemy-inventory-explorer-icons",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "bun run generate-icons.ts",
+    "check": "bun run generate-icons.ts --check"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "2.6.2"
+  }
+}

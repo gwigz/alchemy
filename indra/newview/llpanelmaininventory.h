@@ -107,6 +107,8 @@ public:
 
     static LLFloaterSidePanelContainer* newWindow();
     static void newFolderWindow(LLUUID folder_id = LLUUID(), LLUUID item_to_select = LLUUID());
+    static bool hasSettingsInventory();
+    static bool hasMaterialsInventory();
 
     void toggleFindOptions();
 
@@ -245,8 +247,6 @@ protected:
     bool isActionChecked(const LLSD& userdata);
     void onCustomAction(const LLSD& command_name);
     bool isActionVisible(const LLSD& userdata);
-    static bool hasSettingsInventory();
-    static bool hasMaterialsInventory();
     void updateTitle();
     void updateNavButtons();
 
@@ -279,7 +279,7 @@ private:
     ////////////////////////////////////////////////////////////////////////////////
 };
 
+bool is_add_allowed(LLUUID folder_id);
+
 #endif // LL_LLPANELMAININVENTORY_H
-
-
 

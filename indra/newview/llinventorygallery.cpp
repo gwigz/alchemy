@@ -107,6 +107,7 @@ LLInventoryGallery::LLInventoryGallery(const LLInventoryGallery::Params& p)
       mItemsInRow(p.items_in_row),
       mRowPanWidthFactor(p.row_panel_width_factor),
       mGalleryWidthFactor(p.gallery_width_factor),
+      mContextMenu(p.context_menu),
       mIsInitialized(false),
       mRootDirty(false),
       mLoadThumbnailsImmediately(true),
@@ -136,7 +137,8 @@ LLInventoryGallery::Params::Params()
       item_horizontal_gap("item_horizontal_gap", 16),
       items_in_row("items_in_row", GALLERY_ITEMS_PER_ROW_MIN),
       row_panel_width_factor("row_panel_width_factor", 166),
-      gallery_width_factor("gallery_width_factor", 163)
+      gallery_width_factor("gallery_width_factor", 163),
+      context_menu("context_menu", "menu_gallery_inventory.xml")
 {
     addSynonym(row_panel_height, "row_height");
 }
@@ -150,8 +152,8 @@ bool LLInventoryGallery::postBuild()
 {
     mScrollPanel = getChild<LLScrollContainer>("gallery_scroll_panel");
     mMessageTextBox = getChild<LLTextBox>("empty_txt");
-    mInventoryGalleryMenu = new LLInventoryGalleryContextMenu(this);
-    mRootGalleryMenu = new LLInventoryGalleryContextMenu(this);
+    mInventoryGalleryMenu = new LLInventoryGalleryContextMenu(this, mContextMenu);
+    mRootGalleryMenu = new LLInventoryGalleryContextMenu(this, mContextMenu);
     mRootGalleryMenu->setRootFolder(true);
     return true;
 }

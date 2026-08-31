@@ -1001,4 +1001,37 @@ with the same filename but different name
   <texture name="Script_Running" file_name="script_editor/green_square.png" preload="false" />
   <texture name="Script_NotRunning" file_name="script_editor/yellow_square.png" preload="false" />
   <texture name="Script_Error" file_name="script_editor/red_square.png" preload="false" />
+
+  <!-- BEGIN Inventory Explorer generated textures -->
+  <texture name="InvExplorer_Action_Add" file_name="inventory_explorer/InvExplorer_Action_Add.png" preload="false" />
+  <texture name="InvExplorer_Action_Back" file_name="inventory_explorer/InvExplorer_Action_Back.png" preload="false" />
+  <texture name="InvExplorer_Action_Forward" file_name="inventory_explorer/InvExplorer_Action_Forward.png" preload="false" />
+  <texture name="InvExplorer_Action_Search" file_name="inventory_explorer/InvExplorer_Action_Search.png" preload="false" />
+  <texture name="InvExplorer_Action_Sort" file_name="inventory_explorer/InvExplorer_Action_Sort.png" preload="false" />
+  <texture name="InvExplorer_Action_Up" file_name="inventory_explorer/InvExplorer_Action_Up.png" preload="false" />
+  <texture name="InvExplorer_Collection_All" file_name="inventory_explorer/InvExplorer_Collection_All.png" preload="false" />
+  <texture name="InvExplorer_Collection_Favorites" file_name="inventory_explorer/InvExplorer_Collection_Favorites.png" preload="false" />
+  <texture name="InvExplorer_Collection_Recent" file_name="inventory_explorer/InvExplorer_Collection_Recent.png" preload="false" />
+  <texture name="InvExplorer_Collection_Worn" file_name="inventory_explorer/InvExplorer_Collection_Worn.png" preload="false" />
+  <texture name="InvExplorer_Inspector" file_name="inventory_explorer/InvExplorer_Inspector.png" preload="false" />
+  <texture name="InvExplorer_Item_Animation" file_name="inventory_explorer/InvExplorer_Item_Animation.png" preload="false" />
+  <texture name="InvExplorer_Item_BodyPart" file_name="inventory_explorer/InvExplorer_Item_BodyPart.png" preload="false" />
+  <texture name="InvExplorer_Item_CallingCard" file_name="inventory_explorer/InvExplorer_Item_CallingCard.png" preload="false" />
+  <texture name="InvExplorer_Item_Clothing" file_name="inventory_explorer/InvExplorer_Item_Clothing.png" preload="false" />
+  <texture name="InvExplorer_Item_Folder" file_name="inventory_explorer/InvExplorer_Item_Folder.png" preload="false" />
+  <texture name="InvExplorer_Item_Gesture" file_name="inventory_explorer/InvExplorer_Item_Gesture.png" preload="false" />
+  <texture name="InvExplorer_Item_Landmark" file_name="inventory_explorer/InvExplorer_Item_Landmark.png" preload="false" />
+  <texture name="InvExplorer_Item_Material" file_name="inventory_explorer/InvExplorer_Item_Material.png" preload="false" />
+  <texture name="InvExplorer_Item_Mesh" file_name="inventory_explorer/InvExplorer_Item_Mesh.png" preload="false" />
+  <texture name="InvExplorer_Item_Notecard" file_name="inventory_explorer/InvExplorer_Item_Notecard.png" preload="false" />
+  <texture name="InvExplorer_Item_Object" file_name="inventory_explorer/InvExplorer_Item_Object.png" preload="false" />
+  <texture name="InvExplorer_Item_Script" file_name="inventory_explorer/InvExplorer_Item_Script.png" preload="false" />
+  <texture name="InvExplorer_Item_Settings" file_name="inventory_explorer/InvExplorer_Item_Settings.png" preload="false" />
+  <texture name="InvExplorer_Item_Snapshot" file_name="inventory_explorer/InvExplorer_Item_Snapshot.png" preload="false" />
+  <texture name="InvExplorer_Item_Sound" file_name="inventory_explorer/InvExplorer_Item_Sound.png" preload="false" />
+  <texture name="InvExplorer_Item_Texture" file_name="inventory_explorer/InvExplorer_Item_Texture.png" preload="false" />
+  <texture name="InvExplorer_View_Grid" file_name="inventory_explorer/InvExplorer_View_Grid.png" preload="false" />
+  <texture name="InvExplorer_View_List" file_name="inventory_explorer/InvExplorer_View_List.png" preload="false" />
+  <texture name="InvExplorer_View_Tree" file_name="inventory_explorer/InvExplorer_View_Tree.png" preload="false" />
+  <!-- END Inventory Explorer generated textures -->
 </textures>

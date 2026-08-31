@@ -32,6 +32,7 @@
 //#include "alcinematicmode.h"
 #include "alderenderlist.h"
 #include "alfloaterblocked.h"
+#include "alfloaterinventoryexplorer.h"
 #include "alfloaterparticleeditor.h"
 #include "llagent.h"
 #include "llagentcamera.h"
@@ -598,12 +599,16 @@ void ALViewerMenu::initialize_menus()
     enable.add("Avatar.EnableTeleportTo", [](LLUICtrl* ctrl, const LLSD& param) { return can_teleport_to(); });
     enable.add("Object.EnableEditParticles", [](LLUICtrl* ctrl, const LLSD& param) { return enable_edit_particle_source(); });
     enable.add("SavedSetting", [](LLUICtrl* ctrl, const LLSD& param) { return get_saved_setting(param); });
+    enable.add("Inventory.PreferredVisible", [](LLUICtrl*, const LLSD&)
+        { return ALFloaterInventoryExplorer::isPreferredInventoryVisible(); });
 
     LLUICtrl::CommitCallbackRegistry::Registrar& commit = LLUICtrl::CommitCallbackRegistry::currentRegistrar();
     commit.add("Avatar.CopyData",       [](LLUICtrl* ctrl, const LLSD& param) { avatar_copy_data(param); });
     commit.add("Avatar.ManageEstate", [](LLUICtrl* ctrl, const LLSD& param) { manage_estate(param); });
     commit.add("Avatar.TeleportTo", [](LLUICtrl* ctrl, const LLSD& param) { teleport_to(); });
     commit.add("Avatar.RefreshTexture", [](LLUICtrl* ctrl, const LLSD& param) { avatar_texture_refresh(); });
+    commit.add("Inventory.TogglePreferred", [](LLUICtrl*, const LLSD&)
+        { ALFloaterInventoryExplorer::togglePreferredInventory(); });
 
     commit.add("Advanced.DebugSimFeatures", [](LLUICtrl* ctrl, const LLSD& param) { spawn_debug_simfeatures(); });
 
