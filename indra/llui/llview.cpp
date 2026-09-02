@@ -123,6 +123,10 @@ LLView::Params::Params()
     sound_flags("sound_flags", MOUSE_UP),
     layout("layout"),
     rect("rect"),
+#ifdef LLUI_ENABLE_VIEW_INSPECTION
+    source_file("source_file"),
+    source_line("source_line", 0),
+#endif
     bottom_delta("bottom_delta", S32_MAX),
     top_pad("top_pad"),
     top_delta("top_delta", S32_MAX),
@@ -140,6 +144,10 @@ LLView::LLView(const LLView::Params& p)
 :   mVisible(p.visible),
     mInDraw(false),
     mName(p.name),
+#ifdef LLUI_ENABLE_VIEW_INSPECTION
+    mSourceFile(p.source_file),
+    mSourceLine(p.source_line),
+#endif
     mParentView(NULL),
     mReshapeFlags(FOLLOWS_NONE),
     mFromXUI(p.from_xui),
@@ -2741,7 +2749,31 @@ void LLView::addInfo(LLSD & info)
     info["enabled"] = getEnabled();
     info["enabled_chain"] = isInEnabledChain();
     info["available"] = isAvailable();
+#ifdef LLUI_ENABLE_VIEW_INSPECTION
+    const auto rect_to_llsd = [](const LLRect& rect)
+    {
+        return LLSDMap("left", rect.mLeft)("top", rect.mTop)
+                    ("right", rect.mRight)("bottom", rect.mBottom);
+    };
+    const LLRect local_rect(getLocalRect());
+    const LLRect screen_rect(calcScreenRect());
+    LLRect clipping_rect(screen_rect);
+    for (const LLView* ancestor = getParent(); ancestor; ancestor = ancestor->getParent())
+    {
+        clipping_rect.intersectWith(ancestor->calcScreenRect());
+    }
+    info["rect"] = rect_to_llsd(screen_rect);
+    info["local_rect"] = rect_to_llsd(local_rect);
+    info["screen_rect"] = rect_to_llsd(screen_rect);
+    info["clipping_rect"] = rect_to_llsd(clipping_rect);
+    info["source_file"] = mSourceFile;
+    info["source_line"] = mSourceLine;
+    info["layout"] = mLayout;
+    info["keyboard_focus"] = dynamic_cast<LLView*>(gFocusMgr.getKeyboardFocus()) == this;
+    info["mouse_capture"] = dynamic_cast<LLView*>(gFocusMgr.getMouseCapture()) == this;
+#else
     LLRect rect(calcScreenRect());
     info["rect"] = LLSDMap("left", rect.mLeft)("top", rect.mTop)
                 ("right", rect.mRight)("bottom", rect.mBottom);
+#endif
 }

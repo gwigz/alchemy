@@ -46,6 +46,10 @@ public:
     typedef boost::signals2::signal<void (void)> use_display_name_signal_t;
     typedef std::function<void (const LLUUID id, const LLAvatarName& av_name)> account_name_changed_callback_t;
 
+    // Construct a cache that serves preloaded names without an HTTP service.
+    // This must be called before the singleton is otherwise instantiated.
+    static void initializeOffline();
+
     // Import/export the name cache to file.
     bool importFile(std::istream& istr);
     void exportFile(std::ostream& ostr);

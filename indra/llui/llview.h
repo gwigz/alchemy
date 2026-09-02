@@ -135,6 +135,13 @@ public:
         Optional<std::string>       layout;
         Optional<LLRect>            rect;
 
+#ifdef LLUI_ENABLE_VIEW_INSPECTION
+        // Runtime provenance supplied by LLUICtrlFactory after parsing XUI.
+        // These are not authored XUI attributes.
+        Optional<std::string>       source_file;
+        Optional<S32>               source_line;
+#endif
+
         // Historical bottom-left layout used bottom_delta and left_delta
         // for relative positioning.  New layout "topleft" prefers specifying
         // based on top edge.
@@ -594,6 +601,10 @@ private:
 
     std::string mLayout;
     std::string mName;
+#ifdef LLUI_ENABLE_VIEW_INSPECTION
+    std::string mSourceFile;
+    S32         mSourceLine;
+#endif
 
     U32         mReshapeFlags;
 

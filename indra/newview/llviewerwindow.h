@@ -155,6 +155,8 @@ static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 7680; // max snapshot image size 7680
 class LLViewerWindow : public LLWindowCallbacks
 {
 public:
+    static bool sCreateHidden;
+
     //
     // CREATORS
     //
@@ -170,7 +172,8 @@ public:
                                     min_height;
         Optional<bool>              fullscreen,
                                     ignore_pixel_depth,
-                                    first_run;
+                                    first_run,
+                                    hidden;
 
         Params();
     };

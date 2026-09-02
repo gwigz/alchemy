@@ -1016,6 +1016,8 @@ void LLViewerWindow::updateDebugText()
 // LLViewerWindow
 //
 
+bool LLViewerWindow::sCreateHidden = false;
+
 LLViewerWindow::Params::Params()
 :   title("title"),
     name("name"),
@@ -1026,7 +1028,8 @@ LLViewerWindow::Params::Params()
     min_width("min_width"),
     min_height("min_height"),
     fullscreen("fullscreen", false),
-    ignore_pixel_depth("ignore_pixel_depth", false)
+    ignore_pixel_depth("ignore_pixel_depth", false),
+    hidden("hidden", false)
 {}
 
 
@@ -2269,7 +2272,8 @@ LLViewerWindow::LLViewerWindow(const Params& p)
     F32 max_gl_version = gSavedSettings.getF32("RenderMaxOpenGLVersion");
 
     mWindow = LLWindowManager::createWindow(this,
-        p.title, p.name, p.x, p.y, p.width, p.height, 0,
+        p.title, p.name, p.x, p.y, p.width, p.height,
+        p.hidden ? LLWindow::WINDOW_FLAG_HIDDEN : 0,
         p.fullscreen,
         gHeadlessClient,
         gSavedSettings.getBOOL("RenderVSyncEnable"),

@@ -36,7 +36,6 @@
 #include "llui.h"
 #include "llview.h"
 #include "llviewinject.h"
-#include "llviewerwindow.h"
 #include "llviewerinput.h"
 #include "llrootview.h"
 #include "llsdutil.h"
@@ -47,7 +46,7 @@
 #include <typeinfo>
 #include <map>
 
-LLWindowListener::LLWindowListener(LLViewerWindow *window, const KeyboardGetter& kbgetter)
+LLWindowListener::LLWindowListener(LLWindowCallbacks* window, const KeyboardGetter& kbgetter)
     : LLEventAPI("LLWindow", "Inject input events into the LLWindow instance"),
       mWindow(window),
       mKbGetter(kbgetter)
@@ -106,6 +105,9 @@ LLWindowListener::LLWindowListener(LLViewerWindow *window, const KeyboardGetter&
     add("mouseDown",
         given + buttonParams + "click event.\n" + buttonExplain + paramsExplain + mask,
         &LLWindowListener::mouseDown);
+    add("mouseDoubleClick",
+        given + mouseParams + "double-click event.\n" + paramsExplain + mask,
+        &LLWindowListener::mouseDoubleClick);
     add("mouseUp",
         given + buttonParams + "release event.\n" + buttonExplain + paramsExplain + mask,
         &LLWindowListener::mouseUp);
@@ -289,7 +291,7 @@ void LLWindowListener::getPaths(LLSD const & request)
 
 static LLSD buildSubtree(LLView* view)
 {
-    LLSD children;
+    LLSD children = LLSD::emptyArray();
     LLSD node = view->getInfo();
     for (LLView::child_list_const_iter_t it = view->beginChild(); it != view->endChild(); ++it)
     {
@@ -586,6 +588,13 @@ void LLWindowListener::mouseDown(LLSD const & request)
                              static_cast<LLWindow*>(NULL), boost::placeholders::_1, boost::placeholders::_2),
                    request);
     }
+}
+
+void LLWindowListener::mouseDoubleClick(LLSD const & request)
+{
+    mouseEvent(boost::bind(&LLWindowCallbacks::handleDoubleClick, mWindow,
+                          static_cast<LLWindow*>(NULL), boost::placeholders::_1, boost::placeholders::_2),
+               request);
 }
 
 void LLWindowListener::mouseUp(LLSD const & request)

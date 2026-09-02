@@ -3455,7 +3455,8 @@ bool LLAppViewer::initWindow()
         .fullscreen(gSavedSettings.getBOOL("FullScreen"))
 #endif
         .ignore_pixel_depth(ignorePixelDepth)
-        .first_run(mIsFirstRun);
+        .first_run(mIsFirstRun)
+        .hidden(LLViewerWindow::sCreateHidden);
 
     gViewerWindow = new LLViewerWindow(window_params);
 

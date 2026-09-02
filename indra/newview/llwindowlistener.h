@@ -31,13 +31,13 @@
 #include <functional>
 
 class LLKeyboard;
-class LLViewerWindow;
+class LLWindowCallbacks;
 
 class LLWindowListener : public LLEventAPI
 {
 public:
     typedef std::function<LLKeyboard*()> KeyboardGetter;
-    LLWindowListener(LLViewerWindow * window, const KeyboardGetter& kbgetter);
+    LLWindowListener(LLWindowCallbacks* window, const KeyboardGetter& kbgetter);
 
     void getInfo(LLSD const & evt);
     void getPaths(LLSD const & evt);
@@ -45,6 +45,7 @@ public:
     void keyDown(LLSD const & evt);
     void keyUp(LLSD const & evt);
     void mouseDown(LLSD const & evt);
+    void mouseDoubleClick(LLSD const & evt);
     void mouseUp(LLSD const & evt);
     void mouseMove(LLSD const & evt);
     void mouseScroll(LLSD const & evt);
@@ -55,7 +56,7 @@ public:
     void selectAll(LLSD const & evt);
 
 private:
-    LLViewerWindow * mWindow;
+    LLWindowCallbacks* mWindow;
     KeyboardGetter mKbGetter;
 };
 

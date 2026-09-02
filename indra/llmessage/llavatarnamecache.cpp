@@ -64,6 +64,7 @@ LLCore::HttpRequest::ptr_t      sHttpRequest;
 LLCore::HttpHeaders::ptr_t      sHttpHeaders;
 LLCore::HttpOptions::ptr_t      sHttpOptions;
 LLCore::HttpRequest::policy_t   sHttpPolicy;
+bool                            sOffline = false;
 
 /* Sample response:
 <?xml version="1.0"?>
@@ -116,9 +117,12 @@ LLAvatarNameCache::LLAvatarNameCache()
 
     mUsePeopleAPI = true;
 
-    sHttpRequest = std::make_shared<LLCore::HttpRequest>();
-    sHttpHeaders = std::make_shared<LLCore::HttpHeaders>();
-    sHttpOptions = std::make_shared<LLCore::HttpOptions>();
+    if (!sOffline)
+    {
+        sHttpRequest = std::make_shared<LLCore::HttpRequest>();
+        sHttpHeaders = std::make_shared<LLCore::HttpHeaders>();
+        sHttpOptions = std::make_shared<LLCore::HttpOptions>();
+    }
     sHttpPolicy = LLCore::HttpRequest::DEFAULT_POLICY_ID;
 }
 
@@ -128,6 +132,17 @@ LLAvatarNameCache::~LLAvatarNameCache()
     sHttpHeaders.reset();
     sHttpOptions.reset();
     mCache.clear();
+}
+
+//static
+void LLAvatarNameCache::initializeOffline()
+{
+    if (instanceExists())
+    {
+        LL_ERRS("AvNameCache") << "Offline avatar-name mode must be selected before cache construction" << LL_ENDL;
+    }
+    sOffline = true;
+    getInstance()->mRunning = true;
 }
 
 void LLAvatarNameCache::requestAvatarNameCache_(std::string url, std::vector<LLUUID> agentIds)
@@ -943,4 +958,3 @@ bool max_age_from_cache_control(const std::string& cache_control, S32 *max_age)
     }
     return false;
 }
-

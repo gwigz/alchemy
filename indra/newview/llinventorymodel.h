@@ -53,6 +53,7 @@ class LLInventoryItem;
 class LLInventoryCategory;
 class LLMessageSystem;
 class LLInventoryCollectFunctor;
+class LLInventoryModelTestAccess;
 
 ///----------------------------------------------------------------------------
 /// LLInventoryValidationInfo
@@ -94,6 +95,7 @@ std::ostream& operator<<(std::ostream& s, const LLInventoryValidationInfo& v);
 class LLInventoryModel
 {
     LOG_CLASS(LLInventoryModel);
+    friend class LLInventoryModelTestAccess;
 
 public:
     enum EHasChildren
@@ -753,4 +755,3 @@ public:
 extern LLInventoryModel gInventory;
 
 #endif // LL_LLINVENTORYMODEL_H
-

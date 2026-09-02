@@ -242,6 +242,11 @@ private:
         LLXUIParser parser;
         parser.readXUI(node, params, LLUICtrlFactory::getInstance()->getCurFileName());
 
+#ifdef LLUI_ENABLE_VIEW_INSPECTION
+        params.source_file = LLUICtrlFactory::getInstance()->getCurFileName();
+        params.source_line = node->getLineNumber();
+#endif
+
         // Apply layout transformations, usually munging rect
         params.from_xui = true;
         T::applyXUILayout(params, parent);
