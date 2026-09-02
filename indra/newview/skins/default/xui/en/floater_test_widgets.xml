@@ -194,6 +194,7 @@
   <!-- "stat_view" is a container for statistics graphs.  It is only used
        for debugging/diagnostic displays. -->
   <stat_view
+   follows="top|left"
    height="250"
    label="Statistics View"
    layout="topleft"
