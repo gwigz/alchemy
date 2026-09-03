@@ -1530,6 +1530,17 @@ bool LLFolderView::handleRightMouseDown( S32 x, S32 y, MASK mask )
         updateMenuOptions(menu);
 
         menu->updateParent(LLMenuGL::sMenuContainer);
+
+        // LLContextMenu::setVisible(true) is a no-op, show() reveals a
+        // context_menu widget; showPopup() then places it.
+        if (LLContextMenu* context_menu = dynamic_cast<LLContextMenu*>(menu))
+        {
+            S32 screen_x = x;
+            S32 screen_y = y;
+            localPointToScreen(x, y, &screen_x, &screen_y);
+            context_menu->show(screen_x, screen_y, this);
+        }
+
         LLMenuGL::showPopup(this, menu, x, y);
         if (mEnableRegistrar)
         {
