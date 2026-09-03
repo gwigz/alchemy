@@ -70,15 +70,17 @@
     </menu>
   </menu_bar>
 
-  <!-- "text" is one or more read-only lines of text.
-       It can be made clickable but this requires C++ code
-       support.  URLs are not automatically underlined. -->
+  <!-- "text" is one or more read-only lines of text. mouse_opaque and
+       width keep a click on the wiki URL. -->
   <text
    bottom="55"
    layout="topleft"
    follows="top|left"
    left="10"
-   height="16">
+   height="16"
+   width="480"
+   mouse_opaque="true"
+   name="test_url_text">
     For widget list see http://wiki.secondlife.com/wiki/XUI_Reference
   </text>
 
