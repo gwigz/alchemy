@@ -26,6 +26,7 @@
 #include <vector>
 
 class LLFlatListView;
+class LLUICtrl;
 
 class ALPanelInventoryHoldingTray final : public LLPanel, public LLInventoryObserver
 {
@@ -41,6 +42,8 @@ public:
 
     bool hasItems() const { return !mItemIDs.empty(); }
     void setDragStartCallback(std::function<bool(const LLUUID&)> callback);
+    void setContextMenuCallback(
+        std::function<void(LLUICtrl*, S32, S32, const LLUUID&)> callback);
 
 private:
     void addItem(const LLUUID& item_id);
@@ -56,6 +59,7 @@ private:
     LLUUID mDraggedItemID;
     bool mDroppedOnSelf{ false };
     std::function<bool(const LLUUID&)> mDragStartCallback;
+    std::function<void(LLUICtrl*, S32, S32, const LLUUID&)> mContextMenuCallback;
     boost::signals2::connection mEndDragConnection;
 };
 

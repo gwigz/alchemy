@@ -37,10 +37,12 @@ class ALPanelInventoryHoldingItem final : public LLPanel
 public:
     ALPanelInventoryHoldingItem(const LLUUID& item_id,
                                 std::function<void()> remove_callback,
-                                std::function<void()> drag_callback)
+                                std::function<void()> drag_callback,
+                                std::function<void(LLUICtrl*, S32, S32)> context_menu_callback)
     :   LLPanel(),
         mItemID(item_id),
-        mDragCallback(std::move(drag_callback))
+        mDragCallback(std::move(drag_callback)),
+        mContextMenuCallback(std::move(context_menu_callback))
     {
         buildFromFile("panel_al_inventory_explorer_holding_item.xml");
         getChild<LLButton>("remove_button")->setCommitCallback(
@@ -94,6 +96,16 @@ public:
         return LLPanel::handleMouseUp(x, y, mask);
     }
 
+    bool handleRightMouseDown(S32 x, S32 y, MASK mask) override
+    {
+        if (mContextMenuCallback)
+        {
+            mContextMenuCallback(this, x, y);
+            return true;
+        }
+        return LLPanel::handleRightMouseDown(x, y, mask);
+    }
+
     bool handleHover(S32 x, S32 y, MASK mask) override
     {
         if (hasMouseCapture())
@@ -113,6 +125,7 @@ public:
 private:
     LLUUID mItemID;
     std::function<void()> mDragCallback;
+    std::function<void(LLUICtrl*, S32, S32)> mContextMenuCallback;
 };
 
 LLUUID getCargoID(EDragAndDropType cargo_type, void* cargo_data)
@@ -224,6 +237,12 @@ void ALPanelInventoryHoldingTray::setDragStartCallback(
     mDragStartCallback = std::move(callback);
 }
 
+void ALPanelInventoryHoldingTray::setContextMenuCallback(
+    std::function<void(LLUICtrl*, S32, S32, const LLUUID&)> callback)
+{
+    mContextMenuCallback = std::move(callback);
+}
+
 void ALPanelInventoryHoldingTray::addItem(const LLUUID& item_id)
 {
     if (std::find(mItemIDs.begin(), mItemIDs.end(), item_id) != mItemIDs.end())
@@ -263,7 +282,14 @@ void ALPanelInventoryHoldingTray::rebuildItems()
     {
         auto* row = new ALPanelInventoryHoldingItem(item_id,
             boost::bind(&ALPanelInventoryHoldingTray::removeItem, this, item_id),
-            boost::bind(&ALPanelInventoryHoldingTray::startDrag, this, item_id));
+            boost::bind(&ALPanelInventoryHoldingTray::startDrag, this, item_id),
+            [this, item_id](LLUICtrl* ctrl, S32 x, S32 y)
+            {
+                if (mContextMenuCallback)
+                {
+                    mContextMenuCallback(ctrl, x, y, item_id);
+                }
+            });
         mItemsList->addItem(row, item_id, ADD_BOTTOM);
     }
 }

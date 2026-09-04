@@ -50,6 +50,9 @@ struct LLFolderViewItemStyle
 {
     LLUIColor   fontColor;
     LLUIColor   fontHighlightColor;
+    LLUIColor   selectionColor;
+    LLUIColor   selectionOutlineColor;
+    LLUIColor   mouseOverColor;
     S32         itemHeight{ 0 };
     S32         localIndentation{ 0 };
     S32         iconPad{ 0 };
@@ -59,6 +62,8 @@ struct LLFolderViewItemStyle
     S32         arrowSize{ 0 };
     S32         arrowPadTop{ 0 };
     S32         maxFolderItemOverlap{ 0 };
+    bool        rightAlignLabelSuffix{ false };
+    bool        showFolderNavigateArrow{ false };
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,6 +95,9 @@ public:
 
         Optional<LLUIColor>                         font_color;
         Optional<LLUIColor>                         font_highlight_color;
+        Optional<LLUIColor>                         selection_color;
+        Optional<LLUIColor>                         selection_outline_color;
+        Optional<LLUIColor>                         mouse_over_color;
 
         Optional<S32>                               left_pad,
                                                     icon_pad,
@@ -101,7 +109,9 @@ public:
                                                     arrow_pad_top,
                                                     max_folder_item_overlap;
         Optional<bool>                              single_folder_mode,
-                                                    double_click_override;
+                                                    double_click_override,
+                                                    right_align_label_suffix,
+                                                    show_folder_navigate_arrow;
         Params();
     };
 
@@ -330,6 +340,7 @@ public:
     //  virtual void handleDropped();
     virtual void draw();
     void drawOpenFolderArrow();
+    void drawFolderNavigateArrow();
     void drawFavoriteIcon();
     void drawHighlight(bool showContent, bool hasKeyboardFocus, const LLUIColor& selectColor, const LLUIColor& flashColor, const LLUIColor& outlineColor, const LLUIColor& mouseOverColor);
     void drawLabel(const LLFontGL* font, const F32 x, const F32 y, const LLColor4& color, F32 &right_x);
@@ -351,6 +362,9 @@ private:
     // Returns a shared, immutable style for the given params, deduplicated across
     // all items (there are only a handful of distinct param sets). Main-thread only.
     static const LLFolderViewItemStyle* internStyle(const Params& p);
+    S32 getVisibleRowRight() const;
+    S32 getTrailingContentWidth() const;
+    bool shouldDrawFavoriteIcon() const;
 
     // Cached text geometry. Lazily (re)built during draw() and released when the
     // item goes off-screen (see setVisible), so only on-screen items hold vertex

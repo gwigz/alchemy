@@ -65,6 +65,7 @@
 #include "llpreviewanim.h"
 #include "llpreviewgesture.h"
 #include "llpreviewtexture.h"
+#include "llresmgr.h"
 #include "llselectmgr.h"
 #include "llsidepanelappearance.h"
 #include "lltooldraganddrop.h"
@@ -2546,6 +2547,27 @@ std::string LLFolderBridge::getLabelSuffix() const
     }
 
     return LLInvFVBridge::getLabelSuffix() + suffix;
+}
+
+std::string LLFolderBridge::getLabelRightText() const
+{
+    static LLCachedControl<bool> xui_debug(gSavedSettings, "DebugShowXUINames", 0);
+    if (!mShowDescendantsCount || mIsLoading || xui_debug)
+    {
+        return getLabelSuffix();
+    }
+
+    LLInventoryModel::cat_array_t cat_array;
+    LLInventoryModel::item_array_t item_array;
+    gInventory.collectDescendents(getUUID(), cat_array, item_array, true);
+    if (item_array.empty())
+    {
+        return LLStringUtil::null;
+    }
+
+    std::string count;
+    LLResMgr::instance().getIntegerString(count, static_cast<S32>(item_array.size()));
+    return count;
 }
 
 LLFontGL::StyleFlags LLFolderBridge::getLabelStyle() const

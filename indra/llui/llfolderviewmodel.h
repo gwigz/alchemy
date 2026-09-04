@@ -155,6 +155,7 @@ public:
 
     virtual LLFontGL::StyleFlags getLabelStyle() const = 0;
     virtual std::string getLabelSuffix() const = 0;
+    virtual std::string getLabelRightText() const { return getLabelSuffix(); }
 
     virtual void openItem( void ) = 0;
     virtual void closeItem( void ) = 0;

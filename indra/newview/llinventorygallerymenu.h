@@ -28,6 +28,11 @@
 
 #include "lllistcontextmenu.h"
 
+#include <map>
+#include <string>
+#include <utility>
+#include <vector>
+
 class LLInventoryGalleryContextMenu : public LLListContextMenu
 {
 public:
@@ -42,6 +47,9 @@ public:
     void setRootFolder(bool is_root) { mRootFolder = is_root; }
     void doToSelected(const LLSD& userdata);
     void rename(const LLUUID& item_id);
+    std::map<std::string, std::pair<bool, bool>> getActionStates(
+        const LLUUID& item_id, const std::vector<std::string>& action_names);
+    bool performAction(const LLUUID& item_id, const std::string& action_name);
 
 protected:
     //virtual void buildContextMenu(class LLMenuGL& menu, U32 flags);

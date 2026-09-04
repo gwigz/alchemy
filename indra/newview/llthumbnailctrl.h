@@ -69,6 +69,8 @@ public:
     virtual void setValue(const LLSD& value ) override;
     void setInitImmediately(bool val) { mInitImmediately = val; }
     void clearTexture();
+    [[nodiscard]] bool hasImage() const { return mTexturep.notNull() || mImagep.notNull(); }
+    [[nodiscard]] bool hasFallbackImage() const { return mFallbackImagep.notNull(); }
 
     virtual bool handleHover(S32 x, S32 y, MASK mask) override;
 

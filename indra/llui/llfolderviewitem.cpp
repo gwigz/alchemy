@@ -154,6 +154,9 @@ LLFolderViewItem::Params::Params()
     allow_drop("allow_drop", true),
     font_color("font_color"),
     font_highlight_color("font_highlight_color"),
+    selection_color("selection_color", LLUIColorTable::instance().getColor("MenuItemHighlightBgColor")),
+    selection_outline_color("selection_outline_color", LLUIColorTable::instance().getColor("InventoryFocusOutlineColor")),
+    mouse_over_color("mouse_over_color", LLUIColorTable::instance().getColor("InventoryMouseOverColor")),
     left_pad("left_pad", 0),
     icon_pad("icon_pad", 0),
     icon_width("icon_width", 0),
@@ -162,6 +165,8 @@ LLFolderViewItem::Params::Params()
     text_pad_top("text_pad_top", 1),
     single_folder_mode("single_folder_mode", false),
     double_click_override("double_click_override", false),
+    right_align_label_suffix("right_align_label_suffix", false),
+    show_folder_navigate_arrow("show_folder_navigate_arrow", false),
     arrow_size("arrow_size", 0),
     arrow_pad_top("arrow_pad_top", 1),
     max_folder_item_overlap("max_folder_item_overlap", 0)
@@ -180,6 +185,9 @@ const LLFolderViewItemStyle* LLFolderViewItem::internStyle(const Params& p)
     LLFolderViewItemStyle candidate;
     candidate.fontColor = p.font_color;
     candidate.fontHighlightColor = p.font_highlight_color;
+    candidate.selectionColor = p.selection_color;
+    candidate.selectionOutlineColor = p.selection_outline_color;
+    candidate.mouseOverColor = p.mouse_over_color;
     candidate.itemHeight = p.item_height;
     candidate.localIndentation = p.folder_indentation;
     candidate.iconPad = p.icon_pad;
@@ -189,6 +197,8 @@ const LLFolderViewItemStyle* LLFolderViewItem::internStyle(const Params& p)
     candidate.arrowSize = p.arrow_size;
     candidate.arrowPadTop = p.arrow_pad_top;
     candidate.maxFolderItemOverlap = p.max_folder_item_overlap;
+    candidate.rightAlignLabelSuffix = p.right_align_label_suffix;
+    candidate.showFolderNavigateArrow = p.show_folder_navigate_arrow;
 
     for (const std::unique_ptr<LLFolderViewItemStyle>& style : sStyles)
     {
@@ -201,8 +211,13 @@ const LLFolderViewItemStyle* LLFolderViewItem::internStyle(const Params& p)
             && style->arrowSize == candidate.arrowSize
             && style->arrowPadTop == candidate.arrowPadTop
             && style->maxFolderItemOverlap == candidate.maxFolderItemOverlap
+            && style->rightAlignLabelSuffix == candidate.rightAlignLabelSuffix
+            && style->showFolderNavigateArrow == candidate.showFolderNavigateArrow
             && LLInitParam::ParamCompare<LLUIColor, false>::equals(style->fontColor, candidate.fontColor)
-            && LLInitParam::ParamCompare<LLUIColor, false>::equals(style->fontHighlightColor, candidate.fontHighlightColor))
+            && LLInitParam::ParamCompare<LLUIColor, false>::equals(style->fontHighlightColor, candidate.fontHighlightColor)
+            && LLInitParam::ParamCompare<LLUIColor, false>::equals(style->selectionColor, candidate.selectionColor)
+            && LLInitParam::ParamCompare<LLUIColor, false>::equals(style->selectionOutlineColor, candidate.selectionOutlineColor)
+            && LLInitParam::ParamCompare<LLUIColor, false>::equals(style->mouseOverColor, candidate.mouseOverColor))
         {
             return style.get();
         }
@@ -409,7 +424,8 @@ void LLFolderViewItem::refresh()
         // Can do a number of expensive checks, like checking active motions, wearables or friend list
         mLabelStyle = vmi.getLabelStyle();
         pLabelFont = nullptr; // refresh can be called from a coro, don't use getLabelFontForStyle, coro trips font list tread safety
-        mLabelSuffix = utf8str_to_wstring(vmi.getLabelSuffix());
+        mLabelSuffix = utf8str_to_wstring(
+            mStyle->rightAlignLabelSuffix ? vmi.getLabelRightText() : vmi.getLabelSuffix());
         // Only invalidate cached geometry if the buffer exists; if it doesn't,
         // draw() will lazily create it. Don't allocate here just to reset it.
         if (mSuffixFontBuffer)
@@ -443,7 +459,8 @@ void LLFolderViewItem::refreshSuffix()
         // Can do a number of expensive checks, like checking active motions, wearables or friend list
         mLabelStyle = vmi->getLabelStyle();
         pLabelFont = nullptr;
-        mLabelSuffix = utf8str_to_wstring(vmi->getLabelSuffix());
+        mLabelSuffix = utf8str_to_wstring(
+            mStyle->rightAlignLabelSuffix ? vmi->getLabelRightText() : vmi->getLabelSuffix());
         // LLFontVertexBuffer::render doesn't compare the string, so cached
         // geometry must be invalidated here or it would replay the old suffix.
         // (A style change is covered by render's font-pointer compare.)
@@ -880,6 +897,48 @@ void LLFolderViewItem::drawOpenFolderArrow()
     }
 }
 
+void LLFolderViewItem::drawFolderNavigateArrow()
+{
+    const S32 x = getVisibleRowRight() - mStyle->arrowSize - mLabelPaddingRight;
+    gl_draw_scaled_image(
+        x, getRect().getHeight() - mStyle->arrowSize - mStyle->arrowPadTop - sTopPad,
+        mStyle->arrowSize, mStyle->arrowSize, sFolderArrowImg->getImage(), sFgColor);
+}
+
+S32 LLFolderViewItem::getVisibleRowRight() const
+{
+    if (LLScrollContainer* scroll = mRoot->getScrollContainer())
+    {
+        return scroll->getVisibleContentRect().getWidth() + scroll->getDocPosHorizontal();
+    }
+    return getRect().getWidth();
+}
+
+S32 LLFolderViewItem::getTrailingContentWidth() const
+{
+    S32 width = mLabelPaddingRight;
+    if (mSingleFolderMode && mStyle->showFolderNavigateArrow)
+    {
+        width += mStyle->arrowSize + mLabelPaddingRight;
+    }
+    if (shouldDrawFavoriteIcon())
+    {
+        width += FAVORITE_IMAGE_SIZE + FAVORITE_IMAGE_PAD;
+    }
+    if (mStyle->rightAlignLabelSuffix && !mLabelSuffix.empty())
+    {
+        width += sSuffixFont->getWidth(mLabelSuffix) + mLabelPaddingRight;
+    }
+    return width;
+}
+
+bool LLFolderViewItem::shouldDrawFavoriteIcon() const
+{
+    static LLUICachedControl<bool> draw_star("InventoryFavoritesUseStar", true);
+    static LLUICachedControl<bool> draw_hollow_star("InventoryFavoritesUseHollowStar", true);
+    return (draw_star && mIsFavorite) || (draw_hollow_star && mHasFavorites && !isOpen());
+}
+
 void LLFolderViewItem::drawFavoriteIcon()
 {
     static LLUICachedControl<bool> draw_star("InventoryFavoritesUseStar", true);
@@ -897,17 +956,10 @@ void LLFolderViewItem::drawFavoriteIcon()
 
     if (favorite_image)
     {
-        S32 x_offset = 0;
-        LLScrollContainer* scroll = mRoot->getScrollContainer();
-        if (scroll)
+        S32 x_offset = getVisibleRowRight();
+        if (mSingleFolderMode && mStyle->showFolderNavigateArrow)
         {
-            S32 width = scroll->getVisibleContentRect().getWidth();
-            S32 offset = scroll->getDocPosHorizontal();
-            x_offset = width + offset;
-        }
-        else
-        {
-            x_offset = getRect().getWidth();
+            x_offset -= mStyle->arrowSize + mLabelPaddingRight;
         }
         gl_draw_scaled_image(
             x_offset - FAVORITE_IMAGE_SIZE - FAVORITE_IMAGE_PAD,
@@ -1075,9 +1127,14 @@ void LLFolderViewItem::drawLabel(const LLFontGL * font, const F32 x, const F32 y
     {
         mLabelFontBuffer = std::make_unique<LLFontVertexBuffer>();
     }
+    S32 max_pixels = getRect().getWidth() - ll_round(x) - mLabelPaddingRight;
+    if (mStyle->rightAlignLabelSuffix || (mSingleFolderMode && mStyle->showFolderNavigateArrow))
+    {
+        max_pixels = llmax(0, getVisibleRowRight() - ll_round(x) - getTrailingContentWidth());
+    }
     mLabelFontBuffer->render(font, mLabel, 0, x, y, color,
         LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW,
-        S32_MAX, getRect().getWidth() - (S32) x - mLabelPaddingRight, &right_x, /*use_ellipses*/true);
+        S32_MAX, max_pixels, &right_x, /*use_ellipses*/true);
 }
 
 void LLFolderViewItem::draw()
@@ -1094,9 +1151,13 @@ void LLFolderViewItem::draw()
     {
         drawOpenFolderArrow();
     }
+    else if (mStyle->showFolderNavigateArrow)
+    {
+        drawFolderNavigateArrow();
+    }
     drawFavoriteIcon();
 
-    drawHighlight(show_context, filled, sHighlightBgColor, sFlashBgColor, sFocusOutlineColor, sMouseOverColor);
+    drawHighlight(show_context, filled, mStyle->selectionColor, sFlashBgColor, mStyle->selectionOutlineColor, mStyle->mouseOverColor);
 
     //--------------------------------------------------------------------------------//
     // Draw open icon
@@ -1215,7 +1276,21 @@ void LLFolderViewItem::draw()
         {
             mSuffixFontBuffer = std::make_unique<LLFontVertexBuffer>();
         }
-        mSuffixFontBuffer->render(sSuffixFont, mLabelSuffix, 0, right_x, y, isFadeItem() ? color : sSuffixColor.get(),
+        F32 suffix_x = right_x;
+        if (mStyle->rightAlignLabelSuffix)
+        {
+            S32 trailing_width = mLabelPaddingRight;
+            if (mSingleFolderMode && mStyle->showFolderNavigateArrow)
+            {
+                trailing_width += mStyle->arrowSize + mLabelPaddingRight;
+            }
+            if (shouldDrawFavoriteIcon())
+            {
+                trailing_width += FAVORITE_IMAGE_SIZE + FAVORITE_IMAGE_PAD;
+            }
+            suffix_x = getVisibleRowRight() - trailing_width - sSuffixFont->getWidth(mLabelSuffix);
+        }
+        mSuffixFontBuffer->render(sSuffixFont, mLabelSuffix, 0, suffix_x, y, isFadeItem() ? color : sSuffixColor.get(),
             LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW,
             S32_MAX, S32_MAX, &right_x);
     }
@@ -2745,4 +2820,3 @@ LLFolderViewItem* LLFolderViewFolder::getPreviousFromChild( LLFolderViewItem* it
 
     return result;
 }
-

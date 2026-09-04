@@ -11,7 +11,7 @@
  reuse_instance="true"
  save_rect="true"
  save_visibility="true"
- title="INVENTORY EXPLORER"
+ title="INVENTORY"
  width="920">
   <panel
    bottom="-1"

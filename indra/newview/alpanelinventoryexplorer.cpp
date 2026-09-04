@@ -46,6 +46,7 @@
 #include "lllayoutstack.h"
 #include "llmenugl.h"
 #include "llpanelmaininventory.h"
+#include "llresmgr.h"
 #include "llsdserialize.h"
 #include "lltextbox.h"
 #include "lltooldraganddrop.h"
@@ -64,7 +65,10 @@
 
 namespace
 {
-constexpr S32 COMPACT_BREAKPOINT = 700;
+// The floater's one-pixel border is outside this panel, so a 640-pixel
+// floater presents 639 pixels here.
+constexpr S32 COMPACT_BREAKPOINT = 639;
+constexpr S32 COMPACT_RAIL_WIDTH = 46;
 constexpr S32 COMPACT_ICON_LEFT = 15;
 constexpr S32 WIDE_ICON_LEFT = 14;
 constexpr const char* COLLECTIONS_FILENAME = "inventory_explorer_collections.xml";
@@ -183,7 +187,23 @@ bool hasFavoriteOrTrashAncestor(const LLInventoryObject& object)
 
 std::string formatCount(S32 count)
 {
-    return llformat("%d", count);
+    std::string formatted;
+    LLResMgr::instance().getIntegerString(formatted, count);
+    return formatted;
+}
+
+std::string formatItemCount(S32 count)
+{
+    return formatCount(count) + (count == 1 ? " item" : " items");
+}
+
+S32 directItemCount(const LLUUID& folder_id)
+{
+    LLInventoryModel::cat_array_t* categories = nullptr;
+    LLInventoryModel::item_array_t* items = nullptr;
+    gInventory.getDirectDescendentsOf(folder_id, categories, items);
+    return static_cast<S32>(
+        (categories ? categories->size() : 0) + (items ? items->size() : 0));
 }
 }
 
@@ -251,6 +271,7 @@ bool ALPanelInventoryExplorer::postBuild()
     mGridViewButton = getChild<LLButton>("grid_view_button");
     mCreateButton = getChild<LLButton>("create_button");
     mSearchEditor = getChild<LLFilterEditor>("inventory_explorer_search_editor");
+    mCurrentFolderCount = getChild<LLTextBox>("current_folder_count");
     mStatusText = getChild<LLTextBox>("status_text");
     mInspector = dynamic_cast<ALPanelInventoryInspector*>(getChildView("inventory_inspector"));
     mHoldingTray = dynamic_cast<ALPanelInventoryHoldingTray*>(getChildView("inventory_holding_tray"));
@@ -261,6 +282,24 @@ bool ALPanelInventoryExplorer::postBuild()
     }
     mHoldingTray->setDragStartCallback(boost::bind(
         &ALPanelInventoryExplorer::startHoldingItemDrag, this, _1));
+    mHoldingTray->setContextMenuCallback(boost::bind(
+        &ALPanelInventoryExplorer::showHoldingItemContextMenu, this, _1, _2, _3, _4));
+    mInspector->setActionCallback(boost::bind(
+        &ALPanelInventoryExplorer::performInspectorAction, this, _1));
+
+    LLInventoryGallery::Params gallery_params;
+    gallery_params.row_panel_height = 146;
+    gallery_params.vertical_gap = 8;
+    gallery_params.horizontal_gap = 8;
+    gallery_params.item_width = 128;
+    gallery_params.item_height = 146;
+    gallery_params.item_horizontal_gap = 8;
+    gallery_params.items_in_row = 3;
+    gallery_params.row_panel_width_factor = 128;
+    gallery_params.gallery_width_factor = 128;
+    gallery_params.item_filename = "panel_al_inventory_explorer_gallery_item.xml";
+    gallery_params.context_menu = "menu_al_inventory_explorer.xml";
+    mGalleryPanel->configure(gallery_params);
 
     mTreePanel->getFilter().markDefault();
     mTreePanel->setSelectCallback(boost::bind(
@@ -388,6 +427,8 @@ void ALPanelInventoryExplorer::changed(U32 mask)
     if (mask != LLInventoryObserver::NONE)
     {
         mInspector->refreshObject();
+        updateInspectorActions();
+        updateStatusText();
         scheduleCountRefresh();
     }
 }
@@ -414,7 +455,30 @@ void ALPanelInventoryExplorer::applyLayout(S32 width)
     const bool compact = next_state == ELayoutState::COMPACT;
     const S32 icon_left = compact ? COMPACT_ICON_LEFT : WIDE_ICON_LEFT;
 
-    mLayoutStack->collapsePanel(mRailPanel, compact);
+    if (mWideRailWidth == 0)
+    {
+        mWideRailMinWidth = mRailPanel->getExpandedMinDim();
+        mWideRailWidth = mRailPanel->getTargetDim();
+    }
+    else if (compact && mLayoutState == ELayoutState::WIDE)
+    {
+        mWideRailWidth = mRailPanel->getTargetDim();
+    }
+
+    if (compact)
+    {
+        mRailPanel->setMinDim(COMPACT_RAIL_WIDTH);
+        mRailPanel->setExpandedMinDim(COMPACT_RAIL_WIDTH);
+        mRailPanel->setMaxDim(COMPACT_RAIL_WIDTH);
+        mRailPanel->setTargetDim(COMPACT_RAIL_WIDTH);
+    }
+    else
+    {
+        mRailPanel->setMaxDim(-1);
+        mRailPanel->setMinDim(COMPACT_RAIL_WIDTH);
+        mRailPanel->setExpandedMinDim(mWideRailMinWidth);
+        mRailPanel->setTargetDim(mWideRailWidth);
+    }
     mInspectorPanel->setVisible(!compact);
 
     for (const char* control_name : WIDE_ONLY_CONTROLS)
@@ -694,6 +758,10 @@ void ALPanelInventoryExplorer::rebuildTypeFilterRows()
     if (mLayoutState != ELayoutState::UNINITIALIZED)
     {
         const ELayoutState old_state = mLayoutState;
+        if (old_state == ELayoutState::WIDE)
+        {
+            mWideRailWidth = mRailPanel->getTargetDim();
+        }
         mLayoutState = ELayoutState::UNINITIALIZED;
         applyLayout(old_state == ELayoutState::COMPACT ? COMPACT_BREAKPOINT - 1 : COMPACT_BREAKPOINT);
     }
@@ -906,6 +974,7 @@ void ALPanelInventoryExplorer::updateViewVisibility()
     getChild<LLTextBox>("active_collection_label")->setText(getActiveCollectionLabel());
     getChildView("active_collection_label")->setVisible(!all_items || tree_visible);
     getChildView("active_collection_count")->setVisible(!all_items || tree_visible);
+    mCurrentFolderCount->setVisible(all_items && !tree_visible);
     mBackButton->setVisible(all_items && !tree_visible);
     mForwardButton->setVisible(all_items && !tree_visible);
     mUpButton->setVisible(all_items && !tree_visible);
@@ -1042,6 +1111,67 @@ void ALPanelInventoryExplorer::onGallerySelection(const LLUUID& item_id)
 void ALPanelInventoryExplorer::updateInspectorSelection()
 {
     mInspector->setObjectID(mSelectedItemID);
+    updateInspectorActions();
+}
+
+void ALPanelInventoryExplorer::updateInspectorActions()
+{
+    using ActionState = ALPanelInventoryInspector::ActionState;
+    if (mSelectedItemID.isNull() || !gInventory.getObject(mSelectedItemID))
+    {
+        mInspector->setActions({});
+        return;
+    }
+
+    static const std::vector<std::string> action_names{
+        "Wearable And Object Wear",
+        "Open",
+        "open_in_current_window",
+        "Wearable Edit",
+        "Share",
+        "Properties",
+    };
+    const auto states = mGalleryPanel->getContextMenuActionStates(
+        mSelectedItemID, action_names);
+    const auto state = [&states](const std::string& name)
+    {
+        const auto found = states.find(name);
+        return found == states.end()
+            ? std::pair<bool, bool>{ false, false }
+            : found->second;
+    };
+
+    std::string primary_action = "Open";
+    std::string primary_label = "Open";
+    if (state("Wearable And Object Wear").first)
+    {
+        primary_action = "Wearable And Object Wear";
+        primary_label = "Wear";
+    }
+    else if (state("open_in_current_window").first)
+    {
+        primary_action = "open_in_current_window";
+    }
+
+    const auto primary_state = state(primary_action);
+    const auto edit_state = state("Wearable Edit");
+    const auto share_state = state("Share");
+    const auto properties_state = state("Properties");
+    mInspector->setActions({{
+        ActionState{ primary_label, primary_action, primary_state.first, primary_state.second },
+        ActionState{ "Edit", "Wearable Edit", edit_state.first, edit_state.second },
+        ActionState{ "Share", "Share", share_state.first, share_state.second },
+        ActionState{ "Properties", "Properties", properties_state.first, properties_state.second },
+    }});
+}
+
+void ALPanelInventoryExplorer::performInspectorAction(
+    const std::string& action_name)
+{
+    if (mSelectedItemID.notNull())
+    {
+        mGalleryPanel->performContextMenuAction(mSelectedItemID, action_name);
+    }
 }
 
 void ALPanelInventoryExplorer::restoreSelection()
@@ -1167,12 +1297,22 @@ void ALPanelInventoryExplorer::updateNavigationButtons()
 
 void ALPanelInventoryExplorer::updateStatusText()
 {
-    if (!isAllItemsCollection() || mViewMode == EViewMode::TREE)
+    if (!isAllItemsCollection())
     {
-        const LLInventoryObject* object = gInventory.getObject(mSelectedItemID);
-        mStatusText->setText(object ? object->getName() : getActiveCollectionLabel());
+        mStatusText->setText(getActiveCollectionLabel());
+        mCurrentFolderCount->setText(std::string());
         return;
     }
+
+    if (mViewMode == EViewMode::TREE)
+    {
+        mStatusText->setText(formatItemCount(gInventory.getItemCount()));
+        mCurrentFolderCount->setText(std::string());
+        return;
+    }
+
+    mCurrentFolderCount->setText(formatItemCount(
+        directItemCount(getCurrentSingleFolderRoot())));
 
     std::vector<std::string> path;
     LLUUID folder_id = getCurrentSingleFolderRoot();
@@ -1430,6 +1570,12 @@ bool ALPanelInventoryExplorer::startHoldingItemDrag(const LLUUID& item_id)
         return panel->getRootViewModel().startDrag(drag_items);
     }
     return false;
+}
+
+void ALPanelInventoryExplorer::showHoldingItemContextMenu(
+    LLUICtrl* ctrl, S32 x, S32 y, const LLUUID& item_id)
+{
+    mGalleryPanel->showContextMenu(ctrl, x, y, uuid_vec_t{ item_id });
 }
 
 void ALPanelInventoryExplorer::updateHoldingTrayVisibility()

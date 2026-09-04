@@ -21,30 +21,48 @@
 
 #include <boost/signals2/connection.hpp>
 
+#include <array>
+#include <functional>
+#include <string>
+
 class LLAvatarName;
+class LLButton;
 class LLIconCtrl;
+class LLScrollContainer;
 class LLTextBox;
 class LLThumbnailCtrl;
-class LLView;
 class LLViewerInventoryItem;
 
 class ALPanelInventoryInspector final : public LLPanel
 {
 public:
+    struct ActionState
+    {
+        std::string label;
+        std::string command;
+        bool visible{ false };
+        bool enabled{ false };
+    };
+
     ALPanelInventoryInspector();
     ~ALPanelInventoryInspector() override;
 
     bool postBuild() override;
+    void reshape(S32 width, S32 height, bool called_from_parent = true) override;
     void setObjectID(const LLUUID& object_id);
     void refreshObject();
+    void setActions(const std::array<ActionState, 4>& actions);
+    void setActionCallback(std::function<void(const std::string&)> callback);
 
 private:
+    void resizeDetailsPanel();
     void showEmpty();
     void showItem(const LLViewerInventoryItem& item);
     void onCreatorName(const LLUUID& creator_id, const LLAvatarName& avatar_name);
 
     LLPanel* mEmptyPanel{ nullptr };
-    LLView* mDetailsView{ nullptr };
+    LLScrollContainer* mDetailsScroll{ nullptr };
+    LLPanel* mDetailsPanel{ nullptr };
     LLThumbnailCtrl* mThumbnail{ nullptr };
     LLIconCtrl* mTypeIcon{ nullptr };
     LLTextBox* mNameText{ nullptr };
@@ -52,10 +70,12 @@ private:
     LLTextBox* mCreatorText{ nullptr };
     LLTextBox* mCreatedText{ nullptr };
     LLTextBox* mPermissionsText{ nullptr };
-    LLTextBox* mAttachmentText{ nullptr };
     LLTextBox* mStateText{ nullptr };
+    std::array<LLButton*, 4> mActionButtons{};
+    std::array<std::string, 4> mActionCommands;
 
     LLUUID mObjectID;
+    std::function<void(const std::string&)> mActionCallback;
     boost::signals2::connection mCreatorNameConnection;
 };
 

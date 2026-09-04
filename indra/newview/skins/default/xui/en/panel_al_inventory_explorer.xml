@@ -14,14 +14,15 @@
   <layout_stack
    animate="false"
    bottom="-1"
-   drag_handle_gap="6"
+   drag_handle_gap="1"
    follows="all"
    layout="topleft"
    left="0"
    name="inventory_explorer_layout_stack"
    orientation="horizontal"
+   resize_bar_overlap="4"
    right="-1"
-   show_drag_handle="true"
+   show_drag_handle="false"
    top="0">
     <layout_panel
      auto_resize="false"
@@ -227,7 +228,7 @@
       <text
        follows="left|top"
        font="SansSerifSmall"
-       height="14"
+       height="18"
        layout="topleft"
        left="10"
        name="my_filters_label"
@@ -256,7 +257,7 @@
        name="type_filter_list"
        opaque="false"
        right="-1"
-       bottom="40"
+       bottom="-40"
        top="151" />
 
       <icon
@@ -267,7 +268,7 @@
        layout="topleft"
        left="14"
        name="add_filter_icon"
-       bottom="13"
+       bottom="-13"
        width="16" />
       <text
        follows="left|bottom"
@@ -277,7 +278,7 @@
        left="38"
        name="add_filter_label"
        text_color="LabelTextColor"
-       bottom="12"
+       bottom="-12"
        width="112">Add filter</text>
       <menu_button
        follows="left|bottom|right"
@@ -290,7 +291,7 @@
        menu_position="topleft"
        name="add_filter_button"
        right="-6"
-       bottom="6"
+       bottom="-6"
        tool_tip="Add an inventory type filter" />
     </layout_panel>
 
@@ -321,8 +322,8 @@
          bg_alpha_color="PanelDefaultBackgroundColor"
          bg_opaque_color="PanelDefaultBackgroundColor"
          border="false"
-         height="70"
-         min_dim="70"
+         height="64"
+         min_dim="64"
          name="toolbar_layout_panel"
          user_resize="false">
           <text
@@ -334,7 +335,7 @@
            left="10"
            name="active_collection_label"
            text_color="White"
-           top="9"
+           top="8"
            width="104">All Items</text>
           <text
            follows="left|top"
@@ -344,15 +345,27 @@
            left="116"
            name="active_collection_count"
            text_color="LabelTextColor"
-           top="9"
+           top="8"
            width="52">--</text>
+          <text
+           follows="left|top"
+           font="SansSerifSmall"
+           height="18"
+           layout="topleft"
+           left="91"
+           name="current_folder_count"
+           text_color="LabelTextColor"
+           top="8"
+           visible="false"
+           width="92">--</text>
           <button
            follows="left|top"
            height="24"
            image_overlay="InvExplorer_Action_Back"
            image_overlay_color="LabelTextColor"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
+           image_hover_unselected="Toolbar_Left_Over"
+           image_selected="Toolbar_Left_Selected"
+           image_unselected="Toolbar_Left_Off"
            layout="topleft"
            left="8"
            name="back_button"
@@ -365,6 +378,7 @@
            height="24"
            image_overlay="InvExplorer_Action_Forward"
            image_overlay_color="LabelTextColor"
+           image_hover_unselected="Toolbar_Middle_Over"
            image_selected="Toolbar_Middle_Selected"
            image_unselected="Toolbar_Middle_Off"
            layout="topleft"
@@ -379,8 +393,9 @@
            height="24"
            image_overlay="InvExplorer_Action_Up"
            image_overlay_color="LabelTextColor"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
+           image_hover_unselected="Toolbar_Right_Over"
+           image_selected="Toolbar_Right_Selected"
+           image_unselected="Toolbar_Right_Off"
            layout="topleft"
            left="58"
            name="up_button"
@@ -394,12 +409,13 @@
            image_overlay="InvExplorer_View_Tree"
            image_overlay_color="LabelTextColor"
            image_overlay_selected_color="EmphasisColor"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
+           image_hover_unselected="Toolbar_Left_Over"
+           image_selected="Toolbar_Left_Selected"
+           image_unselected="Toolbar_Left_Off"
            is_toggle="true"
            layout="topleft"
            name="tree_view_button"
-           right="-136"
+           right="-132"
            tool_tip="Tree view"
            top="5"
            width="24" />
@@ -409,12 +425,13 @@
            image_overlay="InvExplorer_View_List"
            image_overlay_color="LabelTextColor"
            image_overlay_selected_color="EmphasisColor"
+           image_hover_unselected="Toolbar_Middle_Over"
            image_selected="Toolbar_Middle_Selected"
            image_unselected="Toolbar_Middle_Off"
            is_toggle="true"
            layout="topleft"
            name="list_view_button"
-           right="-111"
+           right="-108"
            tool_tip="List view"
            top="5"
            width="24" />
@@ -424,12 +441,13 @@
            image_overlay="InvExplorer_View_Grid"
            image_overlay_color="LabelTextColor"
            image_overlay_selected_color="EmphasisColor"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
+           image_hover_unselected="Toolbar_Right_Over"
+           image_selected="Toolbar_Right_Selected"
+           image_unselected="Toolbar_Right_Off"
            is_toggle="true"
            layout="topleft"
            name="grid_view_button"
-           right="-86"
+           right="-84"
            tool_tip="Grid view"
            top="5"
            width="24" />
@@ -438,12 +456,14 @@
            height="24"
            image_overlay="InvExplorer_Action_Sort"
            image_overlay_color="LabelTextColor"
-           image_unselected="Toolbar_Middle_Off"
+           image_hover_unselected="Toolbar_Middle_Over"
+           image_selected="Transparent"
+           image_unselected="Transparent"
            layout="topleft"
            name="sort_button"
            menu_filename="menu_al_inventory_explorer_sort.xml"
            position="bottomleft"
-           right="-59"
+           right="-57"
            tool_tip="Sort"
            top="5"
            width="24" />
@@ -452,10 +472,12 @@
            height="24"
            image_overlay="OptionsMenu_Off"
            image_overlay_color="LabelTextColor"
-           image_unselected="Toolbar_Middle_Off"
+           image_hover_unselected="Toolbar_Middle_Over"
+           image_selected="Transparent"
+           image_unselected="Transparent"
            layout="topleft"
            name="actions_button"
-           right="-34"
+           right="-32"
            tool_tip="Actions"
            top="5"
            width="24" />
@@ -464,33 +486,29 @@
            height="24"
            image_overlay="InvExplorer_Action_Add"
            image_overlay_color="LabelTextColor"
-           image_unselected="Toolbar_Middle_Off"
+           image_hover_unselected="Toolbar_Middle_Over"
+           image_selected="Transparent"
+           image_unselected="Transparent"
            layout="topleft"
            name="create_button"
-           right="-9"
+           right="-7"
            tool_tip="Create new item"
            top="5"
            width="24" />
-          <icon
-           color="LabelTextColor"
-           follows="left|top"
-           height="16"
-           image_name="InvExplorer_Action_Search"
-           layout="topleft"
-           left="13"
-           name="search_icon"
-           top="43"
-           width="16" />
           <filter_editor
+           background_image="TextField_Search_Off"
+           background_image_disabled="TextField_Search_Disabled"
+           background_image_focused="TextField_Search_Active"
            follows="left|top|right"
            height="25"
            label="Search inventory..."
            layout="topleft"
-           left="36"
+           left="8"
            max_length_chars="300"
            name="inventory_explorer_search_editor"
-           right="-9"
-           top="38" />
+           right="-8"
+           search_button_visible="true"
+           top="34" />
         </layout_panel>
 
         <layout_panel
@@ -529,7 +547,18 @@
            show_item_link_overlays="true"
            sort_order_setting="InventorySortOrder"
            top="1">
-            <folder double_click_override="true" />
+            <item
+             folder_indentation="7"
+             item_height="20"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
+            <folder
+             double_click_override="true"
+             folder_indentation="7"
+             item_height="20"
+             right_align_label_suffix="true"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
           </inventory_panel>
           <single_folder_inventory_panel
            background_visible="true"
@@ -550,9 +579,17 @@
            visible="false">
             <item
              folder_indentation="-8"
+             item_height="20"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent"
              single_folder_mode="true" />
             <folder
              folder_indentation="-8"
+             item_height="20"
+             right_align_label_suffix="true"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent"
+             show_folder_navigate_arrow="true"
              single_folder_mode="true" />
           </single_folder_inventory_panel>
           <panel
@@ -563,7 +600,6 @@
            layout="topleft"
            left="0"
            name="all_items_grid"
-           context_menu="menu_al_inventory_explorer.xml"
            right="-1"
            top="1"
            visible="false" />
@@ -585,7 +621,18 @@
            show_item_link_overlays="true"
            top="1"
            visible="false">
-            <folder double_click_override="true" />
+            <item
+             folder_indentation="7"
+             item_height="20"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
+            <folder
+             double_click_override="true"
+             folder_indentation="7"
+             item_height="20"
+             right_align_label_suffix="true"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
           </recent_inventory_panel>
           <inventory_panel
            background_visible="true"
@@ -605,7 +652,18 @@
            show_item_link_overlays="true"
            top="1"
            visible="false">
-            <folder double_click_override="true" />
+            <item
+             folder_indentation="7"
+             item_height="20"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
+            <folder
+             double_click_override="true"
+             folder_indentation="7"
+             item_height="20"
+             right_align_label_suffix="true"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
           </inventory_panel>
           <favorites_inventory_panel
            background_visible="true"
@@ -625,7 +683,18 @@
            show_item_link_overlays="true"
            top="1"
            visible="false">
-            <folder double_click_override="true" />
+            <item
+             folder_indentation="7"
+             item_height="20"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
+            <folder
+             double_click_override="true"
+             folder_indentation="7"
+             item_height="20"
+             right_align_label_suffix="true"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
           </favorites_inventory_panel>
           <inventory_panel
            background_visible="true"
@@ -645,7 +714,18 @@
            show_item_link_overlays="true"
            top="1"
            visible="false">
-            <folder double_click_override="true" />
+            <item
+             folder_indentation="7"
+             item_height="20"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
+            <folder
+             double_click_override="true"
+             folder_indentation="7"
+             item_height="20"
+             right_align_label_suffix="true"
+             selection_color="EmphasisColor_35"
+             selection_outline_color="Transparent" />
           </inventory_panel>
         </layout_panel>
 
@@ -655,8 +735,8 @@
          bg_alpha_color="InventoryBackgroundColor"
          bg_opaque_color="InventoryBackgroundColor"
          border="false"
-         height="82"
-         min_dim="82"
+         height="58"
+         min_dim="58"
          name="holding_tray_layout_panel"
          user_resize="false"
          visible="false">
@@ -678,8 +758,8 @@
          bg_alpha_color="InventoryBackgroundColor"
          bg_opaque_color="InventoryBackgroundColor"
          border="false"
-         height="24"
-         min_dim="24"
+         height="22"
+         min_dim="22"
          name="status_layout_panel"
          user_resize="false">
           <view_border
@@ -700,7 +780,7 @@
            name="status_text"
            right="-10"
            text_color="LabelTextColor"
-           top="5">All Items</text>
+           top="4">All Items</text>
         </layout_panel>
       </layout_stack>
     </layout_panel>

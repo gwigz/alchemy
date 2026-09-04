@@ -16,19 +16,18 @@
    right="-1"
    top="0">
     <icon
-     color="EmphasisColor"
+     color="LabelTextColor"
      follows="top"
-     height="16"
+     height="24"
      image_name="InvExplorer_Inspector"
      layout="topleft"
-     left="112"
+     left="108"
      name="inspector_icon"
-     top="170"
-     width="16" />
+     top="190"
+     width="24" />
     <text
      follows="left|top|right"
      font="SansSerifSmall"
-     font.style="BOLD"
      halign="center"
      height="18"
      layout="topleft"
@@ -36,21 +35,23 @@
      name="inspector_title"
      right="-20"
      text_color="White"
-     top="197">INSPECTOR</text>
+     top="224">Select an item</text>
     <text
      follows="left|top|right"
+     font="SansSerifSmall"
      halign="center"
-     height="42"
+     height="34"
      layout="topleft"
      left="24"
      name="inspector_empty_message"
      right="-24"
      text_color="LabelTextColor"
-     top="222"
+     top="248"
      valign="top"
-     word_wrap="true">Select an inventory item to inspect its details.</text>
+     word_wrap="true">Item details appear here.</text>
   </panel>
   <scroll_container
+   bottom="-1"
    color="InventoryBackgroundColor"
    follows="all"
    layout="topleft"
@@ -59,71 +60,99 @@
    opaque="true"
    right="-1"
    top="0"
-   bottom="-1"
    visible="false">
     <panel
      background_visible="false"
      follows="left|top|right"
-     height="500"
+     height="516"
      layout="topleft"
      left="0"
      name="details_panel"
      top="0"
-     width="220">
-      <text
-       follows="left|top|right"
-       font="SansSerifSmall"
-       font.style="BOLD"
-       height="18"
-       layout="topleft"
-       left="14"
-       name="details_title"
-       right="-14"
-       text_color="White"
-       top="14">DETAILS</text>
-      <thumbnail
-       fallback_image="Thumbnail_Fallback"
-       follows="left|top"
-       height="96"
-       interactable="false"
-       layout="topleft"
-       left="14"
-       name="item_thumbnail"
-       top="42"
-       width="96" />
-      <icon
-       color="LabelTextColor"
-       follows="left|top"
-       height="48"
-       image_name="InvExplorer_Inspector"
+     width="238">
+      <panel
+       background_visible="true"
+       background_opaque="false"
+       bg_alpha_color="Black_10"
+       border="false"
+       follows="top"
+       height="162"
        layout="topleft"
        left="38"
+       name="preview_background"
+       top="16"
+       width="162" />
+      <thumbnail
+       fallback_image="Transparent"
+       follows="top"
+       height="152"
+       interactable="false"
+       layout="topleft"
+       left="43"
+       name="item_thumbnail"
+       show_loading="false"
+       top="21"
+       width="152" />
+      <icon
+       color="LabelTextColor"
+       follows="top"
+       height="64"
+       image_name="InvExplorer_Inspector"
+       layout="topleft"
+       left="87"
        name="item_type_icon"
-       top="66"
-       width="48" />
+       top="65"
+       width="64" />
       <text
        follows="left|top|right"
        font="SansSerifSmall"
        font.style="BOLD"
+       halign="center"
        height="38"
        layout="topleft"
-       left="122"
+       left="14"
        name="item_name"
        right="-14"
        text_color="White"
-       top="44"
+       top="188"
        use_ellipses="true"
        word_wrap="true">Item</text>
       <text
        follows="left|top|right"
-       height="34"
+       font="SansSerifSmall"
+       halign="center"
+       height="16"
        layout="topleft"
-       left="122"
-       name="item_type"
+       left="14"
+       name="item_state"
        right="-14"
-       text_color="LabelTextColor"
-       top="88"
-       word_wrap="true">Inventory item</text>
+       text_color="InventoryFavoriteColor"
+       top="229" />
+      <panel
+       background_visible="true"
+       background_opaque="false"
+       bg_alpha_color="White_05"
+       border="false"
+       follows="top"
+       height="22"
+       layout="topleft"
+       left="59"
+       name="item_type_badge"
+       top="251"
+       width="120">
+        <text
+         follows="all"
+         font="SansSerifSmall"
+         halign="center"
+         height="16"
+         layout="topleft"
+         left="5"
+         name="item_type"
+         right="-5"
+         text_color="LabelTextColor"
+         top="3"
+         use_ellipses="true">Inventory item</text>
+      </panel>
       <view_border
        bevel_style="none"
        follows="left|top|right"
@@ -132,27 +161,103 @@
        left="14"
        name="details_divider"
        right="-14"
-       top="152" />
-      <text follows="left|top" font="SansSerifSmall" height="16" layout="topleft" left="14" name="creator_label" text_color="LabelTextColor" top="168" width="74">Creator</text>
-      <text follows="left|top|right" height="34" layout="topleft" left="92" name="item_creator" right="-14" text_color="White" top="168" use_ellipses="true" word_wrap="true">—</text>
-      <text follows="left|top" font="SansSerifSmall" height="16" layout="topleft" left="14" name="created_label" text_color="LabelTextColor" top="210" width="74">Created</text>
-      <text follows="left|top|right" height="16" layout="topleft" left="92" name="item_created" right="-14" text_color="White" top="210">—</text>
-      <text follows="left|top" font="SansSerifSmall" height="16" layout="topleft" left="14" name="permissions_label" text_color="LabelTextColor" top="240" width="74">Permissions</text>
-      <text follows="left|top|right" height="34" layout="topleft" left="92" name="item_permissions" right="-14" text_color="White" top="240" word_wrap="true">—</text>
-      <text follows="left|top" font="SansSerifSmall" height="16" layout="topleft" left="14" name="attachment_label" text_color="LabelTextColor" top="282" width="74">Attached to</text>
-      <text follows="left|top|right" height="34" layout="topleft" left="92" name="item_attachment" right="-14" text_color="White" top="282" word_wrap="true">—</text>
-      <text follows="left|top" font="SansSerifSmall" height="16" layout="topleft" left="14" name="state_label" text_color="LabelTextColor" top="324" width="74">State</text>
-      <text follows="left|top|right" height="34" layout="topleft" left="92" name="item_state" right="-14" text_color="White" top="324" word_wrap="true">—</text>
-      <text
-       follows="left|top|right"
-       height="52"
+       top="326" />
+      <button
+       follows="left|top"
+       height="24"
+       label="Open"
        layout="topleft"
        left="14"
-       name="properties_hint"
+       name="primary_action"
+       top="286"
+       width="44" />
+      <button
+       follows="left|top"
+       height="24"
+       label="Edit"
+       layout="topleft"
+       left="62"
+       name="edit_action"
+       top="286"
+       width="40" />
+      <button
+       follows="left|top"
+       height="24"
+       label="Share"
+       layout="topleft"
+       left="106"
+       name="share_action"
+       top="286"
+       width="48" />
+      <button
+       follows="left|top"
+       height="24"
+       label="Properties"
+       layout="topleft"
+       left="158"
+       name="properties_action"
+       top="286"
+       width="66" />
+      <text
+       follows="left|top|right"
+       font="SansSerifSmall"
+       height="16"
+       layout="topleft"
+       left="14"
+       name="creator_label"
        right="-14"
        text_color="LabelTextColor"
-       top="382"
-       word_wrap="true">Use Properties in the item menu for complete details and editing.</text>
+       top="341">Creator</text>
+      <text
+       follows="left|top|right"
+       height="34"
+       layout="topleft"
+       left="14"
+       name="item_creator"
+       right="-14"
+       text_color="White"
+       top="358"
+       use_ellipses="true"
+       word_wrap="true">—</text>
+      <text
+       follows="left|top|right"
+       font="SansSerifSmall"
+       height="16"
+       layout="topleft"
+       left="14"
+       name="permissions_label"
+       right="-14"
+       text_color="LabelTextColor"
+       top="398">Permissions</text>
+      <text
+       follows="left|top|right"
+       height="34"
+       layout="topleft"
+       left="14"
+       name="item_permissions"
+       right="-14"
+       text_color="White"
+       top="415"
+       word_wrap="true">—</text>
+      <text
+       follows="left|top|right"
+       font="SansSerifSmall"
+       height="16"
+       layout="topleft"
+       left="14"
+       name="created_label"
+       right="-14"
+       text_color="LabelTextColor"
+       top="455">Created</text>
+      <text
+       follows="left|top|right"
+       height="16"
+       layout="topleft"
+       left="14"
+       name="item_created"
+       right="-14"
+       text_color="White"
+       top="472">—</text>
     </panel>
   </scroll_container>
 </panel>

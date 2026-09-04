@@ -4,7 +4,7 @@
  bg_alpha_color="InventoryBackgroundColor"
  bg_opaque_color="InventoryBackgroundColor"
  follows="all"
- height="82"
+ height="58"
  layout="topleft"
  name="panel_al_inventory_explorer_holding_tray"
  width="500">
@@ -19,32 +19,35 @@
   <text
    follows="left|top"
    font="SansSerifSmall"
-   font.style="BOLD"
+   font.style="NORMAL"
    height="16"
    layout="topleft"
-   left="10"
+   left="8"
    name="holding_label"
    text_color="LabelTextColor"
-   top="6"
-   width="100">HOLDING</text>
+   top="4"
+   width="120">Holding shelf</text>
   <button
    follows="right|top"
-   height="20"
+   height="18"
+   image_hover_unselected="Toolbar_Middle_Over"
+   image_selected="Transparent"
+   image_unselected="Transparent"
    label="Clear"
    layout="topleft"
    name="clear_button"
-   right="-8"
-   top="3"
-   width="52" />
+   right="-6"
+   top="2"
+   width="44" />
   <flat_list_view
    allow_select="false"
-   bottom="-4"
+   bottom="-2"
    follows="all"
    item_pad="1"
    layout="topleft"
-   left="6"
+   left="4"
    name="holding_items"
    no_items_text="Drag inventory here to hold it"
-   right="-6"
-   top="26" />
+   right="-4"
+   top="22" />
 </panel>

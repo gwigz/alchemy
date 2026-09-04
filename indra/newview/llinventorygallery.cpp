@@ -49,6 +49,7 @@
 #include "llmarketplacefunctions.h"
 #include "llnotificationsutil.h"
 #include "lloutfitobserver.h"
+#include "llresmgr.h"
 #include "lltrans.h"
 #include "llviewerassettype.h"
 #include "llviewermessage.h"
@@ -107,6 +108,7 @@ LLInventoryGallery::LLInventoryGallery(const LLInventoryGallery::Params& p)
       mItemsInRow(p.items_in_row),
       mRowPanWidthFactor(p.row_panel_width_factor),
       mGalleryWidthFactor(p.gallery_width_factor),
+      mItemFilename(p.item_filename),
       mContextMenu(p.context_menu),
       mIsInitialized(false),
       mRootDirty(false),
@@ -138,6 +140,7 @@ LLInventoryGallery::Params::Params()
       items_in_row("items_in_row", GALLERY_ITEMS_PER_ROW_MIN),
       row_panel_width_factor("row_panel_width_factor", 166),
       gallery_width_factor("gallery_width_factor", 163),
+      item_filename("item_filename", "panel_inventory_gallery_item.xml"),
       context_menu("context_menu", "menu_gallery_inventory.xml")
 {
     addSynonym(row_panel_height, "row_height");
@@ -156,6 +159,34 @@ bool LLInventoryGallery::postBuild()
     mRootGalleryMenu = new LLInventoryGalleryContextMenu(this, mContextMenu);
     mRootGalleryMenu->setRootFolder(true);
     return true;
+}
+
+void LLInventoryGallery::configure(const Params& params)
+{
+    if (mGalleryCreated)
+    {
+        LL_WARNS("InventoryGallery") << "Cannot configure a populated gallery" << LL_ENDL;
+        return;
+    }
+
+    mRowPanelHeight = params.row_panel_height;
+    mVerticalGap = params.vertical_gap;
+    mHorizontalGap = params.horizontal_gap;
+    mItemWidth = params.item_width;
+    mItemHeight = params.item_height;
+    mItemHorizontalGap = params.item_horizontal_gap;
+    mItemsInRow = params.items_in_row;
+    mRowPanWidthFactor = params.row_panel_width_factor;
+    mGalleryWidthFactor = params.gallery_width_factor;
+    mItemFilename = params.item_filename;
+    mContextMenu = params.context_menu;
+    updateGalleryWidth();
+
+    delete mInventoryGalleryMenu;
+    delete mRootGalleryMenu;
+    mInventoryGalleryMenu = new LLInventoryGalleryContextMenu(this, mContextMenu);
+    mRootGalleryMenu = new LLInventoryGalleryContextMenu(this, mContextMenu);
+    mRootGalleryMenu->setRootFolder(true);
 }
 
 LLInventoryGallery::~LLInventoryGallery()
@@ -644,6 +675,7 @@ LLInventoryGalleryItem* LLInventoryGallery::buildGalleryItem(std::string name, L
     giparams.visible = true;
     giparams.follows.flags(FOLLOWS_LEFT | FOLLOWS_TOP);
     giparams.rect(LLRect(0,mItemHeight, mItemWidth, 0));
+    giparams.filename = mItemFilename;
     LLInventoryGalleryItem* gitem = LLUICtrlFactory::create<LLInventoryGalleryItem>(giparams);
     gitem->setItemName(name);
     gitem->setUUID(item_id);
@@ -1494,9 +1526,33 @@ void LLInventoryGallery::showContextMenu(LLUICtrl* ctrl, S32 x, S32 y, const LLU
         {
             changeItemSelection(item_id, false);
         }
-        uuid_vec_t selected_uuids(mSelectedItemIDs.begin(), mSelectedItemIDs.end());
-        mInventoryGalleryMenu->show(ctrl, selected_uuids, x, y);
+        showContextMenu(ctrl, x, y, uuid_vec_t(mSelectedItemIDs.begin(), mSelectedItemIDs.end()));
     }
+}
+
+void LLInventoryGallery::showContextMenu(
+    LLUICtrl* ctrl, S32 x, S32 y, const uuid_vec_t& item_ids)
+{
+    if (mInventoryGalleryMenu && !item_ids.empty())
+    {
+        mInventoryGalleryMenu->show(ctrl, item_ids, x, y);
+    }
+}
+
+std::map<std::string, std::pair<bool, bool>>
+LLInventoryGallery::getContextMenuActionStates(
+    const LLUUID& item_id, const std::vector<std::string>& action_names)
+{
+    return mInventoryGalleryMenu
+        ? mInventoryGalleryMenu->getActionStates(item_id, action_names)
+        : std::map<std::string, std::pair<bool, bool>>{};
+}
+
+bool LLInventoryGallery::performContextMenuAction(
+    const LLUUID& item_id, const std::string& action_name)
+{
+    return mInventoryGalleryMenu &&
+        mInventoryGalleryMenu->performAction(item_id, action_name);
 }
 
 void LLInventoryGallery::changeItemSelection(const LLUUID& item_id, bool scroll_to_selection)
@@ -2792,7 +2848,9 @@ void LLInventoryGallery::setSortOrder(U32 order, bool update)
 static LLDefaultChildRegistry::Register<LLInventoryGalleryItem> r("inventory_gallery_item");
 
 LLInventoryGalleryItem::LLInventoryGalleryItem(const Params& p)
-    : LLPanel(p),
+    : LLPanel(),
+    mFolderCountBadge(nullptr),
+    mFallbackTypeIcon(nullptr),
     mSelected(false),
     mDefaultImage(true),
     mItemName(""),
@@ -2808,7 +2866,8 @@ LLInventoryGalleryItem::LLInventoryGalleryItem(const Params& p)
     mCutGeneration(0),
     mSelectedForCut(false)
 {
-    buildFromFile("panel_inventory_gallery_item.xml");
+    const std::string filename = p.filename;
+    buildFromFile(filename.empty() ? "panel_inventory_gallery_item.xml" : filename, p);
 }
 
 LLInventoryGalleryItem::~LLInventoryGalleryItem()
@@ -2819,6 +2878,8 @@ bool LLInventoryGalleryItem::postBuild()
 {
     mNameText = getChild<LLTextBox>("item_name");
     mTextBgPanel = getChild<LLPanel>("text_bg_panel");
+    mFolderCountBadge = findChild<LLPanel>("folder_count_badge");
+    mFallbackTypeIcon = findChild<LLIconCtrl>("fallback_type_icon");
     mThumbnailCtrl = getChild<LLThumbnailCtrl>("preview_thumbnail");
 
     return true;
@@ -2858,6 +2919,19 @@ void LLInventoryGalleryItem::setType(LLAssetType::EType type, LLInventoryType::E
                 mSortGroup = SG_SYSTEM_FOLDER;
             }
         }
+
+        if (mFolderCountBadge)
+        {
+            LLInventoryModel::cat_array_t* categories = nullptr;
+            LLInventoryModel::item_array_t* items = nullptr;
+            gInventory.getDirectDescendentsOf(folder_id, categories, items);
+            std::string count;
+            LLResMgr::instance().getIntegerString(
+                count, static_cast<S32>(
+                    (categories ? categories->size() : 0) +
+                    (items ? items->size() : 0)));
+            mFolderCountBadge->getChild<LLTextBox>("folder_count")->setText(count);
+        }
     }
     else
     {
@@ -2888,6 +2962,14 @@ void LLInventoryGalleryItem::setType(LLAssetType::EType type, LLInventoryType::E
 
     getChild<LLIconCtrl>("item_type")->setValue(icon_name);
     getChild<LLIconCtrl>("link_overlay")->setVisible(is_link);
+    if (mFallbackTypeIcon)
+    {
+        mFallbackTypeIcon->setValue(icon_name);
+    }
+    if (mFolderCountBadge)
+    {
+        mFolderCountBadge->setVisible(mIsFolder);
+    }
 }
 
 void LLInventoryGalleryItem::setFavorite(bool is_favorite)
@@ -2901,6 +2983,10 @@ void LLInventoryGalleryItem::setFavorite(bool is_favorite)
 void LLInventoryGalleryItem::setThumbnail(LLUUID id)
 {
     mDefaultImage = id.isNull();
+    if (mFallbackTypeIcon)
+    {
+        mFallbackTypeIcon->setVisible(mDefaultImage);
+    }
     if (mDefaultImage)
     {
         mThumbnailCtrl->clearTexture();

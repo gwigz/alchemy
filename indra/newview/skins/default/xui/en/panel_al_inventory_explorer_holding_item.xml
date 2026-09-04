@@ -4,7 +4,7 @@
  bg_alpha_color="PanelDefaultBackgroundColor"
  bg_opaque_color="PanelDefaultBackgroundColor"
  follows="left|top|right"
- height="28"
+ height="24"
  layout="topleft"
  name="panel_al_inventory_explorer_holding_item"
  width="480">
@@ -13,19 +13,19 @@
    follows="left|top"
    height="16"
    layout="topleft"
-   left="6"
+   left="5"
    name="item_icon"
-   top="6"
+   top="4"
    width="16" />
   <text
    follows="left|top|right"
    height="18"
    layout="topleft"
-   left="28"
+   left="26"
    name="item_name"
    right="-28"
    text_color="LabelTextColor"
-   top="5"
+   top="3"
    use_ellipses="true" />
   <button
    follows="right|top"
@@ -34,8 +34,8 @@
    image_unselected="Icon_Close_Toast"
    layout="topleft"
    name="remove_button"
-   right="-5"
+   right="-4"
    tool_tip="Remove from holding"
-   top="5"
+   top="3"
    width="18" />
 </panel>

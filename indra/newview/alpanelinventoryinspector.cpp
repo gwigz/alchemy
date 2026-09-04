@@ -20,15 +20,17 @@
 #include "llagent.h"
 #include "llavatarname.h"
 #include "llavatarnamecache.h"
+#include "llbutton.h"
 #include "lldate.h"
 #include "lliconctrl.h"
 #include "llinventoryfunctions.h"
 #include "llinventorymodel.h"
 #include "llinventorytype.h"
+#include "llscrollcontainer.h"
 #include "lltextbox.h"
 #include "llthumbnailctrl.h"
+#include "lluicolortable.h"
 #include "llviewerinventory.h"
-#include "llvoavatarself.h"
 #include "llwearabletype.h"
 #include "rlvactions.h"
 
@@ -132,7 +134,7 @@ std::string stateLabel(const LLViewerInventoryItem& item)
     {
         states.emplace_back("Link");
     }
-    return states.empty() ? EMPTY_VALUE : joinLabels(states);
+    return states.empty() ? std::string() : joinLabels(states);
 }
 }
 
@@ -157,7 +159,8 @@ bool ALPanelInventoryInspector::postBuild()
     }
 
     mEmptyPanel = getChild<LLPanel>("empty_panel");
-    mDetailsView = getChildView("details_scroll");
+    mDetailsScroll = getChild<LLScrollContainer>("details_scroll");
+    mDetailsPanel = getChild<LLPanel>("details_panel");
     mThumbnail = getChild<LLThumbnailCtrl>("item_thumbnail");
     mTypeIcon = getChild<LLIconCtrl>("item_type_icon");
     mNameText = getChild<LLTextBox>("item_name");
@@ -165,10 +168,71 @@ bool ALPanelInventoryInspector::postBuild()
     mCreatorText = getChild<LLTextBox>("item_creator");
     mCreatedText = getChild<LLTextBox>("item_created");
     mPermissionsText = getChild<LLTextBox>("item_permissions");
-    mAttachmentText = getChild<LLTextBox>("item_attachment");
     mStateText = getChild<LLTextBox>("item_state");
+    mActionButtons = {
+        getChild<LLButton>("primary_action"),
+        getChild<LLButton>("edit_action"),
+        getChild<LLButton>("share_action"),
+        getChild<LLButton>("properties_action"),
+    };
+    for (std::size_t index = 0; index < mActionButtons.size(); ++index)
+    {
+        mActionButtons[index]->setCommitCallback(
+            [this, index](LLUICtrl*, const LLSD&)
+            {
+                if (mActionCallback && !mActionCommands[index].empty())
+                {
+                    mActionCallback(mActionCommands[index]);
+                }
+            });
+    }
+    resizeDetailsPanel();
     showEmpty();
     return true;
+}
+
+void ALPanelInventoryInspector::setActions(
+    const std::array<ActionState, 4>& actions)
+{
+    static constexpr std::array<S32, 4> widths{ 44, 40, 48, 66 };
+    S32 left = 14;
+    for (std::size_t index = 0; index < actions.size(); ++index)
+    {
+        const ActionState& action = actions[index];
+        mActionCommands[index] = action.command;
+        mActionButtons[index]->setLabel(action.label);
+        mActionButtons[index]->setVisible(action.visible);
+        mActionButtons[index]->setEnabled(action.enabled);
+        if (action.visible)
+        {
+            mActionButtons[index]->setOrigin(left, mActionButtons[index]->getRect().mBottom);
+            mActionButtons[index]->reshape(widths[index], mActionButtons[index]->getRect().getHeight());
+            left += widths[index] + 4;
+        }
+    }
+}
+
+void ALPanelInventoryInspector::setActionCallback(
+    std::function<void(const std::string&)> callback)
+{
+    mActionCallback = std::move(callback);
+}
+
+void ALPanelInventoryInspector::reshape(S32 width, S32 height, bool called_from_parent)
+{
+    LLPanel::reshape(width, height, called_from_parent);
+    resizeDetailsPanel();
+}
+
+void ALPanelInventoryInspector::resizeDetailsPanel()
+{
+    if (!mDetailsScroll || !mDetailsPanel)
+    {
+        return;
+    }
+
+    const S32 width = mDetailsScroll->getVisibleContentRect().getWidth();
+    mDetailsPanel->reshape(width, mDetailsPanel->getRect().getHeight());
 }
 
 void ALPanelInventoryInspector::setObjectID(const LLUUID& object_id)
@@ -189,7 +253,7 @@ void ALPanelInventoryInspector::refreshObject()
     }
 
     mEmptyPanel->setVisible(false);
-    mDetailsView->setVisible(true);
+    mDetailsScroll->setVisible(true);
     mNameText->setText(object->getName());
     mThumbnail->setValue(object->getThumbnailUUID());
     mThumbnail->setVisible(object->getThumbnailUUID().notNull());
@@ -206,15 +270,16 @@ void ALPanelInventoryInspector::refreshObject()
     mCreatorText->setText(std::string(EMPTY_VALUE));
     mCreatedText->setText(std::string(EMPTY_VALUE));
     mPermissionsText->setText(std::string(EMPTY_VALUE));
-    mAttachmentText->setText(std::string(EMPTY_VALUE));
-    mStateText->setText(std::string(object->getIsFavorite() ? "Favorite" : EMPTY_VALUE));
+    mStateText->setText(std::string(object->getIsFavorite() ? "Favorite" : ""));
+    mStateText->setColor(LLUIColorTable::instance().getColor(
+        object->getIsFavorite() ? "InventoryFavoriteColor" : "LabelTextColor"));
 }
 
 void ALPanelInventoryInspector::showEmpty()
 {
     mObjectID.setNull();
     mEmptyPanel->setVisible(true);
-    mDetailsView->setVisible(false);
+    mDetailsScroll->setVisible(false);
 }
 
 void ALPanelInventoryInspector::showItem(const LLViewerInventoryItem& item)
@@ -225,17 +290,8 @@ void ALPanelInventoryInspector::showItem(const LLViewerInventoryItem& item)
         LLDate(static_cast<F64>(item.getCreationDate())).toLocalDateString("%Y-%m-%d %H:%M"));
     mPermissionsText->setText(permissionLabel(item));
     mStateText->setText(stateLabel(item));
-
-    std::string attachment_point;
-    if (isAgentAvatarValid() &&
-        gAgentAvatarp->getAttachedPointName(item.getLinkedUUID(), attachment_point))
-    {
-        mAttachmentText->setText(attachment_point);
-    }
-    else
-    {
-        mAttachmentText->setText(std::string(EMPTY_VALUE));
-    }
+    mStateText->setColor(LLUIColorTable::instance().getColor(
+        item.getIsFavorite() ? "InventoryFavoriteColor" : "LabelTextColor"));
 
     const LLUUID creator_id = item.getCreatorUUID();
     if (creator_id.isNull())

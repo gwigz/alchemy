@@ -131,6 +131,53 @@ LLContextMenu* LLInventoryGalleryContextMenu::createMenu()
     return menu;
 }
 
+std::map<std::string, std::pair<bool, bool>>
+LLInventoryGalleryContextMenu::getActionStates(
+    const LLUUID& item_id, const std::vector<std::string>& action_names)
+{
+    mUUIDs = { item_id };
+    LLContextMenu* menu = createMenu();
+    std::map<std::string, std::pair<bool, bool>> states;
+    if (!menu)
+    {
+        return states;
+    }
+
+    menu->buildDrawLabels();
+    for (const std::string& action_name : action_names)
+    {
+        if (LLMenuItemGL* item = menu->findChild<LLMenuItemGL>(action_name, true))
+        {
+            states[action_name] = { item->getVisible(), item->getEnabled() };
+        }
+    }
+    menu->die();
+    mUUIDs.clear();
+    return states;
+}
+
+bool LLInventoryGalleryContextMenu::performAction(
+    const LLUUID& item_id, const std::string& action_name)
+{
+    mUUIDs = { item_id };
+    LLContextMenu* menu = createMenu();
+    if (!menu)
+    {
+        return false;
+    }
+
+    menu->buildDrawLabels();
+    LLMenuItemGL* item = menu->findChild<LLMenuItemGL>(action_name, true);
+    const bool available = item && item->getVisible() && item->getEnabled();
+    if (available)
+    {
+        item->onCommit();
+    }
+    menu->die();
+    mUUIDs.clear();
+    return available;
+}
+
 void LLInventoryGalleryContextMenu::doToSelected(const LLSD& userdata)
 {
     std::string action = userdata.asString();

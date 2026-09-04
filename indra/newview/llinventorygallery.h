@@ -34,8 +34,14 @@
 #include "llinventoryobserver.h"
 #include "llinventorymodel.h"
 
+#include <map>
+#include <string>
+#include <utility>
+#include <vector>
+
 class LLInventoryCategoriesObserver;
 class LLInventoryGalleryItem;
+class LLIconCtrl;
 class LLScrollContainer;
 class LLTextBox;
 class LLThumbnailsObserver;
@@ -66,6 +72,7 @@ public:
         Optional<S32>   item_height;
         Optional<S32>   item_horizontal_gap;
         Optional<S32>   items_in_row;
+        Optional<std::string> item_filename;
         Optional<std::string> context_menu;
 
         Params();
@@ -77,6 +84,7 @@ public:
     ~LLInventoryGallery();
 
     bool postBuild() override;
+    void configure(const Params& params);
     void initGallery();
     void draw() override;
     void onVisibilityChange(bool new_visibility) override;
@@ -180,6 +188,10 @@ public:
                                void* cargo_data, EAcceptance* accept, std::string& tooltip_msg);
 
     void showContextMenu(LLUICtrl* ctrl, S32 x, S32 y, const LLUUID& item_id);
+    void showContextMenu(LLUICtrl* ctrl, S32 x, S32 y, const uuid_vec_t& item_ids);
+    std::map<std::string, std::pair<bool, bool>> getContextMenuActionStates(
+        const LLUUID& item_id, const std::vector<std::string>& action_names);
+    bool performContextMenuAction(const LLUUID& item_id, const std::string& action_name);
 
 protected:
     void paste(const LLUUID& dest,
@@ -265,6 +277,7 @@ private:
     int mGalleryWidth;
     int mRowPanWidthFactor;
     int mGalleryWidthFactor;
+    std::string mItemFilename;
     std::string mContextMenu;
 
     LLInventoryGalleryContextMenu* mInventoryGalleryMenu;
@@ -362,6 +375,8 @@ private:
     LLUUID mUUID;
     LLTextBox* mNameText;
     LLPanel* mTextBgPanel;
+    LLPanel* mFolderCountBadge;
+    LLIconCtrl* mFallbackTypeIcon;
     LLThumbnailCtrl* mThumbnailCtrl;
     bool     mSelected;
     bool     mWorn;

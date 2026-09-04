@@ -129,6 +129,8 @@ private:
     void onGallerySelection(const LLUUID& item_id);
     void restoreSelection();
     void updateInspectorSelection();
+    void updateInspectorActions();
+    void performInspectorAction(const std::string& action_name);
     bool selectionBelongsToRoot(const LLUUID& item_id, const LLUUID& root_id) const;
 
     void onRootChanged();
@@ -138,6 +140,8 @@ private:
     void updateNavigationButtons();
     void updateStatusText();
     bool startHoldingItemDrag(const LLUUID& item_id);
+    void showHoldingItemContextMenu(
+        LLUICtrl* ctrl, S32 x, S32 y, const LLUUID& item_id);
     void updateHoldingTrayVisibility();
 
     void onSearch(const std::string& search_string);
@@ -176,11 +180,14 @@ private:
     LLButton* mGridViewButton{ nullptr };
     LLButton* mCreateButton{ nullptr };
     LLFilterEditor* mSearchEditor{ nullptr };
+    LLTextBox* mCurrentFolderCount{ nullptr };
     LLTextBox* mStatusText{ nullptr };
     ALPanelInventoryInspector* mInspector{ nullptr };
     ALPanelInventoryHoldingTray* mHoldingTray{ nullptr };
 
     ELayoutState mLayoutState{ ELayoutState::UNINITIALIZED };
+    S32 mWideRailMinWidth{ 0 };
+    S32 mWideRailWidth{ 0 };
     EViewMode mViewMode{ EViewMode::TREE };
     ActiveCollection mActiveCollection{ EBuiltinCollection::ALL_ITEMS };
     std::vector<std::string> mTypeFilterIDs;

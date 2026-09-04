@@ -301,6 +301,7 @@ public:
     virtual LLUIImagePtr getIconOverlay() const;
     static LLUIImagePtr getIcon(LLFolderType::EType preferred_type);
     virtual std::string getLabelSuffix() const;
+    virtual std::string getLabelRightText() const;
     virtual LLFontGL::StyleFlags getLabelStyle() const;
     virtual const LLUUID& getThumbnailUUID() const;
     virtual bool isFavorite() const;
@@ -814,6 +815,7 @@ public:
     virtual LLUIImagePtr getIcon() const;
     virtual LLUIImagePtr getIconOpen() const;
     virtual std::string getLabelSuffix() const;
+    virtual std::string getLabelRightText() const { return getLabelSuffix(); }
     virtual LLFontGL::StyleFlags getLabelStyle() const;
 
 private:
