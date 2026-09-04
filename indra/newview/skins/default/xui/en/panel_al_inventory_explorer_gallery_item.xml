@@ -12,12 +12,14 @@
   <panel
    background_visible="false"
    background_opaque="false"
-   bg_alpha_color="EmphasisColor_35"
+   bg_alpha_image="Rounded_Square"
+   bg_alpha_image_overlay="InventoryExplorerSelectedBackgroundColor"
    border="false"
    bottom="-1"
    follows="all"
    left="0"
    layout="topleft"
+   mouse_opaque="false"
    name="text_bg_panel"
    right="-1"
    top="0">
@@ -38,12 +40,14 @@
   <panel
    background_visible="true"
    background_opaque="false"
-   bg_alpha_color="Black_10"
+   bg_alpha_image="Rounded_Square"
+   bg_alpha_image_overlay="InventoryExplorerControlBackgroundColor"
    border="false"
    follows="left|top"
    height="104"
    layout="topleft"
    left="4"
+   mouse_opaque="false"
    name="preview_background"
    top="3"
    width="120" />
@@ -99,7 +103,8 @@
   <panel
    background_visible="true"
    background_opaque="false"
-   bg_alpha_color="DkGray_66"
+   bg_alpha_image="Rounded_Square"
+   bg_alpha_image_overlay="DkGray_66"
    border="false"
    follows="right|top"
    height="18"

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
+ background_opaque="false"
  background_visible="true"
- bg_alpha_color="PanelDefaultBackgroundColor"
- bg_opaque_color="PanelDefaultBackgroundColor"
+ bg_alpha_image="Rounded_Square"
+ bg_alpha_image_overlay="InventoryExplorerControlBackgroundColor"
  follows="left|top|right"
  height="24"
  layout="topleft"
@@ -30,8 +31,12 @@
   <button
    follows="right|top"
    height="18"
-   image_selected="Icon_Close_Toast"
-   image_unselected="Icon_Close_Toast"
+   image_color="InventoryExplorerControlHoverColor"
+   image_hover_unselected="Rounded_Square"
+   image_overlay="Icon_Close_Foreground"
+   image_overlay_color="LabelTextColor"
+   image_selected="Transparent"
+   image_unselected="Transparent"
    layout="topleft"
    name="remove_button"
    right="-4"

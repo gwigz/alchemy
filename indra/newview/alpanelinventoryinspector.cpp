@@ -194,8 +194,6 @@ bool ALPanelInventoryInspector::postBuild()
 void ALPanelInventoryInspector::setActions(
     const std::array<ActionState, 4>& actions)
 {
-    static constexpr std::array<S32, 4> widths{ 44, 40, 48, 66 };
-    S32 left = 14;
     for (std::size_t index = 0; index < actions.size(); ++index)
     {
         const ActionState& action = actions[index];
@@ -203,13 +201,8 @@ void ALPanelInventoryInspector::setActions(
         mActionButtons[index]->setLabel(action.label);
         mActionButtons[index]->setVisible(action.visible);
         mActionButtons[index]->setEnabled(action.enabled);
-        if (action.visible)
-        {
-            mActionButtons[index]->setOrigin(left, mActionButtons[index]->getRect().mBottom);
-            mActionButtons[index]->reshape(widths[index], mActionButtons[index]->getRect().getHeight());
-            left += widths[index] + 4;
-        }
     }
+    layoutActionButtons();
 }
 
 void ALPanelInventoryInspector::setActionCallback(
@@ -222,6 +215,58 @@ void ALPanelInventoryInspector::reshape(S32 width, S32 height, bool called_from_
 {
     LLPanel::reshape(width, height, called_from_parent);
     resizeDetailsPanel();
+    layoutActionButtons();
+}
+
+void ALPanelInventoryInspector::layoutActionButtons()
+{
+    static constexpr std::array<S32, 4> preferred_widths{ 44, 40, 48, 66 };
+    static constexpr S32 left_margin = 14;
+    static constexpr S32 right_margin = 14;
+    static constexpr S32 button_gap = 4;
+
+    if (!mDetailsPanel)
+    {
+        return;
+    }
+
+    S32 visible_count = 0;
+    S32 preferred_width = 0;
+    for (std::size_t index = 0; index < mActionButtons.size(); ++index)
+    {
+        if (mActionButtons[index] && mActionButtons[index]->getVisible())
+        {
+            ++visible_count;
+            preferred_width += preferred_widths[index];
+        }
+    }
+    if (visible_count == 0)
+    {
+        return;
+    }
+
+    const S32 available_width = mDetailsPanel->getRect().getWidth() -
+                                left_margin - right_margin -
+                                button_gap * (visible_count - 1);
+    const S32 extra_width = llmax(available_width - preferred_width, 0);
+    const S32 extra_per_button = extra_width / visible_count;
+    S32 remaining_extra = extra_width % visible_count;
+    S32 left = left_margin;
+    for (std::size_t index = 0; index < mActionButtons.size(); ++index)
+    {
+        LLButton* button = mActionButtons[index];
+        if (!button || !button->getVisible())
+        {
+            continue;
+        }
+
+        const S32 width = preferred_widths[index] + extra_per_button +
+                          (remaining_extra > 0 ? 1 : 0);
+        remaining_extra = llmax(remaining_extra - 1, 0);
+        button->setOrigin(left, button->getRect().mBottom);
+        button->reshape(width, button->getRect().getHeight());
+        left += width + button_gap;
+    }
 }
 
 void ALPanelInventoryInspector::resizeDetailsPanel()

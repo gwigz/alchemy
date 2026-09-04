@@ -479,7 +479,9 @@ void ALPanelInventoryExplorer::applyLayout(S32 width)
         mRailPanel->setExpandedMinDim(mWideRailMinWidth);
         mRailPanel->setTargetDim(mWideRailWidth);
     }
-    mInspectorPanel->setVisible(!compact);
+    const bool show_inspector = !compact && mSelectedItemID.notNull();
+    mInspectorPanel->setVisible(show_inspector);
+    mLayoutStack->setPanelSpacing(show_inspector ? 1 : 0);
 
     for (const char* control_name : WIDE_ONLY_CONTROLS)
     {
@@ -1110,6 +1112,10 @@ void ALPanelInventoryExplorer::onGallerySelection(const LLUUID& item_id)
 
 void ALPanelInventoryExplorer::updateInspectorSelection()
 {
+    const bool show_inspector =
+        mLayoutState == ELayoutState::WIDE && mSelectedItemID.notNull();
+    mInspectorPanel->setVisible(show_inspector);
+    mLayoutStack->setPanelSpacing(show_inspector ? 1 : 0);
     mInspector->setObjectID(mSelectedItemID);
     updateInspectorActions();
 }

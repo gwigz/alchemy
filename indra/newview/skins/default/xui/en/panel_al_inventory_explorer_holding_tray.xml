@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
+ background_opaque="false"
  background_visible="true"
- bg_alpha_color="InventoryBackgroundColor"
- bg_opaque_color="InventoryBackgroundColor"
+ bg_alpha_color="InventoryExplorerHeaderBackgroundColor"
  follows="all"
  height="58"
  layout="topleft"
@@ -12,9 +12,13 @@
    bevel_style="none"
    follows="left|top|right"
    height="1"
+   highlight_dark_color="InventoryExplorerDividerColor"
+   highlight_light_color="InventoryExplorerDividerColor"
    layout="topleft"
    left="0"
    right="-1"
+   shadow_dark_color="InventoryExplorerDividerColor"
+   shadow_light_color="InventoryExplorerDividerColor"
    top="0" />
   <text
    follows="left|top"
@@ -30,7 +34,8 @@
   <button
    follows="right|top"
    height="18"
-   image_hover_unselected="Toolbar_Middle_Over"
+   image_color="InventoryExplorerControlHoverColor"
+   image_hover_unselected="Rounded_Square"
    image_selected="Transparent"
    image_unselected="Transparent"
    label="Clear"

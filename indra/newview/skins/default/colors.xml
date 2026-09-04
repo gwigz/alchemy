@@ -571,6 +571,30 @@
      name="InventoryBackgroundColor"
      reference="DkGray2" />
     <color
+     name="InventoryExplorerControlBackgroundColor"
+     reference="Black_25" />
+    <color
+     name="InventoryExplorerControlHoverColor"
+     reference="White_10" />
+    <color
+     name="InventoryExplorerDividerColor"
+     reference="Black_50" />
+    <color
+     name="InventoryExplorerFieldBackgroundColor"
+     reference="Black_25" />
+    <color
+     name="InventoryExplorerHeaderBackgroundColor"
+     reference="Black_10" />
+    <color
+     name="InventoryExplorerSelectedBackgroundColor"
+     reference="EmphasisColor_35" />
+    <color
+     name="InventoryExplorerSideBackgroundColor"
+     reference="Black_10" />
+    <color
+     name="InventoryExplorerStatusBackgroundColor"
+     reference="Black_10" />
+    <color
      name="InventoryFavoriteColor"
      reference="Yellow" />
     <color

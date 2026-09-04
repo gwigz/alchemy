@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
- bg_alpha_color="InventoryBackgroundColor"
- bg_opaque_color="InventoryBackgroundColor"
- background_opaque="true"
- background_visible="true"
+ background_visible="false"
  follows="all"
  height="620"
  layout="topleft"
@@ -20,15 +17,15 @@
    left="0"
    name="inventory_explorer_layout_stack"
    orientation="horizontal"
-   resize_bar_overlap="4"
+   resize_bar_overlap="5"
    right="-1"
    show_drag_handle="false"
    top="0">
     <layout_panel
      auto_resize="false"
+     background_opaque="false"
      background_visible="true"
-     bg_alpha_color="InventoryBackgroundColor"
-     bg_opaque_color="InventoryBackgroundColor"
+     bg_alpha_color="InventoryExplorerSideBackgroundColor"
      border="false"
      expanded_min_dim="140"
      height="620"
@@ -37,16 +34,31 @@
      user_resize="true"
      width="188">
       <panel
+       background_opaque="false"
        background_visible="true"
-       bg_alpha_color="ScrollSelectedBGColor"
-       bg_opaque_color="ScrollSelectedBGColor"
+       bg_alpha_color="InventoryExplorerDividerColor"
+       border="false"
+       bottom="-1"
+       follows="right|top|bottom"
+       layout="topleft"
+       mouse_opaque="false"
+       name="collections_rail_divider"
+       right="-1"
+       top="0"
+       width="1" />
+      <panel
+       background_opaque="false"
+       background_visible="true"
+       bg_alpha_image="Rounded_Square"
+       bg_alpha_image_overlay="InventoryExplorerSelectedBackgroundColor"
        border="false"
        follows="left|top|right"
        height="28"
        layout="topleft"
-       left="6"
+       left="7"
+       mouse_opaque="false"
        name="builtin_collection_selection"
-       right="-6"
+       right="-7"
        top="7" />
       <icon
        color="EmphasisColor"
@@ -183,6 +195,8 @@
       <button
        follows="left|top|right"
        height="28"
+       image_color="InventoryExplorerControlHoverColor"
+       image_hover_unselected="Rounded_Square"
        image_selected="Transparent"
        image_unselected="Transparent"
        layout="topleft"
@@ -194,6 +208,8 @@
       <button
        follows="left|top|right"
        height="28"
+       image_color="InventoryExplorerControlHoverColor"
+       image_hover_unselected="Rounded_Square"
        image_selected="Transparent"
        image_unselected="Transparent"
        layout="topleft"
@@ -205,6 +221,8 @@
       <button
        follows="left|top|right"
        height="28"
+       image_color="InventoryExplorerControlHoverColor"
+       image_hover_unselected="Rounded_Square"
        image_selected="Transparent"
        image_unselected="Transparent"
        layout="topleft"
@@ -216,6 +234,8 @@
       <button
        follows="left|top|right"
        height="28"
+       image_color="InventoryExplorerControlHoverColor"
+       image_hover_unselected="Rounded_Square"
        image_selected="Transparent"
        image_unselected="Transparent"
        layout="topleft"
@@ -239,11 +259,15 @@
        bevel_style="none"
        follows="left|top|right"
        height="1"
+       highlight_dark_color="InventoryExplorerDividerColor"
+       highlight_light_color="InventoryExplorerDividerColor"
        layout="topleft"
        left="14"
        name="my_filters_divider"
-       top="144"
-       right="-14" />
+       right="-14"
+       shadow_dark_color="InventoryExplorerDividerColor"
+       shadow_light_color="InventoryExplorerDividerColor"
+       top="144" />
 
       <flat_list_view
        allow_select="false"
@@ -283,6 +307,8 @@
       <menu_button
        follows="left|bottom|right"
        height="28"
+       image_color="InventoryExplorerControlHoverColor"
+       image_hover_unselected="Rounded_Square"
        image_selected="Transparent"
        image_unselected="Transparent"
        layout="topleft"
@@ -297,9 +323,7 @@
 
     <layout_panel
      auto_resize="true"
-     background_visible="true"
-     bg_alpha_color="PanelDefaultBackgroundColor"
-     bg_opaque_color="PanelDefaultBackgroundColor"
+     background_visible="false"
      border="false"
      height="620"
      min_dim="290"
@@ -318,9 +342,9 @@
        width="492">
         <layout_panel
          auto_resize="false"
+         background_opaque="false"
          background_visible="true"
-         bg_alpha_color="PanelDefaultBackgroundColor"
-         bg_opaque_color="PanelDefaultBackgroundColor"
+         bg_alpha_color="InventoryExplorerHeaderBackgroundColor"
          border="false"
          height="64"
          min_dim="64"
@@ -358,14 +382,29 @@
            top="8"
            visible="false"
            width="92">--</text>
+          <panel
+           background_opaque="false"
+           background_visible="true"
+           bg_alpha_image="Rounded_Square"
+           bg_alpha_image_overlay="InventoryExplorerControlBackgroundColor"
+           border="false"
+           follows="right|top"
+           height="24"
+           layout="topleft"
+           mouse_opaque="false"
+           name="view_mode_background"
+           right="-84"
+           top="5"
+           width="72" />
           <button
            follows="left|top"
            height="24"
            image_overlay="InvExplorer_Action_Back"
            image_overlay_color="LabelTextColor"
-           image_hover_unselected="Toolbar_Left_Over"
-           image_selected="Toolbar_Left_Selected"
-           image_unselected="Toolbar_Left_Off"
+           image_color="InventoryExplorerControlHoverColor"
+           image_hover_unselected="Rounded_Square"
+           image_selected="Transparent"
+           image_unselected="Transparent"
            layout="topleft"
            left="8"
            name="back_button"
@@ -378,9 +417,10 @@
            height="24"
            image_overlay="InvExplorer_Action_Forward"
            image_overlay_color="LabelTextColor"
-           image_hover_unselected="Toolbar_Middle_Over"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
+           image_color="InventoryExplorerControlHoverColor"
+           image_hover_unselected="Rounded_Square"
+           image_selected="Transparent"
+           image_unselected="Transparent"
            layout="topleft"
            left="33"
            name="forward_button"
@@ -393,9 +433,10 @@
            height="24"
            image_overlay="InvExplorer_Action_Up"
            image_overlay_color="LabelTextColor"
-           image_hover_unselected="Toolbar_Right_Over"
-           image_selected="Toolbar_Right_Selected"
-           image_unselected="Toolbar_Right_Off"
+           image_color="InventoryExplorerControlHoverColor"
+           image_hover_unselected="Rounded_Square"
+           image_selected="Transparent"
+           image_unselected="Transparent"
            layout="topleft"
            left="58"
            name="up_button"
@@ -409,9 +450,10 @@
            image_overlay="InvExplorer_View_Tree"
            image_overlay_color="LabelTextColor"
            image_overlay_selected_color="EmphasisColor"
-           image_hover_unselected="Toolbar_Left_Over"
-           image_selected="Toolbar_Left_Selected"
-           image_unselected="Toolbar_Left_Off"
+           image_color="InventoryExplorerSelectedBackgroundColor"
+           image_hover_unselected="Rounded_Square"
+           image_selected="Rounded_Square"
+           image_unselected="Transparent"
            is_toggle="true"
            layout="topleft"
            name="tree_view_button"
@@ -425,9 +467,10 @@
            image_overlay="InvExplorer_View_List"
            image_overlay_color="LabelTextColor"
            image_overlay_selected_color="EmphasisColor"
-           image_hover_unselected="Toolbar_Middle_Over"
-           image_selected="Toolbar_Middle_Selected"
-           image_unselected="Toolbar_Middle_Off"
+           image_color="InventoryExplorerSelectedBackgroundColor"
+           image_hover_unselected="Rounded_Square"
+           image_selected="Rounded_Square"
+           image_unselected="Transparent"
            is_toggle="true"
            layout="topleft"
            name="list_view_button"
@@ -441,9 +484,10 @@
            image_overlay="InvExplorer_View_Grid"
            image_overlay_color="LabelTextColor"
            image_overlay_selected_color="EmphasisColor"
-           image_hover_unselected="Toolbar_Right_Over"
-           image_selected="Toolbar_Right_Selected"
-           image_unselected="Toolbar_Right_Off"
+           image_color="InventoryExplorerSelectedBackgroundColor"
+           image_hover_unselected="Rounded_Square"
+           image_selected="Rounded_Square"
+           image_unselected="Transparent"
            is_toggle="true"
            layout="topleft"
            name="grid_view_button"
@@ -456,7 +500,8 @@
            height="24"
            image_overlay="InvExplorer_Action_Sort"
            image_overlay_color="LabelTextColor"
-           image_hover_unselected="Toolbar_Middle_Over"
+           image_color="InventoryExplorerControlHoverColor"
+           image_hover_unselected="Rounded_Square"
            image_selected="Transparent"
            image_unselected="Transparent"
            layout="topleft"
@@ -472,7 +517,8 @@
            height="24"
            image_overlay="OptionsMenu_Off"
            image_overlay_color="LabelTextColor"
-           image_hover_unselected="Toolbar_Middle_Over"
+           image_color="InventoryExplorerControlHoverColor"
+           image_hover_unselected="Rounded_Square"
            image_selected="Transparent"
            image_unselected="Transparent"
            layout="topleft"
@@ -486,7 +532,8 @@
            height="24"
            image_overlay="InvExplorer_Action_Add"
            image_overlay_color="LabelTextColor"
-           image_hover_unselected="Toolbar_Middle_Over"
+           image_color="InventoryExplorerControlHoverColor"
+           image_hover_unselected="Rounded_Square"
            image_selected="Transparent"
            image_unselected="Transparent"
            layout="topleft"
@@ -495,10 +542,40 @@
            tool_tip="Create new item"
            top="5"
            width="24" />
+          <panel
+           background_opaque="false"
+           background_visible="true"
+           bg_alpha_image="Rounded_Square"
+           bg_alpha_image_overlay="InventoryExplorerDividerColor"
+           border="false"
+           follows="left|top|right"
+           height="25"
+           layout="topleft"
+           left="8"
+           mouse_opaque="false"
+           name="search_border"
+           right="-8"
+           top="34" />
+          <panel
+           background_opaque="false"
+           background_visible="true"
+           bg_alpha_image="Rounded_Square"
+           bg_alpha_image_overlay="InventoryExplorerFieldBackgroundColor"
+           border="false"
+           follows="left|top|right"
+           height="23"
+           layout="topleft"
+           left="9"
+           mouse_opaque="false"
+           name="search_background"
+           right="-9"
+           top="35" />
           <filter_editor
-           background_image="TextField_Search_Off"
-           background_image_disabled="TextField_Search_Disabled"
-           background_image_focused="TextField_Search_Active"
+           background_image="Transparent"
+           background_image_disabled="Transparent"
+           background_image_focused="Transparent"
+           bg_color="Transparent"
+           draw_focus_border="false"
            follows="left|top|right"
            height="25"
            label="Search inventory..."
@@ -508,14 +585,13 @@
            name="inventory_explorer_search_editor"
            right="-8"
            search_button_visible="true"
-           top="34" />
+           top="34"
+           use_bg_color="true" />
         </layout_panel>
 
         <layout_panel
          auto_resize="true"
-         background_visible="true"
-         bg_alpha_color="PanelDefaultBackgroundColor"
-         bg_opaque_color="PanelDefaultBackgroundColor"
+         background_visible="false"
          border="false"
          min_dim="120"
          name="active_view_layout_panel"
@@ -524,13 +600,17 @@
            bevel_style="none"
            follows="left|top|right"
            height="1"
+           highlight_dark_color="InventoryExplorerDividerColor"
+           highlight_light_color="InventoryExplorerDividerColor"
            layout="topleft"
            left="0"
            name="toolbar_divider"
            right="-1"
+           shadow_dark_color="InventoryExplorerDividerColor"
+           shadow_light_color="InventoryExplorerDividerColor"
            top="0" />
           <inventory_panel
-           background_visible="true"
+           background_visible="false"
            bevel_style="none"
            bg_alpha_color="InventoryBackgroundColor"
            bg_opaque_color="InventoryBackgroundColor"
@@ -561,7 +641,7 @@
              selection_outline_color="Transparent" />
           </inventory_panel>
           <single_folder_inventory_panel
-           background_visible="true"
+           background_visible="false"
            bevel_style="none"
            bg_alpha_color="InventoryBackgroundColor"
            bg_opaque_color="InventoryBackgroundColor"
@@ -593,6 +673,7 @@
              single_folder_mode="true" />
           </single_folder_inventory_panel>
           <panel
+           background_visible="false"
            bottom="-1"
            class="inventory_gallery"
            filename="panel_inventory_gallery.xml"
@@ -604,7 +685,7 @@
            top="1"
            visible="false" />
           <recent_inventory_panel
-           background_visible="true"
+           background_visible="false"
            bevel_style="none"
            bg_alpha_color="InventoryBackgroundColor"
            bg_opaque_color="InventoryBackgroundColor"
@@ -635,7 +716,7 @@
              selection_outline_color="Transparent" />
           </recent_inventory_panel>
           <inventory_panel
-           background_visible="true"
+           background_visible="false"
            bevel_style="none"
            bg_alpha_color="InventoryBackgroundColor"
            bg_opaque_color="InventoryBackgroundColor"
@@ -666,7 +747,7 @@
              selection_outline_color="Transparent" />
           </inventory_panel>
           <favorites_inventory_panel
-           background_visible="true"
+           background_visible="false"
            bevel_style="none"
            bg_alpha_color="InventoryBackgroundColor"
            bg_opaque_color="InventoryBackgroundColor"
@@ -697,7 +778,7 @@
              selection_outline_color="Transparent" />
           </favorites_inventory_panel>
           <inventory_panel
-           background_visible="true"
+           background_visible="false"
            bevel_style="none"
            bg_alpha_color="InventoryBackgroundColor"
            bg_opaque_color="InventoryBackgroundColor"
@@ -731,9 +812,7 @@
 
         <layout_panel
          auto_resize="false"
-         background_visible="true"
-         bg_alpha_color="InventoryBackgroundColor"
-         bg_opaque_color="InventoryBackgroundColor"
+         background_visible="false"
          border="false"
          height="58"
          min_dim="58"
@@ -754,9 +833,9 @@
 
         <layout_panel
          auto_resize="false"
+         background_opaque="false"
          background_visible="true"
-         bg_alpha_color="InventoryBackgroundColor"
-         bg_opaque_color="InventoryBackgroundColor"
+         bg_alpha_color="InventoryExplorerStatusBackgroundColor"
          border="false"
          height="22"
          min_dim="22"
@@ -766,10 +845,14 @@
            bevel_style="none"
            follows="left|top|right"
            height="1"
+           highlight_dark_color="InventoryExplorerDividerColor"
+           highlight_light_color="InventoryExplorerDividerColor"
            layout="topleft"
            left="0"
            name="status_divider"
            right="-1"
+           shadow_dark_color="InventoryExplorerDividerColor"
+           shadow_light_color="InventoryExplorerDividerColor"
            top="0" />
           <text
            follows="left|top|right"
@@ -787,15 +870,28 @@
 
     <layout_panel
      auto_resize="false"
+     background_opaque="false"
      background_visible="true"
-     bg_alpha_color="InventoryBackgroundColor"
-     bg_opaque_color="InventoryBackgroundColor"
+     bg_alpha_color="InventoryExplorerSideBackgroundColor"
      border="false"
      height="620"
      min_dim="160"
      name="inspector_layout_panel"
      user_resize="true"
      width="240">
+      <panel
+       background_opaque="false"
+       background_visible="true"
+       bg_alpha_color="InventoryExplorerDividerColor"
+       border="false"
+       bottom="-1"
+       follows="left|top|bottom"
+       layout="topleft"
+       left="0"
+       mouse_opaque="false"
+       name="inspector_divider"
+       top="0"
+       width="1" />
       <panel
        bottom="-1"
        class="panel_al_inventory_inspector"

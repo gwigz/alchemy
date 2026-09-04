@@ -55,6 +55,7 @@ public:
     void setActionCallback(std::function<void(const std::string&)> callback);
 
 private:
+    void layoutActionButtons();
     void resizeDetailsPanel();
     void showEmpty();
     void showItem(const LLViewerInventoryItem& item);
